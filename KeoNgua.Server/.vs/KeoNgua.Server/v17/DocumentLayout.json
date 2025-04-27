@@ -7,19 +7,19 @@
       "RelativeMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|solutionrelative:keongua.server\\dataaccess\\dao\\ikeonguadao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|d:\\project\\private\\gamekeonguaserver\\keongua.server\\keongua.server\\dataaccess\\dao\\iaccountdao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\keongua.server\\dataaccess\\dao\\iaccountdao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|solutionrelative:keongua.server\\dataaccess\\dao\\iaccountdao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|d:\\project\\private\\gamekeonguaserver\\keongua.server\\keongua.server\\models\\resultdice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\keongua.server\\models\\resultdice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|solutionrelative:keongua.server\\models\\resultdice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|d:\\project\\private\\gamekeonguaserver\\keongua.server\\keongua.server\\models\\abstractgameplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\keongua.server\\models\\abstractgameplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|solutionrelative:keongua.server\\models\\abstractgameplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|d:\\project\\private\\gamekeonguaserver\\keongua.server\\keongua.server\\hubs\\keonguahub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\keongua.server\\hubs\\keonguahub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|solutionrelative:keongua.server\\hubs\\keonguahub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -71,6 +71,18 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "libman.json",
+              "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\libman.json",
+              "RelativeDocumentMoniker": "KeoNgua.Server\\libman.json",
+              "ToolTip": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\libman.json",
+              "RelativeToolTip": "KeoNgua.Server\\libman.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-04-27T09:47:11.453Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
               "Title": "IAccountDao.cs",
               "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\DataAccess\\Dao\\IAccountDao.cs",
@@ -79,8 +91,7 @@
               "RelativeToolTip": "KeoNgua.Server\\DataAccess\\Dao\\IAccountDao.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T15:03:33.626Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-27T15:03:33.626Z"
             },
             {
               "$type": "Document",
@@ -92,8 +103,7 @@
               "RelativeToolTip": "KeoNgua.Server\\Models\\ResultDice.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T14:58:33.618Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-27T14:58:33.618Z"
             },
             {
               "$type": "Document",
@@ -105,8 +115,7 @@
               "RelativeToolTip": "KeoNgua.Server\\Models\\AbstractGamePlayer.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T14:58:23.294Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-27T14:58:23.294Z"
             },
             {
               "$type": "Document",
@@ -118,20 +127,7 @@
               "RelativeToolTip": "KeoNgua.Server\\Hubs\\KeoNguaHub.cs",
               "ViewState": "AgIAAO8AAAAAAAAAAAAAAO8AAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T10:56:52.173Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "libman.json",
-              "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\libman.json",
-              "RelativeDocumentMoniker": "KeoNgua.Server\\libman.json",
-              "ToolTip": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\libman.json",
-              "RelativeToolTip": "KeoNgua.Server\\libman.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-04-27T09:47:11.453Z"
+              "WhenOpened": "2025-04-27T10:56:52.173Z"
             },
             {
               "$type": "Document",
