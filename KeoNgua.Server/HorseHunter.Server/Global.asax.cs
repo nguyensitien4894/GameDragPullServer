@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using HorseHunter.Server.Handlers;
+using System.Configuration;
 using System.Web.Http;
-using System.Web.Mvc;
-using System.Web.Optimization;
-using System.Web.Routing;
+using TraditionGame.Utilities.Caching;
 
 namespace HorseHunter.Server
 {
@@ -13,11 +9,43 @@ namespace HorseHunter.Server
     {
         protected void Application_Start()
         {
-            AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
+            StartTimerJackpot();
+            //StartTimerAutoReset();
+        }
+
+        #region Timer Update Client Jackpot
+        private static void StartTimerJackpot()
+        {
+            var aTimer = new System.Timers.Timer();
+            aTimer.Interval = int.Parse(ConfigurationManager.AppSettings["TimerJackpot"]);
+            // Hook up the Elapsed event for the timer. 
+            aTimer.Elapsed += OnTimedJackpot;
+            // Have the timer fire repeated events (true is the default)
+            //aTimer.AutoReset = true;
+            // Start the timer
+            aTimer.Enabled = true;
+        }
+
+        private static void OnTimedJackpot(object source, System.Timers.ElapsedEventArgs e)
+        {
+            HorseHunterHandler.Instance.UpdateClientJackpot();
+        }
+        #endregion
+
+        private static void StartTimerAutoReset()
+        {
+            var aTimer = new System.Timers.Timer();
+            aTimer.Interval = 6 * 60 * 60 * 1000;
+            // Hook up the Elapsed event for the timer. 
+            aTimer.Elapsed += OnTimedAutoReset;
+            // Start the timer
+            aTimer.Enabled = true;
+        }
+
+        private static void OnTimedAutoReset(object source, System.Timers.ElapsedEventArgs e)
+        {
+            GameFilter.Instance.Reset();
         }
     }
 }

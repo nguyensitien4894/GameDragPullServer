@@ -1,0 +1,2 @@
+D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\HorseHunter.Server\obj\Debug\HorseHunter.Server.csproj.AssemblyReference.cache
+D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\HorseHunter.Server\obj\Debug\HorseHunter.Server.csproj.CoreCompileInputs.cache

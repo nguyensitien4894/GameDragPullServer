@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TraditionGame.Utilities", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsWebGame.RedisCache", "WebGame.RedisCache\MsWebGame.RedisCache.csproj", "{6A195B17-8F33-4B4A-ABA2-1414DDBBA4BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorseHunter.Server", "HorseHunter.Server\HorseHunter.Server.csproj", "{75ED1951-A390-479B-BF2B-9C534D5A09ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{6A195B17-8F33-4B4A-ABA2-1414DDBBA4BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A195B17-8F33-4B4A-ABA2-1414DDBBA4BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A195B17-8F33-4B4A-ABA2-1414DDBBA4BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75ED1951-A390-479B-BF2B-9C534D5A09ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75ED1951-A390-479B-BF2B-9C534D5A09ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75ED1951-A390-479B-BF2B-9C534D5A09ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75ED1951-A390-479B-BF2B-9C534D5A09ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,7 +3,15 @@
   "WorkspaceRootPath": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|d:\\project\\private\\gamekeonguaserver\\keongua.server\\keongua.server\\dataaccess\\dao\\ikeonguadao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\keongua.server\\global.asax.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|solutionrelative:keongua.server\\global.asax.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{75ED1951-A390-479B-BF2B-9C534D5A09ED}|HorseHunter.Server\\HorseHunter.Server.csproj|d:\\project\\private\\gamekeonguaserver\\keongua.server\\horsehunter.server\\dataaccess\\daoimpl\\horsehunterdaoimpl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{75ED1951-A390-479B-BF2B-9C534D5A09ED}|HorseHunter.Server\\HorseHunter.Server.csproj|solutionrelative:horsehunter.server\\dataaccess\\daoimpl\\horsehunterdaoimpl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\keongua.server\\dataaccess\\dao\\ikeonguadao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|solutionrelative:keongua.server\\dataaccess\\dao\\ikeonguadao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -54,24 +62,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "IKeoNguaDao.cs",
-              "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\DataAccess\\Dao\\IKeoNguaDao.cs",
-              "RelativeDocumentMoniker": "KeoNgua.Server\\DataAccess\\Dao\\IKeoNguaDao.cs",
-              "ToolTip": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\DataAccess\\Dao\\IKeoNguaDao.cs",
-              "RelativeToolTip": "KeoNgua.Server\\DataAccess\\Dao\\IKeoNguaDao.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "HorseHunterDaoImpl.cs",
+              "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\HorseHunter.Server\\DataAccess\\DAOImpl\\HorseHunterDaoImpl.cs",
+              "RelativeDocumentMoniker": "HorseHunter.Server\\DataAccess\\DAOImpl\\HorseHunterDaoImpl.cs",
+              "ToolTip": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\HorseHunter.Server\\DataAccess\\DAOImpl\\HorseHunterDaoImpl.cs",
+              "RelativeToolTip": "HorseHunter.Server\\DataAccess\\DAOImpl\\HorseHunterDaoImpl.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T15:03:34.958Z",
+              "WhenOpened": "2025-04-27T15:42:06.097Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "libman.json",
               "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\libman.json",
               "RelativeDocumentMoniker": "KeoNgua.Server\\libman.json",
@@ -79,11 +87,37 @@
               "RelativeToolTip": "KeoNgua.Server\\libman.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-04-27T09:47:11.453Z"
+              "WhenOpened": "2025-04-27T09:47:11.453Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "Global.asax.cs",
+              "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\Global.asax.cs",
+              "RelativeDocumentMoniker": "KeoNgua.Server\\Global.asax.cs",
+              "ToolTip": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\Global.asax.cs",
+              "RelativeToolTip": "KeoNgua.Server\\Global.asax.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T15:30:26.366Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IKeoNguaDao.cs",
+              "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\DataAccess\\Dao\\IKeoNguaDao.cs",
+              "RelativeDocumentMoniker": "KeoNgua.Server\\DataAccess\\Dao\\IKeoNguaDao.cs",
+              "ToolTip": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\DataAccess\\Dao\\IKeoNguaDao.cs",
+              "RelativeToolTip": "KeoNgua.Server\\DataAccess\\Dao\\IKeoNguaDao.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T15:03:34.958Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "IAccountDao.cs",
               "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\DataAccess\\Dao\\IAccountDao.cs",
               "RelativeDocumentMoniker": "KeoNgua.Server\\DataAccess\\Dao\\IAccountDao.cs",
@@ -95,7 +129,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "ResultDice.cs",
               "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\Models\\ResultDice.cs",
               "RelativeDocumentMoniker": "KeoNgua.Server\\Models\\ResultDice.cs",
@@ -107,7 +141,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "AbstractGamePlayer.cs",
               "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\Models\\AbstractGamePlayer.cs",
               "RelativeDocumentMoniker": "KeoNgua.Server\\Models\\AbstractGamePlayer.cs",
@@ -119,7 +153,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "KeoNguaHub.cs",
               "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\Hubs\\KeoNguaHub.cs",
               "RelativeDocumentMoniker": "KeoNgua.Server\\Hubs\\KeoNguaHub.cs",
@@ -131,7 +165,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "KeoNguaHandler.cs",
               "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\Handlers\\KeoNguaHandler.cs",
               "RelativeDocumentMoniker": "KeoNgua.Server\\Handlers\\KeoNguaHandler.cs",
@@ -143,7 +177,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "RedisStore.cs",
               "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\WebGame.RedisCache\\Cache\\RedisStore.cs",
               "RelativeDocumentMoniker": "WebGame.RedisCache\\Cache\\RedisStore.cs",
@@ -155,7 +189,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "RedisCacheProvider.cs",
               "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\WebGame.RedisCache\\Cache\\RedisCacheProvider.cs",
               "RelativeDocumentMoniker": "WebGame.RedisCache\\Cache\\RedisCacheProvider.cs",
@@ -167,7 +201,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "KeoNguaController.cs",
               "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\Controllers\\KeoNguaController.cs",
               "RelativeDocumentMoniker": "KeoNgua.Server\\Controllers\\KeoNguaController.cs",
@@ -179,7 +213,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "KeoNguaDaoImpl.cs",
               "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\DataAccess\\DaoImpl\\KeoNguaDaoImpl.cs",
               "RelativeDocumentMoniker": "KeoNgua.Server\\DataAccess\\DaoImpl\\KeoNguaDaoImpl.cs",
