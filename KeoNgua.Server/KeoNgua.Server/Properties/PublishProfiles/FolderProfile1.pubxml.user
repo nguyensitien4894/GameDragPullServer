@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Users\PC\Desktop\pushlist\KeoNgua</_PublishTargetUrl>
+    <History>True|2022-10-05T17:46:22.9034798Z;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="App_Data/Chat/Data/badlinks.txt">
+      <publishTime>07/21/2021 18:16:21</publishTime>
+    </File>
+    <File Include="App_Data/Chat/Data/badwords.txt">
+      <publishTime>07/21/2021 18:16:21</publishTime>
+    </File>
+    <File Include="App_Data/Chat/Data/banusers.txt">
+      <publishTime>07/21/2021 18:16:21</publishTime>
+    </File>
+    <File Include="bin/KeoNgua.Server.dll">
+      <publishTime>10/06/2022 00:46:21</publishTime>
+    </File>
+    <File Include="bin/KeoNgua.Server.pdb">
+      <publishTime>10/06/2022 00:46:21</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.SignalR.Core.dll">
+      <publishTime>07/21/2021 18:16:30</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.SignalR.Core.pdb">
+      <publishTime>07/21/2021 18:16:30</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.SignalR.SystemWeb.dll">
+      <publishTime>07/21/2021 18:16:30</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.SignalR.SystemWeb.pdb">
+      <publishTime>07/21/2021 18:16:30</publishTime>
+    </File>
+    <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
+      <publishTime>07/21/2021 18:16:30</publishTime>
+    </File>
+    <File Include="bin/Microsoft.IdentityModel.JsonWebTokens.dll">
+      <publishTime>07/21/2021 18:17:17</publishTime>
+    </File>
+    <File Include="bin/Microsoft.IdentityModel.JsonWebTokens.pdb">
+      <publishTime>07/21/2021 18:17:17</publishTime>
+    </File>
+    <File Include="bin/Microsoft.IdentityModel.Logging.dll">
+      <publishTime>07/21/2021 18:17:17</publishTime>
+    </File>
+    <File Include="bin/Microsoft.IdentityModel.Logging.pdb">
+      <publishTime>07/21/2021 18:17:17</publishTime>
+    </File>
+    <File Include="bin/Microsoft.IdentityModel.Tokens.dll">
+      <publishTime>07/21/2021 18:17:17</publishTime>
+    </File>
+    <File Include="bin/Microsoft.IdentityModel.Tokens.pdb">
+      <publishTime>07/21/2021 18:17:17</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Cors.dll">
+      <publishTime>07/21/2021 18:16:31</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.dll">
+      <publishTime>07/21/2021 18:16:31</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Host.SystemWeb.dll">
+      <publishTime>07/21/2021 18:16:31</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.dll">
+      <publishTime>07/21/2021 18:16:31</publishTime>
+    </File>
+    <File Include="bin/MsWebGame.RedisCache.dll">
+      <publishTime>10/06/2022 00:46:19</publishTime>
+    </File>
+    <File Include="bin/MsWebGame.RedisCache.dll.config">
+      <publishTime>07/21/2021 18:17:48</publishTime>
+    </File>
+    <File Include="bin/MsWebGame.RedisCache.pdb">
+      <publishTime>10/06/2022 00:46:19</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>07/21/2021 18:16:32</publishTime>
+    </File>
+    <File Include="bin/NLog.dll">
+      <publishTime>07/21/2021 18:17:18</publishTime>
+    </File>
+    <File Include="bin/Owin.dll">
+      <publishTime>07/21/2021 18:16:32</publishTime>
+    </File>
+    <File Include="bin/roslyn/csc.exe">
+      <publishTime>07/21/2021 18:16:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.Build.Tasks.CodeAnalysis.dll">
+      <publishTime>07/21/2021 18:16:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.CSharp.dll">
+      <publishTime>07/21/2021 18:16:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.dll">
+      <publishTime>07/21/2021 18:16:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.VisualBasic.dll">
+      <publishTime>07/21/2021 18:16:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CSharp.Core.targets">
+      <publishTime>07/21/2021 18:16:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.VisualBasic.Core.targets">
+      <publishTime>07/21/2021 18:16:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Collections.Immutable.dll">
+      <publishTime>07/21/2021 18:16:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Reflection.Metadata.dll">
+      <publishTime>07/21/2021 18:16:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/vbc.exe">
+      <publishTime>07/21/2021 18:16:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/VBCSCompiler.exe">
+      <publishTime>07/21/2021 18:16:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/VBCSCompiler.exe.config">
+      <publishTime>07/21/2021 18:16:31</publishTime>
+    </File>
+    <File Include="bin/StackExchange.Redis.Extensions.Core.dll">
+      <publishTime>07/21/2021 18:17:21</publishTime>
+    </File>
+    <File Include="bin/StackExchange.Redis.Extensions.Newtonsoft.dll">
+      <publishTime>07/21/2021 18:17:21</publishTime>
+    </File>
+    <File Include="bin/StackExchange.Redis.StrongName.dll">
+      <publishTime>07/21/2021 18:17:21</publishTime>
+    </File>
+    <File Include="bin/System.IdentityModel.Tokens.Jwt.dll">
+      <publishTime>07/21/2021 18:17:21</publishTime>
+    </File>
+    <File Include="bin/System.IdentityModel.Tokens.Jwt.pdb">
+      <publishTime>07/21/2021 18:17:21</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.Formatting.dll">
+      <publishTime>07/21/2021 18:16:30</publishTime>
+    </File>
+    <File Include="bin/System.Web.Cors.dll">
+      <publishTime>07/21/2021 18:16:30</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.dll">
+      <publishTime>07/21/2021 18:16:30</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.WebHost.dll">
+      <publishTime>07/21/2021 18:16:30</publishTime>
+    </File>
+    <File Include="bin/TraditionGame.Utilities.dll">
+      <publishTime>10/06/2022 00:46:19</publishTime>
+    </File>
+    <File Include="bin/TraditionGame.Utilities.dll.config">
+      <publishTime>07/21/2021 18:16:54</publishTime>
+    </File>
+    <File Include="bin/TraditionGame.Utilities.pdb">
+      <publishTime>10/06/2022 00:46:19</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>07/21/2021 18:16:21</publishTime>
+    </File>
+    <File Include="NLog.config">
+      <publishTime>07/21/2021 18:16:21</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>09/14/2021 01:37:21</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>10/06/2022 00:46:22</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

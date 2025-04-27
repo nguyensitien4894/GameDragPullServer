@@ -1,12 +1,37 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|d:\\project\\private\\gamekeonguaserver\\keongua.server\\keongua.server\\libman.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|solutionrelative:keongua.server\\libman.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "libman.json",
+              "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\libman.json",
+              "RelativeDocumentMoniker": "KeoNgua.Server\\libman.json",
+              "ToolTip": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\libman.json",
+              "RelativeToolTip": "KeoNgua.Server\\libman.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-04-27T05:47:09.647Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
