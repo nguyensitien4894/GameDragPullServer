@@ -1,0 +1,19 @@
+﻿@model  MsWebGame.CSKH.Models.DemoModel
+@{
+    //page title
+    ViewBag.Title ="Thêm mới ";
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+           Thêm mới @Html.ActionLink("(" + "Quay lại" + ")", "Index")
+        </div>
+        <div class="options">
+            <input type="submit" name="save" class="t-button" value="Lưu" />
+            <input type="submit" name="save-continue" class="t-button" value="Lưu và tiếp tục" />
+        </div>
+    </div>
+    @Html.Partial("_CreateOrUpdate", Model)
+}

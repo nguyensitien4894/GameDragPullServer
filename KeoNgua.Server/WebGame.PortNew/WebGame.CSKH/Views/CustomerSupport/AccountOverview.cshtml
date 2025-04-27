@@ -1,0 +1,1069 @@
+﻿@{
+    ViewBag.Title = "Thông tin tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Utils
+@using TraditionGame.Utilities.Utils
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+
+@model  MsWebGame.CSKH.Models.Accounts.AccountOverview
+@functions{
+    private bool IsDisplayMenu(string UserRoles)
+    {
+        string RoleCode = Session["RoleCode"] != null ? Session["RoleCode"].ToString() : string.Empty;
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    private bool IsDisplayMenuByUserName(string UserRoles)
+    {
+        string RoleCode = Session["UserName"] != null ? Session["UserName"].ToString() : string.Empty;
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            Thông tin tài khoản
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <span id="text-notifymsg"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Loại tìm kiếm <span style="color:red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    <select id="SearchType" name="SearchType" class="text-box single-line">
+                        <option value="1" @(ViewBag.SearchType == 1 ? "selected" : string.Empty)>Nick name</option>
+                        <option value="2" @(ViewBag.SearchType == 2 ? "selected" : string.Empty)>Số điện thoại</option>
+                        <option value="3" @(ViewBag.SearchType == 3 ? "selected" : string.Empty)>ID tài khoản</option>
+                        <option value="4" @(ViewBag.SearchType == 4 ? "selected" : string.Empty)>User Name</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Giá trị <span style="color:red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" value="@ViewBag.Value" id="Value" name="Value" type="text" onkeypress="GlobalHeader.inputKeypress(event.keyCode);">
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="submit" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                    <span class="field-validation-valid" data-valmsg-for="user-manager"></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    if (Model != null && Model.UserID > 0)
+    {
+        <table style="width: 100%;">
+            <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Từ ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("StartDate").Value(DateTime.Today.AddDays(-7)).InputHtmlAttributes(new { @readonly = "readonly" })
+                    <span class="field-validation-valid" data-valmsg-for="startDate"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Đến ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("EndDate").Value(DateTime.Now.AddDays(1)).InputHtmlAttributes(new { @readonly = "readonly" })
+                    <span class="field-validation-valid" data-valmsg-for="endDate"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearchLs" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table class ="adminContent">
+            <tr>
+                <td style="width: 50%;">
+                    @(Html.Telerik().Grid<TransactionHistory>()
+                .Name("transaction-grid")
+                .ClientEvents(events => events.OnDataBinding("onDataBindingLs"))
+                .Columns(columns =>
+                {
+                    columns.Bound(x => x.TransCode).Title("Mã giao dịch");
+                    columns.Bound(x => x.DisplayName).Title("Tên hiển thị");
+
+                    columns.Bound(x => x.PartnerName).Title("Đối tác");
+                    columns.Bound(x => x.OrgBalanceFormat).Title("Số dư ban đầu").HtmlAttributes(new {@class = "text-right"});
+                    columns.Bound(x => x.AmountFormat).Title("Phát sinh").HtmlAttributes(new {@class = "text-right"});
+                    columns.Bound(x => x.AmountFeeFormat).Title("Phí").HtmlAttributes(new {@class = "text-right"});
+                    columns.Bound(x => x.RemainBalanceFormat).Title("Số dư còn lại ").HtmlAttributes(new {@class = "text-right"});
+                    columns.Bound(x => x.TransDate).Title("Thời gian");
+                    columns.Bound(x => x.Description).Title("Mô tả").Width(200);
+                })
+                .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                .DataBinding(dataBinding =>
+                {
+                    dataBinding.Ajax().Select("GetTransactionHistoryNew", "CustomerSupport");
+                })
+                .EnableCustomBinding(true))
+                    <script type="text/javascript">
+                function getNowDateTimeStr(day) {
+                    var now = new Date();
+                    now.setDate(now.getDate() + day );
+                    var hour = now.getHours() - (now.getHours() >= 12 ? 12 : 0);
+                    return [[AddZero(now.getDate()), AddZero(now.getMonth() + 1), now.getFullYear()].join("/"), [AddZero(hour), AddZero(now.getMinutes())].join(":"), now.getHours() >= 12 ? "PM" : "AM"].join(" ");
+                }
+
+                function AddZero(num) {
+                    return (num >= 0 && num < 10) ? "0" + num : num + "";
+                }
+
+
+                function onDataBindingLs(e) {
+                    var searchModel = {
+                        ObjectType: '1',
+                        ObjectValue: '@Model.GameAccountName',
+                        SearchType: '0',
+                        PartnerType: '0',
+                        TransCode: '0',
+                        ServiceID: '1',
+                        StartDate: $('#StartDate').val().trim(),
+                        PartnerName: '',
+                        TransType: '0',
+                        EndDate: $('#EndDate').val().trim()
+                    };
+                    e.data = searchModel;
+                }
+                $(document).ready(function () {
+                    $('#btnSearchLs').click(function () {
+                        var grid = $('#transaction-grid').data('tGrid');
+                        grid.currentPage = 1; //new search. Set page size to 1
+                        grid.ajaxRequest();
+                        return false;
+                    });
+                });
+                    </script>
+                </td>
+                <td style=" position: absolute; width: 50%; ">
+                    @(Html.Telerik().Grid<HistoryPlay>()
+                    .Name("historyPlay-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBindingHs"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.GameTypeFormat).Title("Game");
+                        columns.Bound(x => x.STT).Title("STT").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.OrgBalanceFormat).Title("Số dư trước Bet").HtmlAttributes(new { @class = "text-right" });
+
+                        columns.Bound(x => x.BetValueFormat).Title("Cược").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.BalanceFormat).Title("Số dư sau Bet").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.PrizeValueFormat).Title("Thưởng").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.RefundValueFormat).Title("Hoàn").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.SpinID).Title("Phiên");
+
+                        columns.Bound(x => x.Description).Title("Miêu tả");
+                        columns.Bound(x => x.PlayTime).Title("Thời gian chơi").Format("{0:dd/MM/yyyy HH:mm:ss}");
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetHistoryPlay", "CustomerSupport");
+                    })
+                        .EnableCustomBinding(true))
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+                            $('#btnSearchLs').click(function () {
+                                var grid = $('#historyPlay-grid').data('tGrid');
+                                grid.currentPage = 1; //new search. Set page size to 1
+                                grid.ajaxRequest();
+                                return false;
+                            });
+                        });
+
+                        function onDataBindingHs(e) {
+                            var searchModel = {
+                                NickName: '@Model.GameAccountName',
+                                SpinID: '',
+                                GameID: '0',
+                                FromDate: $('#StartDate').val().trim(),
+                                ToDate: $('#EndDate').val().trim(),
+                                ServiceID: '1',
+                                OrderBy: '1'
+                            };
+                            e.data = searchModel;
+                        }
+                    </script>
+                </td>
+            </tr>
+        </table>
+        <table class="custom-table">
+            <tbody id="accountgame-profit">
+                <tr>
+                    <td colspan="3" class="text-center">Thông tin chung</td>
+                </tr>
+                <tr>
+                    <td rowspan="7">Tài khoản</td>
+                    <td>ID</td>
+                    <td>@Model.UserID</td>
+                    <td>
+                        @if (Model.AuthenType != null && Model.AuthenType == 1)
+                        {
+                            <button type="button" onclick="GlobalHeader.closeLoginOtp();" class="btn-success">Tắt đăng nhập otp</button>
+                        }
+                        else
+                        {
+                            <button disabled class="btn-success">Chưa kích hoạt bảo mật Otp</button>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td>Tài khoản</td>
+                    <td>@Model.Username</td>
+                    <td>
+                        @if (Model.Status == 1)
+                        {
+                            <button type="button" onclick="GlobalHeader.lockAndUnlockReset('@Model.GameAccountName', 2, @Model.ServiceID);" class="btn-primary">Khóa user</button>
+                        }
+                        else if (Model.Status == 2)
+                        {
+                            <button type="button" onclick="GlobalHeader.lockAndUnlockReset('@Model.GameAccountName', 1, @Model.ServiceID);" class="btn-primary">Mở khóa user</button>
+                        }
+                        else if (Model.Status == 3)
+                        {
+                            <button type="button" onclick="GlobalHeader.userLockTrans('@Model.GameAccountName', false, @Model.ServiceID);" class="btn-primary">Mở khóa GD</button>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td>Trạng thái</td>
+                    <td class='@(Model.Status!=1?"btn-danger":"btn-primary")'>
+                        @Model.StatusStr
+                        <br />
+                        @if (Model.IsWrong)
+                        {
+                            <b style="color:red">Đã đưa vào danh sách quây bài (Không cần báo với khách)</b>
+                        }
+
+                    </td>
+                    <td>
+                        @if (Model.Status == 1)
+                        {
+                            <button type="button" onclick="GlobalHeader.userLockTrans('@Model.GameAccountName', true, @Model.ServiceID);" class="btn-primary">Khóa Giao Dịch</button>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td>NickName</td>
+                    <td>@Model.GameAccountName</td>
+                    <td>
+
+                        <button type="button" onclick="GlobalHeader.lockAndUnlockReset('@Model.GameAccountName', 3, @Model.ServiceID);" class="btn-danger">Reset password</button>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>Số điện thoại</td>
+                    <td>@Model.PhoneNumber<BR>
+						<button type="button" class="btn-primary" onclick="GlobalHeader.getFormUpdatePhone(@Model.UserID, 10);"
+                                data-toggle="modal" data-target="#lstUpdatePhoneModal">
+                           Cập nhật số điện thoại Tele
+                        </button>
+					</td>
+                    <td>
+                        <button type="button" onclick="GlobalHeader.banUserChat('@Model.GameAccountName', 0, @Model.ServiceID);" class="btn-info">Khóa chat</button> <button type="button" onclick="GlobalHeader.banUserChat('@Model.GameAccountName', 1, @Model.ServiceID);" class="btn-info">Mở chat</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Số điện thoại SafeOtp</td>
+                    <td>@Model.PhoneOTPSafe</td>
+                    <td>
+                        @if (!String.IsNullOrEmpty(Model.PhoneNumber))
+                        {
+                            <button type="button" onclick="GlobalHeader.RemovePhoneOtp('@Model.UserID', @Model.ServiceID);" class="btn-warning">Xóa số điện thoại</button>
+                        }
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>Ngày tạo</td>
+                    <td>@Model.CreatedTime.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>
+                        @if (Model.IsBlackList == 0)
+                        {
+                            <button type="button" onclick="GlobalHeader.updateUserToBlacklist('@Model.UserID', 1, @Model.ServiceID);" class="btn-warning">Cập nhật blacklist</button>
+                        }
+                        else if (Model.IsBlackList == 1)
+                        {
+                            <button type="button" onclick="GlobalHeader.updateUserToBlacklist('@Model.UserID', 0, @Model.ServiceID);" class="btn-warning">Xóa blacklist</button>
+                        }
+
+                        @if (Model.IsBlackList == 0)
+                        {
+                            <button type="button" onclick="GlobalHeader.updateUserToBlacklist('@Model.UserID', 1, @Model.ServiceID);" class="btn-danger">Cập nhật blacklist Cá</button>
+                        }
+                        else if (Model.IsBlackList == 1)
+                        {
+                            <button type="button" onclick="GlobalHeader.updateUserToBlacklist('@Model.UserID', 0, @Model.ServiceID);" class="btn-success">Xóa blacklist Cá</button>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ngày cập nhật SĐT</td>
+                    <td>@(Model.PhoneUpdateDate.HasValue ? Model.PhoneUpdateDate?.ToString("dd/MM/yyyy HH:mm") : string.Empty)</td>
+                    <td>
+
+                        <button type="button" class="@(Model.HasNote==1?"btn-danger":"btn-primary")"
+                                data-toggle="modal" data-target="#lstNote">
+                            Ghi chú
+                            @if (Model.HasNote == 1)
+                            {
+                                <b>*</b>
+                            }
+                            <span id="hasNote"></span>
+
+                        </button>
+
+
+
+
+                    </td>
+                    <td>
+                        @if (!Model.IsWrong)
+                        {
+                            <button type="button" onclick="GlobalHeader.lockGameBai(@Model.UserID,'@Model.GameAccountName', @Model.ServiceID);" class="btn-primary">Đưa vào danh sách quây bài</button>
+                        }
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>IP List</td>
+                    <td>
+                        <button type="button" class="btn-primary" onclick="GlobalHeader.getAccountLoginIP(@Model.UserID, 10);"
+                                data-toggle="modal" data-target="#lstIpLoginModal">
+                            Hiển thị danh sách IP login
+                        </button>
+                    </td>
+                </tr>
+				<tr>
+                    <td>Cấu hình giới hạn Live</td>
+                    <td>
+                        <button type="button" class="btn-primary" onclick="GlobalHeader.getFormConfigLive(@Model.UserID, 10);"
+                                data-toggle="modal" data-target="#lstConfigLiveModal">
+                           Cấu hình
+                        </button>
+                    </td>
+                </tr>
+            <tr>
+                <td>Xèng bắn cá</td>
+                <td>@Model.FishCash.LongToMoneyFormat()</td>
+            </tr>
+
+                <tr>
+                    <td rowspan="3">Số dư</td>
+                    <td>Khả dụng</td>
+                    <td>@Model.Balance.LongToMoneyFormat()</td>
+                </tr>
+                <tr>
+                    <td>Đóng băng</td>
+                    <td>@Model.SafeBalance.LongToMoneyFormat()</td>
+                </tr> 
+				<tr>
+                    <td>Số dư bóng</td>
+                    <td>@ViewBag.EsportsVi ~ @ViewBag.EsportsGame</td>
+                </tr>
+                <tr>
+                    <td><strong>Tổng</strong></td>
+                    <td><strong>@Model.TotalBalance.LongToMoneyFormat()</strong></td>
+                </tr>
+                <tr>
+                    <td><b>Vay-Nợ-Quý</b></td>
+                    <td>
+                        <b style="color:red"> Hiện tại</b> <b>Được vay:</b>@Model.CurrentQuater.LoanAmountFormat <b>Nợ :</b>
+                        @if (Model.CurrentQuater.OldDebt > 0)
+                        {
+                            @Model.CurrentQuater.OldDebtFormat
+                        }
+                        else
+                        {
+                            @Model.BeforQuater.OldDebtFormat
+                        }
+                        <b>Thưởng quý:</b>@Model.CurrentQuater.QuaterAccFormat
+                    </td>
+                    <td><b style="color:red">Trước</b>  <b>Thưởng quý:</b>@Model.BeforQuater.QuaterAccFormat </td>
+
+
+                </tr>
+
+                <tr>
+                    <td rowspan="2">VIP</td>
+                    <td>Hạng</td>
+                    <td>@(Model.RankID != 0 ? Model.RankID.IntToRankFormat() : "Chưa xếp hạng")</td>
+                    @*<td><a href="@Url.Action("HistoryChangeVip", "CustomerSupport", new { nickName = Model.GameAccountName })">Chi tiết</a></td>*@
+                </tr>
+                <tr>
+                    <td>VP</td>
+                    <td>@Model.VipPoint.LongToMoneyFormat()</td>
+                </tr>
+                <tr>
+                    <td>Tổng thưởng</td>
+                    <td>VIP</td>
+                    <td>@Model.TotalRefundAmount.LongToMoneyFormat()</td>
+                </tr>
+
+
+                @if (IsDisplayMenu("ADMIN") || IsDisplayMenuByUserName("cskh_01,admin_test,cskh_04_tq,,monitor_01"))
+                {
+
+
+
+
+
+                    @*<tr>
+
+                            <td>Event</td>
+                            <td>@Model.EventValue.LongToMoneyFormat()</td>
+                        </tr>
+                        <tr>
+                            <td>Tri ân</td>
+                            <td>@Model.GratefulValue.LongToMoneyFormat()</td>
+                        </tr>
+                                    <tr>
+                                        <td><strong>Tổng thưởng</strong></td>
+                                        <td><strong>@Model.TotalAward.LongToMoneyFormat()</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="7">Chuyển khoản</td>
+                                        <td>Chuyển user</td>
+                                        <td>@Model.TotalValueOutUser.LongToMoneyFormat()</td>
+                                        <td rowspan="3"><strong>@Model.TotalValueOut.LongToMoneyFormat()</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Chuyển đại lý</td>
+                                        <td style="background-color:yellow">@Model.TotalValueOutAgency.LongToMoneyFormat()</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Chuyển admin</td>
+                                        <td>@Model.TotalValueOutAdmin.LongToMoneyFormat()</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nhận user</td>
+                                        <td>@Model.TotalValueInUser.LongToMoneyFormat()</td>
+                                        <td rowspan="3"><strong>@Model.TotalValueIn.LongToMoneyFormat()</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nhận đại lý</td>
+                                        <td style="background-color:yellow">@Model.TotalValueInAgency.LongToMoneyFormat()</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nhận admin</td>
+                                        <td>@Model.TotalValueInAdmin.LongToMoneyFormat()</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Chênh lệch</strong></td>
+                                        <td><strong>@((Model.TotalValueIn - Model.TotalValueOut).LongToMoneyFormat())</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="2">Thẻ cào</td>
+                                        <td>Nạp thẻ</td>
+                                        <td>@Model.TotalRecharge.LongToMoneyFormat()</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>Đổi thẻ</td>
+
+                                        <td>@Model.TotalSwap.LongToMoneyFormat()</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td><strong> GiftCode</strong></td>
+                                        <td></td>
+                                        <td><strong>@Model.TotalGiftcode.LongToMoneyFormat()</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong> Nạp bank</strong></td>
+                                        <td></td>
+                                        <td><strong>@Model.TotalRechargeBank.LongToMoneyFormat()</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong> Momo</strong></td>
+                                        <td></td>
+                                        <td><strong>@Model.TotalMomo.LongToMoneyFormat()</strong></td>
+                                    </tr>*@
+
+
+
+
+
+                    <tr>
+                        <td rowspan="12">Tổng vào</td>
+                        <td>VIP</td>
+                        <td>@Model.TotalRefundAmount.LongToMoneyFormat()</td>
+                        <td rowspan="12">
+
+                            @Model.TotalIn.DecimalToMoneyFormat()
+
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td>Vay nợ</td>
+                        <td>@Model.TotalVipLoanValue.LongToMoneyFormat()</td>
+
+                    </tr>
+                    <tr>
+
+
+                        <td>Thưởng quý</td>
+                        <td>@Model.TotalQuaterRedemptionValue.LongToMoneyFormat()</td>
+
+                    </tr>
+
+                    <tr>
+
+
+                        <td>Event</td>
+                        <td>@Model.EventValue.LongToMoneyFormat()</td>
+
+                    </tr>
+
+
+                    <tr>
+
+
+                        <td>Tri ân</td>
+                        <td>@Model.GratefulValue.LongToMoneyFormat()</td>
+
+                    </tr>
+                    <tr>
+
+
+                        <td>Nạp thẻ</td>
+                        <td>@Model.TotalRecharge.LongToMoneyFormat()</td>
+
+                    </tr>
+                    <tr>
+
+
+                        <td> GiftCode</td>
+                        <td>@Model.TotalGiftcode.LongToMoneyFormat()</td>
+
+                    </tr>
+                    <tr>
+
+
+                        <td> Nạp bank</td>
+                        <td>@Model.TotalRechargeBank.LongToMoneyFormat()</td>
+
+                    </tr>
+                    <tr>
+
+
+                        <td> Nạp sms</td>
+                        <td>@Model.TotalSMSCharge.LongToMoneyFormat()</td>
+
+                    </tr>
+
+                    <tr>
+
+
+                        <td> Momo</td>
+                        <td>@Model.TotalMomo.LongToMoneyFormat()</td>
+
+                    </tr>
+                    <tr>
+
+
+                        <td>Nhận user</td>
+                        <td>@Model.TotalValueInUser.LongToMoneyFormat()</td>
+
+                    </tr>
+                    <tr>
+
+
+                        <td>Nhận đại lý</td>
+                        <td style="background-color:yellow">@Model.TotalValueInAgency.LongToMoneyFormat()</td>
+
+                    </tr>
+                    @*<tr>
+
+
+                            <td>Nhận admin</td>
+                            <td>@Model.TotalValueInAdmin.LongToMoneyFormat()</td>
+
+                        </tr>*@
+                    <tr>
+                        <td rowspan="4">Tổng ra</td>
+                        <td>Đổi thẻ</td>
+
+                        <td>@Model.TotalSwap.LongToMoneyFormat()</td>
+                        <td rowspan="4"> @Model.TotalOut.DecimalToMoneyFormat()       </td>
+                    </tr>
+                    <tr>
+
+                        <td>Rút bank</td>
+                        <td>@Model.TotalSwapBank.LongToMoneyFormat()</td>
+
+                    </tr>
+                    <tr>
+
+                        <td>Rút momo</td>
+                        <td>@Model.TotalSwapMomo.LongToMoneyFormat()</td>
+
+                    </tr>
+                    <tr>
+
+                        <td>Chuyển user</td>
+                        <td>@Model.TotalValueOutUser.LongToMoneyFormat()</td>
+
+                    </tr>
+                    <tr>
+
+                        <td>Chuyển đại lý</td>
+                        <td style="background-color:yellow">@Model.TotalValueOutAgency.LongToMoneyFormat()</td>
+
+                    </tr>
+                    @*<tr>
+
+                            <td>Chuyển admin</td>
+                            <td>@Model.TotalValueOutAdmin.LongToMoneyFormat()</td>
+
+                        </tr>*@
+                    <tr>
+
+                        <td colspan="3" style="text-align:center"><strong>Vênh</strong></td>
+                        <td style="background-color:red">@Model.TotalElapse.DecimalToMoneyFormat()</td>
+
+                    </tr>
+
+
+
+
+
+
+                    <tr>
+                        <td colspan="3" class="text-center">GAME</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3">Tổng chơi game</td>
+                        <td>Đặt</td>
+                        <td id="profit-totalbet">0</td>
+                    </tr>
+                    <tr>
+                        <td>Nhận</td>
+                        <td id="profit-totalprize">0</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lỗ/Lãi</strong></td>
+                        <td><strong id="profit-totalprofit"></strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="text-center">CHI TIẾT GAME</td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+
+
+
+
+        if (IsDisplayMenu("ADMIN") || IsDisplayMenuByUserName("cskh_01,cskh_02,admin_test,cskh_09,cskh_08,cskh_04_tq,monitor_01,cskh_02"))
+        {
+            <script>
+                $(document).ready(function () {
+                    GlobalHeader.getAccountGameProfit();
+                });
+            </script>
+        }
+
+        <!-- Modal -->
+        <div class="modal fade" id="lstIpLoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <input type="hidden" id="accountLoginIp" value="@Model.UserID" />
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Danh sách IP login</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <div class="form-inline mr-auto" style="float: left;">
+                            <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Hiển thị</label>
+                            <select class="custom-select my-1 mr-sm-2" id="recordPerPageLoginIP" name="recordPerPage">
+                                <option value="10">10</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="150">150</option>
+                                <option value="200">200</option>
+                            </select>
+                            <label class="my-1 ml-2" for="inlineFormCustomSelectPref">bản ghi</label>
+                        </div>
+                        <button type="button" class="btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="modal fade" id="lstConfigLiveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <input type="hidden" id="accountConfigLive" value="@Model.UserID" />
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cấu hình Live</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        
+                        <button type="button" class="btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="modal fade" id="lstUpdatePhoneModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <input type="hidden" id="accountUpdatePhone" value="@Model.UserID" />
+                    <input type="hidden" id="ServiceIDUpdatePhone" value="@Model.ServiceID" />
+  
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cập nhật số điện thoại</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        
+                        <button type="button" class="btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+	 
+
+
+        <div class="modal fade" id="lstNote" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog .container-fluid" role="document" style="width:1250px;">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ghi chú nick name : <b style="color:red;font-size:20px">@Model.GameAccountName</b></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <div style="float:left;width:50%;height:100%">
+
+                                <table style="width: 100%;">
+                                    <tbody>
+                                        <tr>
+                                            <td class="adminTitle">
+                                                <img src="~/Content/images/ico-help.gif">
+                                                Chức năng
+                                            </td>
+                                            <td class="adminData">
+                                                @Html.DropDownList("SearchComplainType", (IEnumerable<SelectListItem>)ViewBag.ComplainTypes, "--Chọn chức năng--", new { @class = "text-box single-line" })
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                            <td class="adminTitle">
+                                                <img src="~/Content/images/ico-help.gif">
+                                                Xử lý
+                                            </td>
+                                            <td class="adminData">
+                                                <input type="checkbox" name="SearchComplainStatus" id="SearchComplainStatus" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="adminData"></td>
+                                            <td class="adminData">
+                                                <input type="button" id="btnSearchComplain" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                                            </td>
+                                        </tr>
+
+
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <div style="float:right;width:50%;">
+
+                            <table style="width: 100%;">
+                                <tbody>
+                                    <tr>
+                                        <td class="adminTitle">
+                                            <img src="~/Content/images/ico-help.gif">
+                                            Chức năng
+                                        </td>
+                                        <td class="adminData">
+
+                                            @Html.DropDownList("InsertType", (IEnumerable<SelectListItem>)ViewBag.ComplainTypes, "--Chọn chức năng--", new { @class = "text-box single-line" })
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td class="adminTitle">
+                                            <img src="~/Content/images/ico-help.gif">
+                                            Yêu cầu
+                                        </td>
+                                        <td class="adminData">
+                                            <input type="text" id="txtComplainRequest" class="text-box single-line" />
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td class="adminTitle">
+                                            <img src="~/Content/images/ico-help.gif">
+                                            Phản hồi
+                                        </td>
+                                        <td class="adminData">
+                                            <input type="text" id="txtComplainResponse" class="text-box single-line" />
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td class="adminTitle">
+                                            <img src="~/Content/images/ico-help.gif">
+                                            Xử lý
+                                        </td>
+                                        <td class="adminData">
+                                            <input type="checkbox" name="cbComplainStatus" id="cbComplainStatus" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="adminData"></td>
+                                        <td class="adminData">
+                                            <input type="button" id="btnComplainAdd" class="t-button" value="Thêm mới">
+                                        </td>
+                                    </tr>
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <table class="adminContent">
+                            <tr>
+                                <td>
+                                    @(Html.Telerik().Grid<UserComplain>()
+                    .Name("settings-grid")
+                    .DataKeys(x => { x.Add(y => y.ID); })
+
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.ComplainTypeName).Title("Chức năng");
+                        columns.Bound(x => x.Content).Title("Yêu cầu");
+                        columns.Bound(x => x.Response).Title("Phản hồi");
+                        columns.Bound(x => x.Status).Title("Xử lý").ClientTemplate("<input type=\"checkbox\"  <#= Status?\"checked\":\"\" #> \">");
+                        columns.Bound(x => x.UpdateDate).Title("Ngày tháng");
+                        columns.Command(commands =>
+                        {
+                            commands.Edit().Text(AppConstants.CONFIG.EDIT).HtmlAttributes(new { @class = "text-center" });
+                        }).Width(200);
+                    })
+                    .Editable(x => { x.Mode(GridEditMode.InLine); })
+
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetList", "UserComplain").Update("SettingUpdate", "Setting").Update("Update", "UserComplain").Insert("Insert", "UserComplain");
+                    })
+                    .ClientEvents(x => x.OnError("grid_onError").OnEdit("grid_onEdit").OnDataBinding("onDataBinding"))
+                    .EnableCustomBinding(true))
+
+                                    <script type="text/javascript">
+                        function grid_onError(e) {
+                            alert(e.XMLHttpRequest.responseText);
+                            e.preventDefault();
+                        }
+
+                        function grid_onEdit(e) {
+                            $(e.form).find('#ComplainTypeName').attr('readonly', true);
+
+                            $(e.form).find('#Status').attr('readonly', true);
+                        }
+
+                        function onDataBinding(e) {
+                            var searchModel = {
+                                type:$("#SearchComplainType").val().trim(),
+                                status:$("#SearchComplainStatus").val().trim(),
+
+                                UserID:@Model.UserID
+                            };
+                            e.data = searchModel;
+
+                        }
+
+                        $(document).ready(function () {
+                            $('#btnSearchComplain').click(function () {
+                                var grid = $('#settings-grid').data('tGrid');
+                                grid.currentPage = 1; //new search. Set page size to 1
+                                grid.ajaxRequest();
+
+                                return false;
+                            });
+                            $('#btnComplainAdd').click(function () {
+
+                                var request=$("#txtComplainRequest").val().trim();
+                                var response=$("#txtComplainResponse").val().trim();
+                                var status=$("#cbComplainStatus").is(":checked");
+                                var typeComplain=$("#InsertType").val().trim();
+                                if (typeComplain == ''||typeComplain.length<=0) {
+                                    alert(" Chưa chọn chức năng")
+                                    $('#InsertType').focus();
+                                    return;
+                                }
+                                if (request == ''||request.length<=0) {
+                                    alert(" Chưa nhập yêu cầu")
+                                    $('#txtComplainRequest').focus();
+                                    return;
+                                }
+                                if (response == ''||response.length<=0) {
+                                    alert(" Chưa nhập phản hồi")
+                                    $('#txtComplainResponse').focus();
+                                    return;
+                                }
+                                var inputData = {UserID:@Model.UserID,ServiceID:@Model.ServiceID,ComplainTypeID:typeComplain, Content: request, Response: response,Status:status };
+                                $.ajax({
+                                    type: "POST",
+                                    url: GlobalHeader.Config.Root_Url + "UserComplain/Insert",
+                                    data: JSON.stringify(inputData),
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: 'json',
+                                    xhrFields: { withCredentials: true },
+                                    crossDomain: true,
+                                    success: function (data) {
+                                        if(data.ResponseCode==1){
+                                            $("#InsertType").val('');
+                                            $("#txtComplainRequest").val('');
+                                            $("#txtComplainResponse").val('');
+                                            alert(data.Message);
+                                            var grid = $('#settings-grid').data('tGrid');
+                                            grid.currentPage = 1; //new search. Set page size to 1
+                                            grid.ajaxRequest();
+                                            return false;
+                                        }else{
+                                            alert(data.Message);
+                                        }
+
+                                    },
+                                    fail: function (fail) {
+                                        alert("Cập nhật ghi chú thất bại");
+                                    }
+                                });
+
+
+
+                            });
+
+
+                        });
+                                    </script>
+                                </td>
+                            </tr>
+                        </table>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+
+    <script>
+        try {
+            $('#recordPerPageLoginIP').change(function () {
+                var accountId = $("#accountLoginIp").val().trim();
+                var top = $("#recordPerPageLoginIP").val().trim();
+                GlobalHeader.getAccountLoginIP(accountId, top);
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    </script>
+}
+

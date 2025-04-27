@@ -1,0 +1,331 @@
+﻿@{
+    ViewBag.Title = "Báo cáo tài khoản Vip";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@using TraditionGame.Utilities.Utils
+
+@model IEnumerable<Privilege>
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">Báo cáo tài khoản Vip</div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Từ ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("startDate").Value(ViewBag.FirstDay).InputHtmlAttributes(new { @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Đến ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("endDate").Value(DateTime.Now).InputHtmlAttributes(new { @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="submit" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <div id="chartContainer" class="chartContainer" style="width: 33.33%; float: left"></div>
+        <div id="chartContainer1" class="chartContainer" style="width: 33.33%; float: left"></div>
+        <div id="chartContainer2" class="chartContainer" style="width: 33.33%; float: left"></div>
+    </div>
+
+        <script type="text/javascript">
+            var result =  @Html.Raw(ViewBag.Data);
+            var dataQuantityStone =[];
+            var dataQuantityBronze =[];
+            var dataQuantitySilver =[];
+            var dataQuantityGold =[];
+            var dataQuantityDiamond =[];
+            var dataTotalVPStone =[];
+            var dataTotalVPBronze =[];
+            var dataTotalVPSilver =[];
+            var dataTotalVPGold =[];
+            var dataTotalVPDiamond =[];
+            var dataTotalPrizeStone =[];
+            var dataTotalPrizeBronze =[];
+            var dataTotalPrizeSilver =[];
+            var dataTotalPrizeGold =[];
+            var dataTotalPrizeDiamond =[];
+            for(var i = 0; i < result.length; i++){
+                dataQuantityStone.push({ x: new Date(result[i].RankedMonth), y: result[i].QuantityStone });
+                dataQuantityBronze.push({ x: new Date(result[i].RankedMonth), y: result[i].QuantityBronze });
+                dataQuantitySilver.push({ x: new Date(result[i].RankedMonth), y: result[i].QuantitySilver });
+                dataQuantityGold.push({ x: new Date(result[i].RankedMonth), y: result[i].QuantityGold });
+                dataQuantityDiamond.push({ x: new Date(result[i].RankedMonth), y: result[i].QuantityDiamond });
+                dataTotalVPStone.push({ x: new Date(result[i].RankedMonth), y: result[i].TotalVPStone });
+                dataTotalVPBronze.push({ x: new Date(result[i].RankedMonth), y: result[i].TotalVPBronze });
+                dataTotalVPSilver.push({ x: new Date(result[i].RankedMonth), y: result[i].TotalVPSilver });
+                dataTotalVPGold.push({ x: new Date(result[i].RankedMonth), y: result[i].TotalVPGold });
+                dataTotalVPDiamond.push({ x: new Date(result[i].RankedMonth), y: result[i].TotalVPDiamond });
+                dataTotalPrizeStone.push({ x: new Date(result[i].RankedMonth), y: result[i].TotalPrizeStone });
+                dataTotalPrizeBronze.push({ x: new Date(result[i].RankedMonth), y: result[i].TotalPrizeBronze });
+                dataTotalPrizeSilver.push({ x: new Date(result[i].RankedMonth), y: result[i].TotalPrizeSilver });
+                dataTotalPrizeGold.push({ x: new Date(result[i].RankedMonth), y: result[i].TotalPrizeGold });
+                dataTotalPrizeDiamond.push({ x: new Date(result[i].RankedMonth), y: result[i].TotalPrizeDiamond });
+            }
+
+            $(function () {
+                var chart = new CanvasJS.Chart("chartContainer", {
+                    width: 600,
+                    height: 400,
+                    title: { text: "Tổng quan User", fontFamily: "Calibri" },
+                    subtitles: [{ text: "Nhấp vào chú giải để ẩn/hiện ẩn chuỗi dữ liệu", fontFamily: "Calibri" }],
+                    animationEnabled: true,
+                    axisY: { titleFontFamily: "arial", titleFontSize: 12, includeZero: false },
+                    toolTip: { shared: true },
+                    data: [
+                        { type: "spline", name: "User đá",          showInLegend: true, dataPoints: dataQuantityStone },
+                        { type: "spline", name: "User đồng",        showInLegend: true, dataPoints: dataQuantityBronze },
+                        { type: "spline", name: "User bạc",         showInLegend: true, dataPoints: dataQuantitySilver },
+                        { type: "spline", name: "User vàng",        showInLegend: true, dataPoints: dataQuantityGold },
+                        { type: "spline", name: "User kim cương",   showInLegend: true, dataPoints: dataQuantityDiamond }
+                    ],
+                    legend: {
+                        cursor: "pointer",
+                        itemclick: function (e) {
+                            if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                                e.dataSeries.visible = false;
+                            }
+                            else {
+                                e.dataSeries.visible = true;
+                            }
+                            chart.render();
+                        }
+                    }
+                });
+                chart.render();
+
+                var chart1 = new CanvasJS.Chart("chartContainer1", {
+                    width: 600,
+                    height: 400,
+                    title: { text: "Tổng quan VP", fontFamily: "Calibri" },
+                    subtitles: [{ text: "Nhấp vào chú giải để ẩn/hiện ẩn chuỗi dữ liệu", fontFamily: "Calibri" }],
+                    animationEnabled: true,
+                    axisY: { titleFontFamily: "arial", titleFontSize: 12, includeZero: false },
+                    toolTip: { shared: true },
+                    data: [
+                        { type: "spline", name: "VP đá",        showInLegend: true, dataPoints: dataTotalVPStone },
+                        { type: "spline", name: "VP đồng",      showInLegend: true, dataPoints: dataTotalVPBronze },
+                        { type: "spline", name: "VP bạc",       showInLegend: true, dataPoints: dataTotalVPSilver },
+                        { type: "spline", name: "VP vàng",      showInLegend: true, dataPoints: dataTotalVPGold },
+                        { type: "spline", name: "VP kim cương", showInLegend: true, dataPoints: dataTotalVPDiamond }
+                    ],
+                    legend: {
+                        cursor: "pointer",
+                        itemclick: function (e) {
+                            if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                                e.dataSeries.visible = false;
+                            }
+                            else {
+                                e.dataSeries.visible = true;
+                            }
+                            chart1.render();
+                        }
+                    }
+                });
+                chart1.render();
+
+                var chart2 = new CanvasJS.Chart("chartContainer2", {
+                    width: 600,
+                    height: 400,
+                    title: { text: "Tổng quan thưởng", fontFamily: "Calibri" },
+                    subtitles: [{ text: "Nhấp vào chú giải để ẩn/hiện ẩn chuỗi dữ liệu", fontFamily: "Calibri" }],
+                    animationEnabled: true,
+                    axisY: { titleFontFamily: "arial", titleFontSize: 12, includeZero: false },
+                    toolTip: { shared: true },
+                    data: [
+                        { type: "spline", name: "Thưởng đá",        showInLegend: true, dataPoints: dataTotalPrizeStone },
+                        { type: "spline", name: "Thưởng đồng",      showInLegend: true, dataPoints: dataTotalPrizeBronze },
+                        { type: "spline", name: "Thưởng bạc",       showInLegend: true, dataPoints: dataTotalPrizeSilver },
+                        { type: "spline", name: "Thưởng vàng",      showInLegend: true, dataPoints: dataTotalPrizeGold },
+                        { type: "spline", name: "Thưởng kim cương", showInLegend: true, dataPoints: dataTotalPrizeDiamond }
+                    ],
+                    legend: {
+                        cursor: "pointer",
+                        itemclick: function (e) {
+                            if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                                e.dataSeries.visible = false;
+                            }
+                            else {
+                                e.dataSeries.visible = true;
+                            }
+                            chart2.render();
+                        }
+                    }
+                });
+                chart2.render();
+            });
+        </script>
+
+        <table class="adminContent">
+            <tr>
+                <td>
+                    <div id="statistics-user">
+                        <div class="t-widget t-grid">
+                            <table cellspacing="0">
+                                <thead class="t-grid-header">
+                                    <tr>
+                                        <th class="t-header" rowspan="2" scope="col"><span class="t-link">Time</span></th>
+                                        <th class="t-header" colspan="6" scope="col"><span class="t-link">Số lượng user</span></th>
+                                        <th class="t-header" colspan="6" scope="col"><span class="t-link">Tổng VP</span></th>
+                                        <th class="t-header" colspan="6" scope="col"><span class="t-link">Thưởng</span></th>
+                                    </tr>
+                                    <tr>
+                                        <th class="t-header" scope="col"><span class="t-link">Đá</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Đồng</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Bạc</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Vàng</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Kim cương</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Tổng</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Đá</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Đồng</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Bạc</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Vàng</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Kim cương</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Tổng</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Đá</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Đồng</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Bạc</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Vàng</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Kim cương</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Tổng</span></th>
+                                    </tr>
+                                </thead>
+                                @if (Model != null && Model.Any())
+                                {
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td class="text-center">@item.RankedMonth.ToString("MM/yyyy")</td>
+                                                <td class="text-right">@item.QuantityStone.IntToMoneyFormat()</td>
+                                                <td class="text-right">@item.QuantityBronze.IntToMoneyFormat()</td>
+                                                <td class="text-right">@item.QuantitySilver.IntToMoneyFormat()</td>
+                                                <td class="text-right">@item.QuantityGold.IntToMoneyFormat()</td>
+                                                <td class="text-right">@item.QuantityDiamond.IntToMoneyFormat()</td>
+                                                <td class="text-right">
+                                                    @MoneyExtension.IntToMoneyFormat(item.QuantityStone + item.QuantityBronze + item.QuantitySilver +
+                                                item.QuantityGold + item.QuantityDiamond)
+                                                </td>
+                                                <td class="text-right">@item.TotalVPStone.LongToMoneyFormat()</td>
+                                                <td class="text-right">@item.TotalVPBronze.LongToMoneyFormat()</td>
+                                                <td class="text-right">@item.TotalVPSilver.LongToMoneyFormat()</td>
+                                                <td class="text-right">@item.TotalVPGold.LongToMoneyFormat()</td>
+                                                <td class="text-right">@item.TotalVPDiamond.LongToMoneyFormat()</td>
+                                                <td class="text-right">
+                                                    @MoneyExtension.LongToMoneyFormat(item.TotalVPStone + item.TotalVPBronze + item.TotalVPSilver +
+                                                item.TotalVPGold + item.TotalVPDiamond)
+                                                </td>
+                                                <td class="text-right">@item.TotalPrizeStone.LongToMoneyFormat()</td>
+                                                <td class="text-right">@item.TotalPrizeBronze.LongToMoneyFormat()</td>
+                                                <td class="text-right">@item.TotalPrizeSilver.LongToMoneyFormat()</td>
+                                                <td class="text-right">@item.TotalPrizeGold.LongToMoneyFormat()</td>
+                                                <td class="text-right">@item.TotalPrizeDiamond.LongToMoneyFormat()</td>
+                                                <td class="text-right">
+                                                    @MoneyExtension.LongToMoneyFormat(item.TotalPrizeStone + item.TotalPrizeBronze + item.TotalPrizeSilver +
+                                                item.TotalPrizeGold + item.TotalPrizeDiamond)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td><span class="t-link"><b>Thống kê</b></span></td>
+                                            <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.QuantityStone).Sum().IntToMoneyFormat()</b> </span></td>
+                                            <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.QuantityBronze).Sum().IntToMoneyFormat()</b> </span></td>
+                                            <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.QuantitySilver).Sum().IntToMoneyFormat()</b> </span></td>
+                                            <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.QuantityGold).Sum().IntToMoneyFormat()</b> </span></td>
+                                            <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.QuantityDiamond).Sum().IntToMoneyFormat()</b> </span></td>
+                                            <td class="text-right">
+                                                <span class="t-link ">
+                                                    <b>
+                                                        @MoneyExtension.IntToMoneyFormat(
+                                                Model.Select(a => a.QuantityStone).Sum() +
+                                                Model.Select(a => a.QuantityBronze).Sum() +
+                                                Model.Select(a => a.QuantitySilver).Sum() +
+                                                Model.Select(a => a.QuantityGold).Sum() +
+                                                Model.Select(a => a.QuantityDiamond).Sum())
+                                                    </b>
+                                                </span>
+                                            </td>
+                                            <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.TotalVPStone).Sum().LongToMoneyFormat()</b> </span></td>
+                                            <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.TotalVPBronze).Sum().LongToMoneyFormat()</b> </span></td>
+                                            <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.TotalVPSilver).Sum().LongToMoneyFormat()</b> </span></td>
+                                            <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.TotalVPGold).Sum().LongToMoneyFormat()</b> </span></td>
+                                            <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.TotalVPDiamond).Sum().LongToMoneyFormat()</b> </span></td>
+                                            <td class="text-right">
+                                                <span class="t-link ">
+                                                    <b>
+                                                        @MoneyExtension.LongToMoneyFormat(
+                                                Model.Select(a => a.TotalVPStone).Sum() +
+                                                Model.Select(a => a.TotalVPBronze).Sum() +
+                                                Model.Select(a => a.TotalVPSilver).Sum() +
+                                                Model.Select(a => a.TotalVPGold).Sum() +
+                                                Model.Select(a => a.TotalVPDiamond).Sum())
+                                                    </b>
+                                                </span>
+                                            </td>
+                                            <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.TotalPrizeStone).Sum().LongToMoneyFormat()</b> </span></td>
+                                            <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.TotalPrizeBronze).Sum().LongToMoneyFormat()</b> </span></td>
+                                            <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.TotalPrizeSilver).Sum().LongToMoneyFormat()</b> </span></td>
+                                            <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.TotalPrizeGold).Sum().LongToMoneyFormat()</b> </span></td>
+                                            <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.TotalPrizeDiamond).Sum().LongToMoneyFormat()</b> </span></td>
+                                            <td class="text-right">
+                                                <span class="t-link ">
+                                                    <b>
+                                                        @MoneyExtension.LongToMoneyFormat(
+                                                Model.Select(a => a.TotalPrizeStone).Sum() +
+                                                Model.Select(a => a.TotalPrizeBronze).Sum() +
+                                                Model.Select(a => a.TotalPrizeSilver).Sum() +
+                                                Model.Select(a => a.TotalPrizeGold).Sum() +
+                                                Model.Select(a => a.TotalPrizeDiamond).Sum())
+                                                    </b>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        @*<script type="text/javascript">
+                function serviceChange() {
+                    $('#btnSearch').click();
+                }
+            </script>*@
+}

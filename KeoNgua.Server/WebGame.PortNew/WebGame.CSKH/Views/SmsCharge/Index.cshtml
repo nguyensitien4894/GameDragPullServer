@@ -1,0 +1,180 @@
+﻿@{
+    ViewBag.Title = "Lịch sử đổi thẻ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@functions{
+    private bool IsDisplayFunction(string UserRoles)
+    {
+        string RoleCode = Session["RoleCode"].ToString();
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    private bool IsDisplayMenuByUserName(string UserRoles)
+    {
+        string RoleCode = Session["UserName"] != null ? Session["UserName"].ToString() : string.Empty;
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+        Lịch sử giao dịch Momo
+    </div>
+</div>
+<div style="float: left; width: 50%;">
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), "--Chọn cổng--", new { @class = "text-box single-line" })
+                </td>
+            </tr>
+
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("partnerID", new SelectList(ViewBag.Partners, "Value", "Text"), "--Chọn partner--", new { @class = "text-box single-line" })
+                </td>
+            </tr>
+
+           
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Loại Giao Dịch</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("status", new SelectList(ViewBag.GetStatus, "Value", "Text"), "--Chọn trạng thái--", new { @class = "text-box single-line" })
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Mã Request</label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="RequestCode" type="text">
+                    <span class="field-validation-valid" data-valmsg-for="RequestCode"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>RefKey</label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="RefKey" type="text">
+                    <span class="field-validation-valid" data-valmsg-for="RefKey"></span>
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>NickName</label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="NickName" type="text" value="@ViewBag.NickName">
+                    <span class="field-validation-valid" data-valmsg-for="nickName"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Số điện thoại</label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="Phone" type="text">
+                    <span class="field-validation-valid" data-valmsg-for="nickName"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Từ Ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("fromDate")
+                    <span class="field-validation-valid" data-valmsg-for="buyDate"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Tới ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("toDate")
+                    <span class="field-validation-valid" data-valmsg-for="buyDate"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="button" onclick="GlobalHeader.getSMSRequestList(1)" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<table class="adminContent">
+    <tbody>
+        <tr>
+            <td>
+                <div id="hisCardExchange">
+                    @Html.Action("GetSmsList", "SmsCharge")
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+

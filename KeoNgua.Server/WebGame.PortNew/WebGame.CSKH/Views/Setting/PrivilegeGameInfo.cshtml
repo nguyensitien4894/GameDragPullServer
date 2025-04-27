@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "Cấu hình thông tin game";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Telerik.Web.Mvc.UI;
+@using MsWebGame.CSKH.Database.DTO
+@using MsWebGame.CSKH.Utils
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Cấu hình thông tin game
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn game</label>
+                </td>
+                <td class="adminData">
+                    <select id="gameId" class="text-box single-line">
+                        <option value="0">Tất cả</option>
+                        @foreach (var item in ViewBag.GameBox)
+                        {
+                            <option value="@item.Value">@item.Name</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Danh sách
+    </h2>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<PrivilegeGameInfo>()
+                    .Name("privilegeGameInfo-grid")
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.GameName).Title("Game");
+                        columns.Bound(x => x.GameWeight).Title("Trọng số").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.ProfitMargin).Title("Tỷ suất lợi nhuận").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.ConversionCoefficientFormat).Title("Hệ số chuyển đổi").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.StatusFormat).Title("Trạng thái");
+                        columns.Bound(x => x.GameID)
+                        .Width(100)
+                        .Template(x => Html.ActionLink("PrivilegeGameInfoEdit", "PrivilegeGameInfoEdit", new { id = x.GameID }))
+                        .ClientTemplate("<a href=\"PrivilegeGameInfoEdit/<#= GameID #>\">" + AppConstants.CONFIG.EDIT + "</a>")
+                        .Title("Hành động").HtmlAttributes(new { @class = "text-center" });
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetListPrivilegeGameInfo", "Setting").Update("UpdatePrivilegeGameInfo", "Setting");
+                    })
+                    .ClientEvents(x => x.OnError("grid_onError").OnDataBinding("onDataBinding"))
+                    .EnableCustomBinding(true))
+
+                <script type="text/javascript">
+                    function grid_onError(e) {
+                        alert(e.XMLHttpRequest.responseText);
+                        e.preventDefault();
+                    }
+
+                    function onDataBinding(e) {
+                        var searchModel = {
+                            gameId: $('#gameId').val().trim()
+                        };
+                        e.data = searchModel;
+                    }
+
+                    $(document).ready(function () {
+                        $('#btnSearch').click(function () {
+                            var grid = $('#privilegeGameInfo-grid').data('tGrid');
+                            grid.currentPage = 1; //new search. Set page size to 1
+                            grid.ajaxRequest();
+                            return false;
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
+}

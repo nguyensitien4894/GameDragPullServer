@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "Chuyển khoản cho admin_test";
+}
+
+@using TraditionGame.Utilities.Utils;
+@model MsWebGame.CSKH.Models.Param.ParsTransfer
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">Chuyển khoản cho admin</div>
+    </div>
+    <div class="t-widget t-tabstrip t-header">
+        <div class="t-content t-state-active" style="display: block;">
+            <table class="adminContent customer-info-tab">
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <span id="txttransferMsg" class="@(ViewBag.Message == "Chuyển khoản thành công" ? "txttransferMsgSuccess" : "txttransferMsg")">@ViewBag.Message</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Số dư</label>
+                    </td>
+                    <td class="adminData">
+                        <span class="balancetransfer">@MoneyExtension.LongToMoneyFormat(Model.balance)</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Nickname nhận <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        <input class="text-box single-line" id="receiverName" name="receiverName" value="@(Model.receiverName != null ? Model.receiverName : string.Empty)" type="text"
+                               onblur="GlobalHeader.validateAdminTestTransfer();" required>
+                        <span class="field-validation-valid" data-valmsg-for="receiverName"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Số tiền nhận <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        <input class="text-box single-line" id="amount" name="amount" type="text" value="@Model.amount" onkeypress="return GlobalHeader.isNumber(event);"
+                               onkeyup="GlobalHeader.changeNumber(this)" onblur="GlobalHeader.bindDataTransferAmount();" required>
+                        <span class="field-validation-valid" data-valmsg-for="amount"></span>
+                        <input type="hidden" id="transfee" name="transfee" value="0">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Số tiền thực chuyển</label>
+                    </td>
+                    <td class="adminData">
+                        <input class="text-box single-line" id="orgAmount" name="orgAmount" value="@Model.orgAmount" type="text" readonly>
+                    </td>
+                </tr>
+                @*<tr>
+                        <td class="adminTitle">
+                            <label>Loại ví chuyển</label>
+                        </td>
+                        <td class="adminData">
+                            <select id="walletType" name="walletType" class="text-box single-line">
+                                <option value="1" @(Model.WalletType == 1 ? "selected" : string.Empty)>Ví chính</option>
+                                <option value="3" @(Model.WalletType == 3 ? "selected" : string.Empty)>Ví giftcode</option>
+                            </select>
+                            <span class="field-validation-valid" data-valmsg-for="walletType"></span>
+                        </td>
+                    </tr>*@
+                <tr>
+                    <td class="adminTitle">
+                        <label>Nội dung <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        <textarea id="note" name="note" rows="6" required>@Model.note</textarea>
+                        <span class="field-validation-valid" data-valmsg-for="note"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <input type="submit" name="save" class="t-button" value="Chuyển" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txttransferMsg').html('');
+            }, 4000);
+        });
+    </script>
+}

@@ -1,0 +1,163 @@
+﻿@{
+    ViewBag.Title = "Kiểm tra quây bài";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@model HistoryPlay
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            Kiểm tra quây bài
+        </div>
+    </div>
+
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("ServiceID", new SelectList(ViewBag.ServiceBox, "Value", "Text"),"Tất cả", new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn game</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("GameID", new SelectList(ViewBag.GameBox, "Value", "Text"), new { @class = "text-box single-line" })
+                 
+                   
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Loại tìm kiếm</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("SearchBy", new SelectList(ViewBag.SearchTypes, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Giá trị tìm kiếm <span style="color:red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="TextSearch" type="text" ">
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Từ ngày <span style="color:red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DateTimePicker().Name("FromDate").Value(DateTime.Today.AddDays(-7)).Interval(1)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Đến ngày <span style="color:red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DateTimePicker().Name("ToDate").Value(DateTime.Now).Interval(1)
+                </td>
+            </tr>
+
+
+
+
+
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Danh sách
+    </h2>
+    <link href="~/Content/label.css" rel="stylesheet" />
+    <style>
+        .adminContent tr:nth-child(even) {
+            background-color: #f7f7f7;
+        }
+
+        .adminContent td {
+            width: 1px;
+            white-space: nowrap;
+        }
+    </style>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<GameBai>()
+                    .Name("historyPlay-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.ServiceName).Title("Cổng");
+                        columns.Bound(x => x.GameSessionID).Title("Phiên");
+                        columns.Bound(x => x.Username).Title("Tên hiển thị");
+                       
+                        columns.Bound(x => x.OrgBalanceFormat).Title("Số dư trước Bet").HtmlAttributes(new { @class = "text-right" });
+
+                        columns.Bound(x => x.BetValueFormat).Title("Cược").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.BalanceFormat).Title("Số dư sau Bet").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.AwardValueFormat).Title("Thưởng").HtmlAttributes(new { @class = "text-right" });
+
+                        columns.Bound(x => x.CreatedTime).Title("Thời gian chơi").Format("{0:dd/MM/yyyy HH:mm:ss}");
+                        columns.Bound(x => x.ClientIP).Title("IP");
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetList", "GameBai");
+                    })
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#historyPlay-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+
+
+                TextSearch: $('#TextSearch').val().trim(),
+                GameID: $('#GameID').val().trim(),
+                ServiceID: $('#ServiceID').val(),
+                FromDate: $('#FromDate').val(),
+                ToDate: $('#ToDate').val(),
+                SearchBy: $('#SearchBy').val().trim(),
+
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

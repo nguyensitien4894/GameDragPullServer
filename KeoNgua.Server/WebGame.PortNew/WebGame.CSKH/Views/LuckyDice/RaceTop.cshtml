@@ -1,0 +1,67 @@
+﻿@using MsWebGame.CSKH.Utils
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Models.LuckyDice
+@model RaceTopModel
+
+@{
+    ViewBag.Title = "Giải đua top";
+}
+
+<h2>Danh sách cấu hình</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            
+        </div>
+        <div class="options">
+            <a href="@Url.Action("AddOrUpdateRaceTop")" class="t-button">@AppConstants.CONFIG.ADD_NEW</a>
+
+        </div>
+    </div>
+
+
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<RaceTopModel>()
+                    .Name("custom-grid")
+                    .DataKeys(x => { x.Add(y => y.RaceTopID).RouteKey("RaceTopID"); })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.Description);
+                        columns.Bound(x => x.Quantity).HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.PrizeValue).Format("{0:#,##}").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.RaceTopID).Title("Cập nhật").ReadOnly().HtmlAttributes(new { @class = "text-center" })
+                          .Template(x => Html.ActionLink("Update", "Update", new { EventID = x.RaceTopID }))
+                          .ClientTemplate("<a href=\"UpdateRaceTop?RaceTopID=<#= RaceTopID #>\">" + AppConstants.CONFIG.EDIT + "</a>");
+                        columns.Bound(x => x.RaceTopID).Title("Xóa").ReadOnly().HtmlAttributes(new { @class = "text-center" })
+                          .Template(x => Html.ActionLink("Delete", "Delete", new { EventID = x.RaceTopID }))
+                          .ClientTemplate("<a onclick=\"return GlobalHeader.ConfirmDelete();\" href=\"DeleteRaceTop?RaceTopID=<#= RaceTopID #>\">" + AppConstants.CONFIG.DELETE + "</a>");
+                    })
+                    .Editable(x => { x.Mode(GridEditMode.InLine); })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetRaceTopList", "LuckyDice");
+                    })
+                )
+                    
+
+            </td>
+        </tr>
+    </table>
+
+    <script type="text/javascript">
+       
+        function grid_onError(e) {
+            alert(e.XMLHttpRequest.responseText);
+            e.preventDefault();
+        }
+        function grid_onEdit(e) {
+        }
+    </script>
+}
+
+

@@ -1,0 +1,3 @@
+﻿@using Telerik.Web.Mvc.UI
+@model System.TimeSpan?
+@Html.Telerik().TimePicker().HtmlAttributes(new { id = "93388" }).Value(Model.HasValue?String.Format("{0}:{1}",Model.Value.Hours,Model.Value.Minutes):string.Empty)

@@ -1,0 +1,155 @@
+﻿@using MsWebGame.CSKH.Utils
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Models.LuckyDice
+@model EventModel
+
+@{
+    ViewBag.Title = "Tài-Xỉu Giải triệu hồi";
+}
+
+<h2>Cấu hình giải triệu hồi</h2>
+
+
+@using (Html.BeginForm("SaveEvent", "LuckyDice", FormMethod.Post))
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+        </div>
+    </div>
+
+    <div class="t-widget t-tabstrip t-header">
+        <div class="t-content t-state-active" style="display: block;">
+            <table class="adminContent customer-info-tab">
+                @Html.HiddenFor(model => model.EventID)
+                <tr>
+                    <td class="adminTitle">
+                        @Html.LabelFor(model => model.BetValueMin):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.BetValueMin, new { @class = "text-box single-line" })
+                        @Html.ValidationMessageFor(model => model.BetValueMin)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.LabelFor(model => model.QuantityCordWin):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.QuantityCordWin, new { @class = "text-box single-line" })
+                        @Html.ValidationMessageFor(model => model.QuantityCordWin)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.LabelFor(model => model.QuantityCordLost):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.QuantityCordLost, new { @class = "text-box single-line" })
+                        @Html.ValidationMessageFor(model => model.QuantityCordLost)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="adminTitle">
+                        @Html.LabelFor(model => model.PrizeValueMin):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.PrizeValueMin, new { @class = "text-box single-line" })
+                        @Html.ValidationMessageFor(model => model.PrizeValueMin)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="adminTitle">
+                        @Html.LabelFor(model => model.PrizeValueMax):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.PrizeValueMax, new { @class = "text-box single-line" })
+                        @Html.ValidationMessageFor(model => model.PrizeValueMax)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="adminTitle">
+                        @Html.LabelFor(model => model.QuantityAwardCordWinInit):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.QuantityAwardCordWinInit, new { @class = "text-box single-line" })
+                        @Html.ValidationMessageFor(model => model.QuantityAwardCordWinInit)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="adminTitle">
+                        @Html.LabelFor(model => model.QuantityAwardCordLostInit):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.QuantityAwardCordLostInit, new { @class = "text-box single-line" })
+                        @Html.ValidationMessageFor(model => model.QuantityAwardCordLostInit)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="adminTitle">
+                        @Html.LabelFor(model => model.StartEventTimes):
+                    </td>
+                    <td class="adminData">
+                        @*@Html.EditorFor(model => model.StartEventTimes, new { @class = "text-box single-line" })*@
+                        @Html.Telerik().TimePicker().Name("StartEventTimes").Format("HH:mm:ss")
+                        @Html.ValidationMessageFor(model => model.StartEventTimes)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="adminTitle">
+                        @Html.LabelFor(model => model.EndEventTimes):
+                    </td>
+                    <td class="adminData">
+                        @*@Html.EditorFor(model => model.EndEventTimes, new { @class = "text-box single-line" })*@
+                        @Html.Telerik().TimePicker().Name("EndEventTimes").Format("HH:mm:ss")
+                        @Html.ValidationMessageFor(model => model.EndEventTimes)
+                        
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="adminTitle">
+                        @Html.LabelFor(model => model.EventDays):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.EventDays, new { htmlAttributes = new { placeholder = "Example: 1,2,3,4,5,6,7" }, @class = "text-box single-line" })
+                        @Html.ValidationMessageFor(model => model.EventDays)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="adminTitle">
+                        @Html.LabelFor(model => model.Hours):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.Hours, new { htmlAttributes = new { placeholder = "Example: 0h - 12h" }, @class = "text-box single-line" })
+                        @Html.ValidationMessageFor(model => model.Hours)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="adminTitle">
+                       
+                    </td>
+                    <td class="adminData">
+                        <div class="options">
+                            <input type="button" class="t-button" value="Quay lại" onclick="window.location.href='@Url.Action("Event", "LuckyDice")'" />
+                            <input type="submit" name="save" class="t-button" value="@AppConstants.CONFIG.SAVE" />
+                        </div>
+                    </td>
+                </tr>
+
+                
+            </table>
+        </div>
+
+    </div>
+
+
+}

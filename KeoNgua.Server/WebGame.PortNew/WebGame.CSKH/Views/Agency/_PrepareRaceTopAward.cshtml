@@ -1,0 +1,163 @@
+﻿@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@using (Html.BeginForm("RaceTopAward", "Agency", FormMethod.Get))
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            Chốt tiền đại lý
+        </div>
+    </div>
+    <table>
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <label>Từ ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("fromDate").Value(DateTime.Today.AddDays(-7))
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <label>Đến ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("toDate").Value(DateTime.Today)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <label style="margin-right: 10px;">Kỳ chốt</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("raceDate").Value(DateTime.Today)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+<table class="adminContent">
+    <tr>
+        <td>
+
+            @(Html.Telerik().Grid<AgencyRaceTop>()
+                    .Name("agc-transaction-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding").OnRowSelect("OnRowSelected").OnEdit("grid_onEdit").OnError("grid_onError").OnDataBound("onDataBound").OnSave("grid_onSave"))
+                    .Editable(x => { x.Mode(GridEditMode.InLine); })
+                     .DataKeys(x => { x.Add(y => y.AccountID); })
+                    .Columns(columns =>
+                    {
+
+                        columns.Bound(e => e.AccountID).Hidden();
+                        columns.Bound(e => e.PrizeID).Title("Hạng").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.DisplayName).Title("NickName");
+                        columns.Bound(e => e.TotalTransfer).Title("Tổng luồng giao dịch");
+                        columns.Bound(e => e.TotalVP).Title("Tổng VIP").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.BonusRate).Title("Hệ số").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.PrizeValue).Title("Tiền thưởng").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.RaceDate).Title("Ngày chốt").HtmlAttributes(new { @class = "text-right dateChot" });
+                        columns.Bound(e => e.ServiceID).Hidden();
+                        columns.Bound(e => e.IsClosed).Hidden().HtmlAttributes(new { @class = "IsClose" });
+                        columns.Command(commands =>
+                        {
+                            commands.Edit().Text("Chốt").HtmlAttributes(new { @class = "k-state-disabled" });
+                        });
+
+
+                    })
+                    .DataBinding(dataBinding => dataBinding.Ajax().Select("GetPrepareRaceTop", "Agency").Update("UpdateRaceTopAward", "Agency"))
+                    .Selectable()
+                    .EnableCustomBinding(true))
+        </td>
+    </tr>
+</table>
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function grid_onSave(e) {
+        var grid = $('#agc-transaction-grid').data('tGrid');
+        grid.currentPage = 1; //new search. Set page size to 1
+        grid.ajaxRequest();
+
+        var grid2 = $('#agc-resultdt-grid').data('tGrid');
+        grid2.currentPage = 1; //new search. Set page size to 1
+        grid2.ajaxRequest();
+
+
+    }
+    function OnRowSelected(e) {
+        //$(e.row).find('input[name="AccountID"]').prop("checked", true);
+
+
+    }
+    function onDataBound(e) {
+        var gridRows = $('#agc-transaction-grid').data('tGrid');
+
+
+        $("#agc-transaction-grid  tbody").find('tr').each(
+       function (e) {
+           $isclose = $(this).find(".IsClose").text();
+           if ($isclose =="true") {
+               $(this).find(".k-state-disabled").hide();
+           }
+           $dateChot = $(this).find(".dateChot").text();
+           if ($dateChot !="") {
+               $(this).find(".k-state-disabled").hide();
+           }
+       
+
+   });
+       
+    }
+
+    function grid_onError(e) {
+        alert(e.XMLHttpRequest.responseText);
+        e.preventDefault();
+    }
+    function grid_onEdit(e) {
+        $(e.form).find('#PrizeID').attr('readonly', true).css({ 'background-color': '#DFD8D1' });
+
+        $(e.form).find('#DisplayName').attr('readonly', true).css({ 'background-color': '#DFD8D1' });
+        $(e.form).find('#TotalTransfer').attr('readonly', true).css({ 'background-color': '#DFD8D1' });
+        $(e.form).find('#TotalTransfer').attr('readonly', true).css({ 'background-color': '#DFD8D1' });
+        $(e.form).find('#TotalVP').attr('readonly', true).css({ 'background-color': '#DFD8D1' });
+        $(e.form).find('#BonusRate').attr('readonly', true).css({ 'background-color': '#DFD8D1' });
+
+        $(e.form).find('#RaceDate').val($("#raceDate").val());
+
+    }
+    function onDataBinding(e) {
+        var searchModel = {
+
+            raceDate: $('#raceDate').val().trim(),
+            FromDate: $('#fromDate').val().trim(),
+            ToDate: $('#toDate').val().trim(),
+            ServiceID: $('#serviceId').val().trim()
+        };
+        e.data = searchModel;
+    }
+</script>

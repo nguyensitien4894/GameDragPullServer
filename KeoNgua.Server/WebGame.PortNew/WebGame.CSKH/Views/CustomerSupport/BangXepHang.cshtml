@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "Bảng xếp hạng người chơi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@model MsWebGame.CSKH.Models.Param.ParsBangXepHang
+@using (Html.BeginForm())
+{
+
+    <div class="section-header">
+        <div class="title">
+            Lịch sử giao dịch
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+        <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Loại đối tượng </label>
+                </td>
+                <td class="adminData">
+                    <select id="PartnerType" name="PartnerType" class="text-box single-line">
+                        <option value="1">Thắng</option>
+                        <option value="2">Thua</option>
+                        <option value="3">Vip</option>
+                    </select>
+                    <span class="field-validation-valid" data-valmsg-for="serviceId"></span>
+                </td>
+            </tr>
+        <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Danh sách
+    </h2>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<UserProfit>
+    ()
+    .Name("transaction-grid")
+    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+    .Columns(columns =>
+    {
+        columns.Bound(x => x.ID).Hidden();
+        columns.Bound(x => x.AccountID).Title("UserId");
+        columns.Bound(x => x.Username).Title("Tên hiển thị");
+        columns.Bound(x => x.ProfitFormat).Title("Profit");
+        columns.Bound(x => x.CreatedDate).Title("Thời gian");
+        columns.Bound(x => x.ID).Width(100)
+            .Template(x => Html.ActionLink("AddMoney", "AddMoneyBXH", new { Id = x.ID, AccountId = x.AccountID, Nickname = x.Username }))
+            .ClientTemplate("<a href=\"AddMoneyBXH?Id=<#= ID #>&AccountId=<#= AccountID #>&Nickname=<#= Username #>\">" + "AddMoney" + "</a>")
+            .Title(" ").HtmlAttributes(new { @class = "text-center" });
+    })
+    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .Editable(x => { x.Mode(GridEditMode.InLine); })
+    .DataBinding(dataBinding =>
+    {
+        dataBinding.Ajax().Select("GetBangXepHang", "CustomerSupport");
+    }).DataKeys(keys => keys.Add(k => k.ID))
+    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#transaction-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+                Type: $('#PartnerType').val().trim(),
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

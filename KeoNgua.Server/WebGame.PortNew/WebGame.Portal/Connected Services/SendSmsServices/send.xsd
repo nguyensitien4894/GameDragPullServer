@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://send_sms.vienthongdidong.vn/" targetNamespace="http://send_sms.vienthongdidong.vn/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="AdsSend" type="tns:AdsSend" />
+  <xs:element name="AdsSendResponse" type="tns:AdsSendResponse" />
+  <xs:element name="Question" type="tns:Question" />
+  <xs:element name="QuestionResponse" type="tns:QuestionResponse" />
+  <xs:element name="checkBalance" type="tns:checkBalance" />
+  <xs:element name="checkBalanceResponse" type="tns:checkBalanceResponse" />
+  <xs:element name="checkTrans" type="tns:checkTrans" />
+  <xs:element name="checkTransResponse" type="tns:checkTransResponse" />
+  <xs:element name="getip" type="tns:getip" />
+  <xs:element name="getipResponse" type="tns:getipResponse" />
+  <xs:element name="send" type="tns:send" />
+  <xs:element name="sendCskh" type="tns:sendCskh" />
+  <xs:element name="sendCskhResponse" type="tns:sendCskhResponse" />
+  <xs:element name="sendQc" type="tns:sendQc" />
+  <xs:element name="sendQc2" type="tns:sendQc2" />
+  <xs:element name="sendQc2Response" type="tns:sendQc2Response" />
+  <xs:element name="sendQcResponse" type="tns:sendQcResponse" />
+  <xs:element name="sendQuestion" type="tns:sendQuestion" />
+  <xs:element name="sendQuestionResponse" type="tns:sendQuestionResponse" />
+  <xs:element name="sendResponse" type="tns:sendResponse" />
+  <xs:complexType name="sendQc">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="USERNAME" type="xs:string" />
+      <xs:element minOccurs="0" name="PASSWORD" type="xs:string" />
+      <xs:element minOccurs="0" name="BRANDNAME" type="xs:string" />
+      <xs:element minOccurs="0" name="MESSAGE" type="xs:string" />
+      <xs:element minOccurs="0" name="TYPE" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PHONE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IDREQ" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="sendQcResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:sendsmsresponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="sendsmsresponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="detail" type="xs:string" />
+      <xs:element minOccurs="0" name="idTran" type="xs:string" />
+      <xs:element minOccurs="0" name="receipt" type="xs:string" />
+      <xs:element minOccurs="0" name="result" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getip">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:complexType name="getipResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="checkBalance">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="username" type="xs:string" />
+      <xs:element minOccurs="0" name="password" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="checkBalanceResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="sendCskh">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="USERNAME" type="xs:string" />
+      <xs:element minOccurs="0" name="PASSWORD" type="xs:string" />
+      <xs:element minOccurs="0" name="BRANDNAME" type="xs:string" />
+      <xs:element minOccurs="0" name="MESSAGE" type="xs:string" />
+      <xs:element minOccurs="0" name="PHONE" type="xs:string" />
+      <xs:element minOccurs="0" name="IDREQ" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="sendCskhResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:sendsmsresponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="sendQc2">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="USERNAME" type="xs:string" />
+      <xs:element minOccurs="0" name="PASSWORD" type="xs:string" />
+      <xs:element minOccurs="0" name="BRANDNAME" type="xs:string" />
+      <xs:element minOccurs="0" name="MESSAGE" type="xs:string" />
+      <xs:element minOccurs="0" name="TYPE" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PHONE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IDREQ" type="xs:string" />
+      <xs:element minOccurs="0" name="sendtime" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="sendQc2Response">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:sendsmsresponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AdsSend">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="USERNAME" type="xs:string" />
+      <xs:element minOccurs="0" name="PASSWORD" type="xs:string" />
+      <xs:element minOccurs="0" name="BRANDNAME" type="xs:string" />
+      <xs:element minOccurs="0" name="MESSAGE" type="xs:string" />
+      <xs:element minOccurs="0" name="PHONE" type="tns:arrayOfString" />
+      <xs:element minOccurs="0" name="IDREQ" type="xs:string" />
+      <xs:element minOccurs="0" name="sendtime" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="arrayOfString">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AdsSendResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:sendsmsresponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="checkTrans">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="transid" type="xs:string" />
+      <xs:element minOccurs="0" name="USERNAME" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="checkTransResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:sendsmsresponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Question">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="USERNAME" type="xs:string" />
+      <xs:element minOccurs="0" name="QUESTION" type="xs:string" />
+      <xs:element minOccurs="0" name="ANSWER" type="xs:string" />
+      <xs:element minOccurs="0" name="IDCLIENT" type="xs:string" />
+      <xs:element minOccurs="0" name="ANSCORRECT" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="QuestionResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="sendQuestion">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="USERNAME" type="xs:string" />
+      <xs:element minOccurs="0" name="PASSWORD" type="xs:string" />
+      <xs:element minOccurs="0" name="BRANDNAME" type="xs:string" />
+      <xs:element minOccurs="0" name="MESSAGE" type="xs:string" />
+      <xs:element minOccurs="0" name="TYPE" type="xs:string" />
+      <xs:element minOccurs="0" name="PHONE" type="xs:string" />
+      <xs:element minOccurs="0" name="IDREQ" type="xs:string" />
+      <xs:element minOccurs="0" name="IDQues" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="sendQuestionResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:sendsmsresponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="send">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="USERNAME" type="xs:string" />
+      <xs:element minOccurs="0" name="PASSWORD" type="xs:string" />
+      <xs:element minOccurs="0" name="BRANDNAME" type="xs:string" />
+      <xs:element minOccurs="0" name="MESSAGE" type="xs:string" />
+      <xs:element minOccurs="0" name="TYPE" type="xs:string" />
+      <xs:element minOccurs="0" name="PHONE" type="xs:string" />
+      <xs:element minOccurs="0" name="IDREQ" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="sendResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:sendsmsresponse" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

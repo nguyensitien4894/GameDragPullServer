@@ -1,0 +1,130 @@
+﻿@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@using MsWebGame.CSKH.Models.Param
+@model ParReport
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            Chi tiết giao dịch của tổng với C1
+        </div>
+        <div class="options">
+            <a href="@Url.Action("GetAgencyC1Report")" class="t-button">Quay lại</a>
+        </div>
+    </div>
+
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn tổng đại lý</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("AgencyIDTotal", new SelectList(ViewBag.AgencyTotalBox, "Value", "Text", Model.AgencyIDTotal), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Loại giao dịch</label>
+                </td>
+                <td class="adminData">
+                    <select class="text-box single-line" id="TransType" name="TransType">
+                        <option value="-1" @(Model.TransType == -1 ? "selected=selected" : string.Empty)>Tất cả</option>
+                        <option value="0" @(Model.TransType == 0 ? "selected=selected" : string.Empty)>Nhận</option>
+                        <option value="1" @(Model.TransType == 1 ? "selected=selected" : string.Empty)>Chuyển</option>
+                    </select>
+                    <span class="field-validation-valid" data-valmsg-for="TransType"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Nickname đối tác</label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="PartnerName" name="PartnerName" type="text" value="@Model.PartnerName">
+                    <span class="field-validation-valid" data-valmsg-for="PartnerName"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("FromDate").Value(Model.FromDate).InputHtmlAttributes(new { @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("ServiceID", new SelectList(ViewBag.ServiceBox, "Value", "Text", @Model.ServiceID), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Danh sách
+    </h2>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<ReportAgencyGeneralTrans>()
+                    .Name("AgencyC1ReportDetails-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.TransDate).Title("Thời gian").Format("{0:dd/MM/yyyy HH:mm:ss}"); ;
+                        columns.Bound(x => x.TransCode).Title("Mã giao dịch");
+                        columns.Bound(x => x.DisplayName).Title("Người chuyển/nhận");
+                        columns.Bound(x => x.AmountFormat).Title("Giá trị").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.Fee).Title("Phí giao dịch").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.Description).Title("Nội dung");
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetAgencyC1ReportDetails", "Report");
+                    })
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#AgencyC1ReportDetails-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+                AgencyIDTotal: $('#AgencyIDTotal').val().trim(),
+                TransType: $('#TransType').val().trim(),
+                PartnerName: $('#PartnerName').val().trim(),
+                FromDate: $('#FromDate').val(),
+                ServiceID: $('#ServiceID').val().trim()
+            };
+            e.data = searchModel;
+        }
+    </script>
+}
+

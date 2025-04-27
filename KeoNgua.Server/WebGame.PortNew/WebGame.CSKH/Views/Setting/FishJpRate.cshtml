@@ -1,0 +1,50 @@
+﻿@using MsWebGame.CSKH.Models.Games;
+@using MsWebGame.CSKH.Utils
+@using Telerik.Web.Mvc.UI
+
+
+@{
+    ViewBag.Title = "Tỷ lệ nổ hũ súng Bắn cá";
+}
+
+@using (Html.BeginForm())
+{
+    <link href="~/Content/label.css" rel="stylesheet" />
+<style>
+    .adminContent tr:nth-child(even) {
+        background-color: #e4cfcf;
+    }
+
+    .adminContent td {
+        width: 1px;
+        white-space: nowrap;
+    }
+</style>
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            Vd: Tỷ lệ = 2000, tỷ lệ trúng cá nổ hũ sẽ là 1/2000
+        </div>
+    </div>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<JpRateModel>()
+                .Name("gamefund-grid")
+                .Columns(columns =>
+                {
+                    // columns.Bound(x => x.GameName);
+                    columns.Bound(x => x.RoomName);
+                    columns.Bound(x => x.JpRate).HtmlAttributes(new { @class = "text-right" }); ;
+                    // columns.Bound(x => x.JackpotFundFormat).HtmlAttributes(new { @class = "text-right" });
+                    //columns.Bound(x => x.CCU).HtmlAttributes(new { @class = "text-right" });
+                     columns.Bound(p => p.Change).Template(@<text>@(item.Change )</text>)
+                    .ClientTemplate("<#= Change #>");
+                })
+                .Pageable(settings => settings.PageSize(50).Position(GridPagerPosition.Both))
+                .DataBinding(dataBinding => dataBinding.Ajax().Select("SettingFishList", "Setting"))
+                .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+}

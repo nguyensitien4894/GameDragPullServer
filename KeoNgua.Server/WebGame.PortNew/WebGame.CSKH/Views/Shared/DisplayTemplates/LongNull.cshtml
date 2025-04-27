@@ -1,0 +1,7 @@
+@model System.Int64?
+@using TraditionGame.Utilities.Utils
+@if (Model.HasValue)
+{
+    @Model.Value.LongToMoneyFormat()
+}
+

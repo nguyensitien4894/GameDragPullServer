@@ -1,0 +1,62 @@
+﻿@using MsWebGame.CSKH.Utils
+@Html.ValidationSummary(true)
+@model  MsWebGame.CSKH.Database.DTO.UserRedemption
+@{
+    ViewBag.Title = "Quản lý thông tin VIP đổi hiện vật";
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            @AppConstants.CONFIG.EDIT
+        </div>
+        <div class="options">
+            <a href="@Url.Action("UserRedemption")" class="t-button">Quay lại</a>
+        </div>
+    </div>
+    if (Model.id != 0)
+    {
+        @Html.HiddenFor(m => m.id)
+        @Html.HiddenFor(m => m.UserID)
+        @Html.HiddenFor(m => m.RefundAmount)
+        @Html.HiddenFor(m => m.PriArtID)
+        @Html.HiddenFor(m => m.Quantity)
+        @Html.HiddenFor(m => m.PrivilegeID)
+        @Html.HiddenFor(m => m.VP)
+        @Html.HiddenFor(m => m.Point)
+        @Html.HiddenFor(m => m.RankedMonth)
+        @Html.HiddenFor(m => m.Status)
+        @Html.HiddenFor(m => m.Description)
+    }
+    <div class="t-widget t-tabstrip t-header">
+        <div class="t-content t-state-active" style="display: block;">
+            <table class="adminContent customer-info-tab">
+                <tr>
+                    <td class="adminTitle">
+                        @Html.LabelFor(model => model.RefundReceiveDate):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.RefundReceiveDate, new { @type = "datetime", @class = "text-box single-line" })
+                        @Html.ValidationMessageFor(model => model.RefundReceiveDate)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.LabelFor(model => model.GiftReceiveDate):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.GiftReceiveDate, new { @type = "datetime", @class = "text-box single-line" })
+                        @Html.ValidationMessageFor(model => model.GiftReceiveDate)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <input type="submit" name="save" class="t-button" value="@AppConstants.CONFIG.SAVE" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}

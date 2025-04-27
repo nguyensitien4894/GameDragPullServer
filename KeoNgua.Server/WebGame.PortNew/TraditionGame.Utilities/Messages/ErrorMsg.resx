@@ -1,0 +1,603 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AvatarIncorrect" xml:space="preserve">
+    <value>Ảnh đại diện không hợp lệ</value>
+  </data>
+  <data name="BirthdayIncorrect" xml:space="preserve">
+    <value>Ngày sinh không hợp lệ </value>
+  </data>
+  <data name="DisplayNameIncorrect" xml:space="preserve">
+    <value>Tên hiển thị chỉ chứa kí tự thường và số</value>
+  </data>
+  <data name="GenderIncorrect" xml:space="preserve">
+    <value>Giới tính không hợp lệ </value>
+  </data>
+  <data name="GetFail" xml:space="preserve">
+    <value>Lấy thông tin không thành công</value>
+  </data>
+  <data name="InProccessException" xml:space="preserve">
+    <value>Hệ thống của chúng tôi đang bận, xin bạn vui lòng thử lại sau</value>
+  </data>
+  <data name="InValidCaptCha" xml:space="preserve">
+    <value>Mã xác nhận không đúng</value>
+  </data>
+  <data name="NameInUse" xml:space="preserve">
+    <value>Tên hiển thị đã có người sử dụng</value>
+  </data>
+  <data name="NewPasswordFormat" xml:space="preserve">
+    <value>Mật khẩu  mới chỉ cần chứa kí tự thường và số </value>
+  </data>
+  <data name="NewPasswordLength" xml:space="preserve">
+    <value>Mật khẩu mới từ 6 tới 16 ký tự</value>
+  </data>
+  <data name="NickNameLength" xml:space="preserve">
+    <value>Độ dài tên hiển thị từ 6 tới 16 ký tự</value>
+  </data>
+  <data name="OldPasswordEqualNewPassword" xml:space="preserve">
+    <value>Mật khẩu mới trùng với mật khẩu cũ</value>
+  </data>
+  <data name="OldPasswordLength" xml:space="preserve">
+    <value>Mật khẩu cũ từ 6 tới 16 ký tự</value>
+  </data>
+  <data name="OldPassWorldNotCorrect" xml:space="preserve">
+    <value>Mật khẩu cũ không chính xác </value>
+  </data>
+  <data name="PasswordLength" xml:space="preserve">
+    <value>Độ dài mật khẩu từ 6 tới 16 ký tự</value>
+  </data>
+  <data name="PhoneEmpty" xml:space="preserve">
+    <value>Bạn chưa nhập số điện thoại</value>
+  </data>
+  <data name="PhoneFormat" xml:space="preserve">
+    <value>Số điện thoại không đúng định dạng</value>
+  </data>
+  <data name="PhoneIncorrect" xml:space="preserve">
+    <value>Số điện thoại không hợp lệ</value>
+  </data>
+  <data name="PhoneInUse" xml:space="preserve">
+    <value>Số điện thoại có người sử dụng</value>
+  </data>
+  <data name="PhoneNotUse" xml:space="preserve">
+    <value>Số điện thoại chưa được sử dụng</value>
+  </data>
+  <data name="PhoneRegister" xml:space="preserve">
+    <value>Số điện thoại đã được đăng ký</value>
+  </data>
+  <data name="UnAuthorized" xml:space="preserve">
+    <value>Chưa đăng nhập</value>
+  </data>
+  <data name="UpdateFail" xml:space="preserve">
+    <value>Cập nhật không thành công</value>
+  </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>Cập nhật thành công</value>
+  </data>
+  <data name="UserNameEqualNickName" xml:space="preserve">
+    <value>Tên nhân vật trùng với tên đăng nhập</value>
+  </data>
+  <data name="UserNameLength" xml:space="preserve">
+    <value>Độ dài tên đăng nhập từ 6 tới 16 ký tự</value>
+  </data>
+  <data name="OtpEmpty" xml:space="preserve">
+    <value>Bạn chưa nhập mã otp</value>
+  </data>
+  <data name="OtpIncorrect" xml:space="preserve">
+    <value>Mã otp không chính xác</value>
+  </data>
+  <data name="MinAmountTranfer" xml:space="preserve">
+    <value>Số Q tối thiểu phải là {0} </value>
+  </data>
+  <data name="GiftCodeExpired" xml:space="preserve">
+    <value>Mã gift code đã hết hạn sử dụng</value>
+  </data>
+  <data name="GiftCodeInCorrect" xml:space="preserve">
+    <value>Mã gift code không chính xác</value>
+  </data>
+  <data name="GiftCodeRequired" xml:space="preserve">
+    <value>Mã gift code yêu cầu nhập</value>
+  </data>
+  <data name="GiftCodeSuccess" xml:space="preserve">
+    <value>Nhập mã gift code thành công</value>
+  </data>
+  <data name="NickNameInUse" xml:space="preserve">
+    <value>Tên nhân vật đã được sử dụng</value>
+  </data>
+  <data name="PasswordIncorrect" xml:space="preserve">
+    <value>Mật khẩu chỉ chứ kí tự thường và số</value>
+  </data>
+  <data name="CapchaRequired" xml:space="preserve">
+    <value>Mã xác thực không thể để trống</value>
+  </data>
+  <data name="FacebookGetFail" xml:space="preserve">
+    <value>Lấy thông tin facebook không thành công</value>
+  </data>
+  <data name="FacebookIncorrect" xml:space="preserve">
+    <value>Tên tài khoản hoặc mật khẩu không đúng</value>
+  </data>
+  <data name="ParamaterInvalid" xml:space="preserve">
+    <value>Tham số không hợp lệ</value>
+  </data>
+  <data name="PhoneNotRegister" xml:space="preserve">
+    <value>Số điện thoại chưa được đăng ký</value>
+  </data>
+  <data name="PhoneUpdateNeedEmpty" xml:space="preserve">
+    <value>Tài khoản đã được cập nhật số điện thoại</value>
+  </data>
+  <data name="UserNameOrPassInCorrect" xml:space="preserve">
+    <value>Tên tài khoản hoặc mật khẩu không đúng</value>
+  </data>
+  <data name="AcountNotConfigOtp" xml:space="preserve">
+    <value>Tài khoản không cấu hình gửi otp</value>
+  </data>
+  <data name="OtpBusy" xml:space="preserve">
+    <value>Hệ thống gửi otp đang bận</value>
+  </data>
+  <data name="CreateAccountManyTime" xml:space="preserve">
+    <value>Tạo quá nhiều tài khoả từ một ứng dụng</value>
+  </data>
+  <data name="UsernameEmpty" xml:space="preserve">
+    <value>Tên đăng nhập không để trống</value>
+  </data>
+  <data name="UsernameIncorrect" xml:space="preserve">
+    <value>Tên đăng nhập chỉ chứa kí tự số và chữ</value>
+  </data>
+  <data name="NickNameContainNotAlowString" xml:space="preserve">
+    <value>Tên hiển thị chứa từ khóa không cho phép</value>
+  </data>
+  <data name="NickNameContainUsername" xml:space="preserve">
+    <value>Tên hiển thị không thể chứa tên đăng nhập</value>
+  </data>
+  <data name="NickNameNotContainSpace" xml:space="preserve">
+    <value>Tên hiển thị không chứa khoảng trắng</value>
+  </data>
+  <data name="CardBusy" xml:space="preserve">
+    <value>Hệ thống bận</value>
+  </data>
+  <data name="CardCodeInValid" xml:space="preserve">
+    <value>Mệnh giá thẻ không hợp lệ</value>
+  </data>
+  <data name="CardCodeRequired" xml:space="preserve">
+    <value>Bạn chưa chọn mệnh giá thẻ</value>
+  </data>
+  <data name="CardInvalid" xml:space="preserve">
+    <value>Card invalid</value>
+  </data>
+  <data name="CardIsUpdateStatus" xml:space="preserve">
+    <value>card is updated status</value>
+  </data>
+  <data name="CardNotUpdateMoney" xml:space="preserve">
+    <value>Not Update Money</value>
+  </data>
+  <data name="CardNumberRequired" xml:space="preserve">
+    <value>Bạn chưa nhập mã thẻ</value>
+  </data>
+  <data name="CardTypeRequired" xml:space="preserve">
+    <value>Bạn chưa chọn loại thẻ</value>
+  </data>
+  <data name="CardUpdateError" xml:space="preserve">
+    <value>Status not update</value>
+  </data>
+  <data name="CardUpdateOK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="GameAccountIncorrect" xml:space="preserve">
+    <value>Game Account Incorrec</value>
+  </data>
+  <data name="SerialNumberRequired" xml:space="preserve">
+    <value>Bạn chưa nhập số serial thẻ</value>
+  </data>
+  <data name="SignatureIncorrect" xml:space="preserve">
+    <value>signature incorrect</value>
+  </data>
+  <data name="BalanceNotEnough" xml:space="preserve">
+    <value>Tài khoản không đủ Q để thực hiện giao dịch</value>
+  </data>
+  <data name="CardLack" xml:space="preserve">
+    <value>Quỹ thẻ thiếu</value>
+  </data>
+  <data name="CardStatusNotSuccess" xml:space="preserve">
+    <value>Card get status not success</value>
+  </data>
+  <data name="CardTelecomInActive" xml:space="preserve">
+    <value>Hệ thống tạm dừng đổi thẻ {0}</value>
+  </data>
+  <data name="NPPNotAcitve" xml:space="preserve">
+    <value>Cổng nạp thẻ {0} đang bảo trì</value>
+  </data>
+  <data name="CardCashoutSuccess" xml:space="preserve">
+    <value>Đổi thẻ thành công.Chúng tôi đã gửi thông tin thẻ vào hòm thư của bạn</value>
+  </data>
+  <data name="AmountInValid" xml:space="preserve">
+    <value>Số Q yêu cầu nhập</value>
+  </data>
+  <data name="AmountNotEnoghToCardExchange" xml:space="preserve">
+    <value>Tài khoản không đủ Q để đổi thẻ</value>
+  </data>
+  <data name="AmountNotEnoughToOpenSafe" xml:space="preserve">
+    <value>Két không đủ Q để  rút</value>
+  </data>
+  <data name="AmountNotEnoughToSafe" xml:space="preserve">
+    <value>Tài khoản không đủ Q để chuyển vào két</value>
+  </data>
+  <data name="CardChargingSuccess" xml:space="preserve">
+    <value>Chúng tôi đã ghi nhận thẻ .Bạn vui lòng đợi</value>
+  </data>
+  <data name="OTPBitNotEngough" xml:space="preserve">
+    <value>Tài khoản không đủ Q lấy mã Otp</value>
+  </data>
+  <data name="UserRankNotVerify" xml:space="preserve">
+    <value>Tài khoản của bạn chưa đủ điều kiện để đổi điểm VP</value>
+  </data>
+  <data name="VPFail" xml:space="preserve">
+    <value>Hệ thống đổi thưởng đang bận. Vui lòng liên hệ lại sau</value>
+  </data>
+  <data name="VPNotEnough" xml:space="preserve">
+    <value>Số điểm hiện tại không đủ để quy đổi</value>
+  </data>
+  <data name="VPSuccess" xml:space="preserve">
+    <value>Nhận thưởng thành công</value>
+  </data>
+  <data name="CampaignNotExist" xml:space="preserve">
+    <value>Chiến dịch gift code không tồn tại</value>
+  </data>
+  <data name="GiftCodeAmountValid" xml:space="preserve">
+    <value>Cộng tiền gift code vào tài khoản xảy ra lỗi</value>
+  </data>
+  <data name="GiftCodeInUse" xml:space="preserve">
+    <value>Mã gift code đã được sử dụng</value>
+  </data>
+  <data name="GiftCodeUseOnlyOne" xml:space="preserve">
+    <value>Trong chiến dịch này mỗi người dùng chỉ được sử dụng một lần gift code</value>
+  </data>
+  <data name="PasswordEmpty" xml:space="preserve">
+    <value>Bạn chưa nhập mật khẩu </value>
+  </data>
+  <data name="AccountReceiveNotExist" xml:space="preserve">
+    <value>Tài khoản nhận Q không tồn tại</value>
+  </data>
+  <data name="AmountNotValidToTranferBit" xml:space="preserve">
+    <value>Tài khoản không đủ Q để thực hiện giao dịch</value>
+  </data>
+  <data name="CardCharingException" xml:space="preserve">
+    <value>Hệ thống đổi thẻ đang bận</value>
+  </data>
+  <data name="FeeNotConfig" xml:space="preserve">
+    <value>Hệ thống chưa cấu hình phí giao dịch</value>
+  </data>
+  <data name="TranferBitSuccess" xml:space="preserve">
+    <value>Chuyển Q thành công</value>
+  </data>
+  <data name="UserNameTranferInvalid" xml:space="preserve">
+    <value>Tài khoản nhận Q không thể để trống</value>
+  </data>
+  <data name="AccountLock" xml:space="preserve">
+    <value>Tài khoản đã bị khóa</value>
+  </data>
+  <data name="AgencyCodeInUse" xml:space="preserve">
+    <value>Mã đại lý đã được sử dụng</value>
+  </data>
+  <data name="AgencyDisable" xml:space="preserve">
+    <value>Đại lý đã bị khóa</value>
+  </data>
+  <data name="AgencyExist" xml:space="preserve">
+    <value>Đại lý đã tồn tại</value>
+  </data>
+  <data name="AgencyFBLinkInUse" xml:space="preserve">
+    <value>Link facebook đã được sử dụng</value>
+  </data>
+  <data name="AgencyLock" xml:space="preserve">
+    <value>Đại lý đã bị khóa</value>
+  </data>
+  <data name="AgencyNotExist" xml:space="preserve">
+    <value>Đại lý không tồn tại</value>
+  </data>
+  <data name="AgencySecretInUse" xml:space="preserve">
+    <value>Mã bảo mật đại lý đã được sử dụng</value>
+  </data>
+  <data name="DisplayNameContainSpace" xml:space="preserve">
+    <value>Tên hiển thị không thể chứa khoảng trắng</value>
+  </data>
+  <data name="DisplayNameLength" xml:space="preserve">
+    <value>Tên hiển thị chỉ chứa từ khoảng  6 tới 16 kí tự</value>
+  </data>
+  <data name="EmailEmpty" xml:space="preserve">
+    <value>Email  không thể trống</value>
+  </data>
+  <data name="EmailInUse" xml:space="preserve">
+    <value>Email đã được sử dụng</value>
+  </data>
+  <data name="EmailInValid" xml:space="preserve">
+    <value>Email không đúng định dạng</value>
+  </data>
+  <data name="FunctionLock" xml:space="preserve">
+    <value>Chức năng sẽ mở sau 1 vài ngày</value>
+  </data>
+  <data name="NickNameEmpty" xml:space="preserve">
+    <value>Tên hiển thị không được để trống</value>
+  </data>
+  <data name="NoteLengthOverMax" xml:space="preserve">
+    <value>Mô tả không thể vượt quá 50 kí tự</value>
+  </data>
+  <data name="PasswordContainSpace" xml:space="preserve">
+    <value>Mật khẩu không thể chứa khoảng trắng</value>
+  </data>
+  <data name="UpdateNickNameSuccess" xml:space="preserve">
+    <value>Tên hiển thị cập nhật thành công</value>
+  </data>
+  <data name="UpdateSecuritySucess" xml:space="preserve">
+    <value>Cập nhật bảo mật thành công</value>
+  </data>
+  <data name="UserChangeVP" xml:space="preserve">
+    <value>Tài khoản đã đổi điểm VP</value>
+  </data>
+  <data name="UserNameContainsNotAllowString" xml:space="preserve">
+    <value>Tên đăng nhập chứa từ khóa không cho phép</value>
+  </data>
+  <data name="UserNameContainSpace" xml:space="preserve">
+    <value>Tên đăng nhập không thể chứa khoảng trắng</value>
+  </data>
+  <data name="UserNameInUse" xml:space="preserve">
+    <value>Tên đăng  nhập đã có người sử dụng</value>
+  </data>
+  <data name="UserNotActive" xml:space="preserve">
+    <value>Tài khoản  đã bị khóa</value>
+  </data>
+  <data name="UserNotRanked" xml:space="preserve">
+    <value>Tài khoản chưa được xếp hạng</value>
+  </data>
+  <data name="UserTranferEqualUser" xml:space="preserve">
+    <value>Bạn không thể chuyển cho chính bạn</value>
+  </data>
+  <data name="UserTranferNotExist" xml:space="preserve">
+    <value>Người chuyển không tồn tại</value>
+  </data>
+  <data name="AccountExist" xml:space="preserve">
+    <value>Tài khoản đã tồn tại</value>
+  </data>
+  <data name="FBRegister" xml:space="preserve">
+    <value>Tài khoản facebook đã đăng ký</value>
+  </data>
+  <data name="CampaignOutMoney" xml:space="preserve">
+    <value>Quỹ chiến dịch đã hết</value>
+  </data>
+  <data name="SaveLogError" xml:space="preserve">
+    <value>Lỗi lưu lịch sử giao dịch</value>
+  </data>
+  <data name="UserNotValid" xml:space="preserve">
+    <value>Tài khoản không hợp lệ</value>
+  </data>
+  <data name="CreateErrorLogError" xml:space="preserve">
+    <value>Create error log error</value>
+  </data>
+  <data name="UpdateCardStatus3Error" xml:space="preserve">
+    <value>Update card status 3 error</value>
+  </data>
+  <data name="UpdateStatusSuccessError" xml:space="preserve">
+    <value>Update status success error</value>
+  </data>
+  <data name="CardChargingNotAddAmount" xml:space="preserve">
+    <value>Không thể cộng tiền cho user</value>
+  </data>
+  <data name="CardTeleIDInValid" xml:space="preserve">
+    <value>CardTeleInValid</value>
+  </data>
+  <data name="CardUpdateStatusOKMinus_1" xml:space="preserve">
+    <value>Card update status -1 ok</value>
+  </data>
+  <data name="CardUpdateStatusOK_3" xml:space="preserve">
+    <value>Update status 3</value>
+  </data>
+  <data name="CardUpdateStatus_2" xml:space="preserve">
+    <value>UpdateStatus_2</value>
+  </data>
+  <data name="SerialInvalid" xml:space="preserve">
+    <value>Serial card invalid</value>
+  </data>
+  <data name="UserCardNotFind" xml:space="preserve">
+    <value>không tìm thấy thẻ theo request id</value>
+  </data>
+  <data name="CardErrorContactCSKH" xml:space="preserve">
+    <value>Liên hệ chăm sóc khách hàng để xử lý</value>
+  </data>
+  <data name="CardLock" xml:space="preserve">
+    <value>Hệ thống tạm dừng ghi nhận thẻ này</value>
+  </data>
+  <data name="CardNeedApproved" xml:space="preserve">
+    <value>Hệ thống đã ghi nhận .Xin chờ duyệt thẻ</value>
+  </data>
+  <data name="CardNumberNotContainSpace" xml:space="preserve">
+    <value>Mã thẻ không được chứa khoảng trắng</value>
+  </data>
+  <data name="SerialNumberNotContainSpace" xml:space="preserve">
+    <value>Serial thẻ không được chứa khoảng trắng</value>
+  </data>
+  <data name="CardSuccessOnCharging" xml:space="preserve">
+    <value>Nạp thẻ thành công</value>
+  </data>
+  <data name="CardNumberContainNumber" xml:space="preserve">
+    <value>Mã thẻ chỉ chứa kí tự số</value>
+  </data>
+  <data name="SerialNumberContainNumber" xml:space="preserve">
+    <value>Serial chỉ chứ kí tự là số</value>
+  </data>
+  <data name="PhoneRegisterDiffPhonePass" xml:space="preserve">
+    <value>Số điện thoại đăng ký khác số điện đã nhập</value>
+  </data>
+  <data name="UserNotExist" xml:space="preserve">
+    <value>Tài khoản không tồn tại trong hệ thống</value>
+  </data>
+  <data name="CardNumberLenghInValid" xml:space="preserve">
+    <value>Độ dài mã thẻ không phù hợp</value>
+  </data>
+  <data name="CardSerialLenghInValid" xml:space="preserve">
+    <value>Độ dài serial thẻ không phù hợp</value>
+  </data>
+  <data name="TranferOverMoney" xml:space="preserve">
+    <value>Chuyển Q vượt hạng mức trong ngày</value>
+  </data>
+  <data name="AmountNotValid" xml:space="preserve">
+    <value>Số Q không hợp lệ</value>
+  </data>
+  <data name="CardOverThree" xml:space="preserve">
+    <value>Thẻ được nhập vào hệ thống quá số lần cho phép</value>
+  </data>
+  <data name="CardSwapCancelSuccess" xml:space="preserve">
+    <value>Hủy đổi thẻ thành công</value>
+  </data>
+  <data name="CardSwapNotFound" xml:space="preserve">
+    <value>Thẻ đổi thưởng không tìm thấy</value>
+  </data>
+  <data name="CardSwapStatusInValid" xml:space="preserve">
+    <value>Trạng thái thẻ đổi không hợp lệ</value>
+  </data>
+  <data name="UserCardSwapCancelFail" xml:space="preserve">
+    <value>Hủy đổi thẻ thất bại</value>
+  </data>
+  <data name="UserInValid" xml:space="preserve">
+    <value>Tài khoản không hợp lệ</value>
+  </data>
+  <data name="AdBoxFail" xml:space="preserve">
+    <value>Đổi quà không thành công</value>
+  </data>
+  <data name="AdBoxGiftCodeInValid" xml:space="preserve">
+    <value>Loại quà đổi không hợp lệ</value>
+  </data>
+  <data name="AdBoxSuccess" xml:space="preserve">
+    <value>Đổi quà thành công</value>
+  </data>
+  <data name="Bom1AddSuccess" xml:space="preserve">
+    <value>Nhận thưởng mốc thành công</value>
+  </data>
+  <data name="Bom1AdFail" xml:space="preserve">
+    <value>Nhận thưởng mốc thất bại</value>
+  </data>
+  <data name="Bom1OverQuata" xml:space="preserve">
+    <value>Hạn mức nhận thưởng mốc đã hết</value>
+  </data>
+  <data name="Bom1UserReceived" xml:space="preserve">
+    <value>Người dùng đã nhận thưởng mốc</value>
+  </data>
+  <data name="NickNameExist" xml:space="preserve">
+    <value>Tài khoản đã cập nhật tên hiển thị</value>
+  </data>
+  <data name="AnphaMsg" xml:space="preserve">
+    <value>Hôm nay bạn đã test đủ rồi. Vui lòng quay lại vào ngày mai. Cám ơn bạn đã ủng hộ</value>
+  </data>
+</root>

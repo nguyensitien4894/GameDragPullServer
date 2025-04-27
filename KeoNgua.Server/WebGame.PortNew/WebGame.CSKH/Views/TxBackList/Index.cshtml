@@ -1,0 +1,188 @@
+﻿@{
+    ViewBag.Title = "Danh sách back list game tài xỉu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@model TxBackList
+@functions{
+    private bool IsDisplayFunction(string UserRoles)
+    {
+        //string RoleCode = Session["RoleCode"].ToString();
+        //if (UserRoles != "*")
+        //{
+        //    var arrRoles = UserRoles.Split(',');
+        //    var curRoles = RoleCode.Split(',');
+        //    var listCommon = arrRoles.Intersect(curRoles).ToList();
+        //    if (listCommon != null && listCommon.Any())
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+        //}
+        return true;
+    }
+}
+
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            Danh sách back list game tài xỉu
+        </div>
+    </div>
+    <div style="float: left; width: 50%;">
+        <table style="width: 100%;">
+            <tbody>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Chọn cổng</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.DropDownList("ServiceID", new SelectList(ViewBag.ServiceBox, "Value", "Text"), "Tất cả", new { @class = "text-box single-line" })
+                    </td>
+                </tr>
+
+
+
+
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>NickName <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        <input class="text-box single-line" id="DisplayName" type="text">
+                    </td>
+                </tr>
+
+
+
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</div>
+    if (IsDisplayFunction("ADMIN,CALLCENTER"))
+    {
+        <div style="float: right; width: 50%;">
+            <table style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <td class="adminTitle">
+                            <img src="~/Content/images/ico-help.gif">
+                            <label>Chọn cổng</label>
+                        </td>
+                        <td class="adminData">
+                            @Html.DropDownList("ServiceIDAdd", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                        </td>
+                    </tr>
+
+
+
+
+                    <tr>
+                        <td class="adminTitle">
+                            <img src="~/Content/images/ico-help.gif">
+                            <label>NickName <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <input class="text-box single-line" id="DisplayNameAdd" type="text">
+                        </td>
+                    </tr>
+
+
+
+                    <tr>
+                        <td class="adminTitle"></td>
+                        <td class="adminData">
+                            <input type="button" id="btnAdd" class="t-button" value="@AppConstants.CONFIG.ADD_NEW" onclick="GlobalHeader.AddBackListTx();">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="bindGiftcodeProgress">
+            </div>
+        </div>
+    }
+        <h2>
+            Danh sách
+        </h2>
+        <link href="~/Content/label.css" rel="stylesheet" />
+        <style>
+            .adminContent tr:nth-child(even) {
+                background-color: #f7f7f7;
+            }
+
+            .adminContent td {
+                width: 1px;
+                white-space: nowrap;
+            }
+        </style>
+        <table class="adminContent">
+            <tr>
+                <td>
+                    @(Html.Telerik().Grid<TxBackList>()
+                    .Name("historyPlay-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.ServiceName).Title("Cổng");
+
+                        columns.Bound(x => x.DisplayName).Title("Tên hiển thị");
+
+                        columns.Bound(x => x.MinBetFormat).Title("Tiền bet").HtmlAttributes(new { @class = "text-right" });
+
+                        columns.Bound(x => x.CreatedDate).Title("Thời gian ").Format("{0:dd/MM/yyyy HH:mm:ss}");
+                        columns.Bound(x => x.AccountID).Width(100)
+                     .Template(x => Html.ActionLink("Delete", "TxBackList", new { AccountID = x.AccountID }))
+
+                         .ClientTemplate(
+                  "<a onclick=\"return GlobalHeader.RemoveBackListTx('<#= AccountID #>\')\" href=\"#\">" + "Xóa khỏi black list" + "</a>" 
+                ).Title(" ").HtmlAttributes(new { @class = "text-center" });
+
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetList", "TxBackList");
+                    })
+                    .EnableCustomBinding(true))
+                </td>
+            </tr>
+        </table>
+        <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#historyPlay-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+
+
+                DisplayName: $('#DisplayName').val().trim(),
+
+                ServiceID: $('#ServiceID').val(),
+
+
+            };
+            e.data = searchModel;
+        }
+        </script>
+        }

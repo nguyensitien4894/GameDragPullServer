@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "Cấu hình mức phí đại lý";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Cấu hình mức phí đại lý
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Loại</label>
+                </td>
+                <td class="adminData">
+                    <select id="paramType" class="text-box single-line">
+                        <option value="">Tất cả</option>
+                        <option value="TRANSFEE">Phí giao dịch</option>
+                        <option value="TRANS_TYPE">Loại giao dịch</option>
+                        <option value="TRANSLIMIT">Hạn mức giao dịch các loại</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Giá trị</label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="value" type="text">
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Danh sách
+    </h2>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<GameParamConfig>()
+                    .Name("settings-grid")
+                    .DataKeys(x => { x.Add(y => y.ID); })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.Description).Width(800);
+                        columns.Bound(x => x.Value);
+                        columns.Command(commands =>
+                        {
+                            commands.Edit().Text(AppConstants.CONFIG.EDIT);
+                        }).Width(200);
+                    })
+                    .Editable(x => { x.Mode(GridEditMode.InLine); })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("AllSettings", "GameSetting").Update("SettingUpdate", "Setting");
+                    })
+                    .ClientEvents(x => x.OnError("grid_onError").OnEdit("grid_onEdit").OnDataBinding("onDataBinding"))
+                    .EnableCustomBinding(true))
+
+                <script type="text/javascript">
+                    function grid_onError(e) {
+                        alert(e.XMLHttpRequest.responseText);
+                        e.preventDefault();
+                    }
+
+                    function grid_onEdit(e) {
+                        $(e.form).find('#ParamType').attr('readonly', true);
+                        $(e.form).find('#Code').attr('readonly', true);
+                    }
+
+                    function onDataBinding(e) {
+                        var searchModel = {
+                            paramType: $('#paramType').val().trim(),
+                            value: $('#value').val().trim(),
+                        };
+                        e.data = searchModel;
+                    }
+
+                    $(document).ready(function () {
+                        $('#btnSearch').click(function () {
+                            var grid = $('#settings-grid').data('tGrid');
+                            grid.currentPage = 1; //new search. Set page size to 1
+                            grid.ajaxRequest();
+                            return false;
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
+}
+

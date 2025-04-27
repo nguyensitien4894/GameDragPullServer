@@ -1,0 +1,210 @@
+﻿@{
+    ViewBag.Title = "Quản lý đại lý";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@using MsWebGame.CSKH.Models.Agencies
+@model ListAgencyModel
+@functions{
+    private bool IsDisplayFunction(string UserRoles)
+    {
+        string RoleCode = Session["RoleCode"].ToString();
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+@using (Html.BeginForm("Index", "Agency", FormMethod.Get))
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            Quản lý đại lý
+        </div>
+        <div class="options">
+            <a href="@Url.Action("Create")" class="t-button">@AppConstants.CONFIG.ADD_NEW</a>
+        </div>
+    </div>
+    <div style="float: left; width: 50%;">
+        <table style="width: 100%;">
+            <tbody>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Tên đại lý</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(m => m.AccountName, new { @class = "text-box single-line",@id = "accountName" })
+                        <span class="field-validation-valid" data-valmsg-for="accountName"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Số điện thoại</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(m => m.PhoneOTP, new { @class = "text-box single-line" , @id = "PhoneOTP" })
+                        <span class="field-validation-valid" data-valmsg-for="phoneNo"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Chọn cấp đại lý</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.DropDownListFor(m => m.AccountLevel, Model.listAgencyOne, "--Tất cả--", new
+                   {
+                       @class = "text-box single-line" ,@id = "AccountLevel"
+
+                   })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Trạng thái</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.DropDownListFor(m => m.Status, Model.listStatus, new { @class = "text-box single-line", @id = "Status" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Chọn cổng</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        &nbsp;
+                    </td>
+                    <td>
+                        <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="float: right; width: 50%;">
+        @if (IsDisplayFunction("ADMIN"))
+        {
+
+            <table>
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="color:red"><b>Thu hồi  ví gift code đại lý</b></td>
+                    </tr>
+
+                    <tr>
+                        <td class="adminTitle">
+                            <img src="~/Content/images/ico-help.gif">
+                            <label>Chọn cổng</label>
+                        </td>
+                        <td class="adminData">
+                            @Html.DropDownList("sID", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="adminTitle"></td>
+                        <td class="adminData">
+                            <input type="button" id="GiftcodeProgress" class="t-button" value="Thu hồi" onclick="javascript:GlobalHeader.AgencyRefund();">
+
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="bindGiftcodeProgress">
+            </div>
+
+        }
+        <b>
+            <span> Tổng số Q trong ví :@Model.TotalWalletFormat</span>
+            <br />
+            <span> Tổng số GiftCode :@Model.TotalGiftCodeFormat</span>
+        </b>
+
+    </div>
+
+
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<Agency>(Model.listAgency)
+                    .Name("agencyLst-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.No).Title("STT");
+                        columns.Bound(x => x.AccountName).Title("Tên Đăng nhập");
+                        columns.Bound(x => x.DisplayName).Title("Tên giao dịch");
+                        columns.Bound(x => x.FullName).Title("Tên đầy đủ");
+                        columns.Bound(e => e.PhoneOTP).Title("Số điện thoại");
+                        columns.Bound(e => e.WalletFormat).Title("B trong ví").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.GiftcodeWallettFormat).Title("B GiftCode").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.PhoneDisplay).Title("Số điện thoại hiển thị");
+                        columns.Bound(x => x.AccountLevel).Title("Đại lý cấp").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.ParrentDisplayName).Title("Tên đại lý cha");
+                        columns.Bound(e => e.OrderNum).Title("Vị trí hiển thị").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.ZaloLink).Title("Zalo").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.StatusFormat).Title("Trạng thái").HtmlAttributes(new { @class = "bg-color-gray" });
+                        columns.Bound(x => x.AccountId).Width(100)
+                            .Template(x => Html.ActionLink("Edit", "Edit", new { Id = x.AccountId, serviceId = x.ServiceID }))
+                            .ClientTemplate("<# if (Status) { #>" +
+                                            "<a href=\"Edit?Id=<#= AccountId #>&serviceId=<#= ServiceID #>\">" + AppConstants.CONFIG.EDIT + "</a>&nbsp" +
+                                            "<# }else{ #>" +
+                                            "<a href=\"Edit?Id=<#= AccountId #>&serviceId=<#= ServiceID #>\">" + AppConstants.CONFIG.EDIT + "</a>&nbsp" +
+                                            "<# } #>"
+                            ).Title(" ").HtmlAttributes(new { @class = "text-center" });
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both)).DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetAgency", "Agency");
+                    })
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#agencyLst-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            console.log("Search: " + $('#accountName').val().trim());
+            var searchModel = {
+                AccountName: $('#accountName').val().trim(),
+                PhoneOTP: $('#PhoneOTP').val().trim(),
+                AccountLevel: $('#AccountLevel').val().trim(),
+                Status: $('#Status').val().trim()
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

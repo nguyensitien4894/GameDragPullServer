@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "Thông tin tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Utils
+@using TraditionGame.Utilities.Utils
+@using MsWebGame.CSKH.Database.DTO
+@using NPOI.SS.Formula.Functions
+@using Telerik.Web.Mvc.UI
+
+@model  MsWebGame.CSKH.Models.Accounts.TaiXiuRefunParam
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            Thông tin tài khoản
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <span id="text-notifymsg"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <label>Phiên</label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="SessionID" name="SessionID" value="@Model.SessionID" type="text" required>
+                    <span class="field-validation-valid" data-valmsg-for="phatLocName"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <label>Nickname</label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="NickName" name="NickName" value="@Model.NickName" type="text" required>
+                    <span class="field-validation-valid" data-valmsg-for="phatLocName"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="submit" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                    <span class="field-validation-valid" data-valmsg-for="user-manager"></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    if (Model != null && Model.AccountID > 0)
+    {
+        <table class="adminContent">
+            <tbody id="accountgame-profit">
+                <tr>
+                    <td class="adminTitle">
+                       
+                        <label>NickName</label>
+                    </td>
+                    <td class="adminData">
+                        @Model.NickName
+                    </td>
+                </tr>
+                <tr>
+                <tr>
+                    <td class="adminTitle">
+                        
+                        <label>AccountID</label>
+                    </td>
+                    <td class="adminData">
+                        @Model.AccountID
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        
+                        <label>Session</label>
+                    </td>
+                    <td class="adminData">
+                        @Model.SessionID
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        
+                        <label>Tổng tiền hoàn</label>
+                    </td>
+                    <td class="adminData">
+                        @Model.Amount
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        
+                        <label>Thời gian</label>
+                    </td>
+                    <td class="adminData">
+                        @ViewBag.Date
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    }
+}
+

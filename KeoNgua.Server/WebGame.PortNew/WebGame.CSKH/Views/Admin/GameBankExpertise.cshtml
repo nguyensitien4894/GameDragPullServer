@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "Cấu hình chiến dịch";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Tìm kiếm dữ liệu đã thẩm định
+        </div>
+    </div>
+    <table style="width: 100%">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn game</label>
+                </td>
+                <td class="adminData">
+                    <select id="gameId" name="gameId" class="text-box single-line">
+                        <option value="0">Tất cả</option>
+                        @foreach (var item in ViewBag.GameBox)
+                        {
+                            <option value="@item.Value">@item.Name</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn phòng</label>
+                </td>
+                <td class="adminData">
+                    <select id="roomId" name="roomId" class="text-box single-line">
+                        @foreach (var item in ViewBag.RoomBox)
+                        {
+                            <option value="@item.Value">@item.Name</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Danh sách
+    </h2>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<GameBankExpertise>()
+                    .Name("gameBankExpertise-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.DateCycle).Title("Ngày");
+                        columns.Bound(x => x.TrackingID).Title("Theo dõi");
+                        columns.Bound(x => x.GameIDFormat).Title("Game");
+                        columns.Bound(x => x.RoomIDFormat).Title("Phòng");
+                        columns.Bound(x => x.PoolAccumulateFormat).Title("Tích lũy");
+                        columns.Bound(x => x.PrizeAccumulateFormat).Title("Tích lũy giải thưởng");
+                        columns.Bound(x => x.CurrentPrizeFundFormat).Title("Quỹ thưởng");
+                        columns.Bound(x => x.CurrentJackpotFundFormat).Title("Quỹ hũ");
+                        columns.Bound(x => x.Flag).Title("Cờ");
+                        columns.Bound(x => x.CreatedDate).Title("Ngày tạo").Format("{0:dd/MM/yyyy}");
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetGameBankExpertise", "Admin");
+                    })
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#gameBankExpertise-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+                gameId: $('#gameId').val().trim(),
+                roomId: $('#roomId').val().trim()
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

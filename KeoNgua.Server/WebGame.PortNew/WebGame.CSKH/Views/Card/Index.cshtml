@@ -1,0 +1,173 @@
+﻿@{
+    ViewBag.Title = "Cấu hình thẻ cào";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Models.Cards
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@model CardListModel
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Danh sách thẻ
+        </div>
+        <div class="options">
+            <a href="@Url.Action("Create")" class="t-button">@AppConstants.CONFIG.ADD_NEW</a>
+        </div>
+    </div>
+    <h2>
+        Danh sách
+    </h2>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(m=>m.ServiceID, new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img alt="A billing email address." src="~/Content/images/ico-help.gif">
+                    @Html.LabelFor(m => m.CardName)
+                </td>
+                <td class="adminData">
+                    @Html.TextBoxFor(m => m.CardName, new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img alt="A billing email address." src="~/Content/images/ico-help.gif">
+                    @Html.LabelFor(m => m.CardCode)
+                </td>
+                <td class="adminData">
+                    @Html.TextBoxFor(m => m.CardCode, new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img alt="A billing email address." src="~/Content/images/ico-help.gif">
+                    @Html.LabelFor(m => m.TeleId)
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(m => m.TeleId, Model.listTelecom, "--Chọn nhà mạng--", new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img alt="A billing email address." src="~/Content/images/ico-help.gif" title="Tên đăng nhập">
+                    @Html.LabelFor(m => m.Status)
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(m => m.Status, Model.listStatus, "--Chọn trạng thái--", new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<CardModel>()
+                    .Name("settings-grid")
+                    .DataKeys(x => { x.Add(y => y.ID); })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.ServiceName);
+                        columns.Bound(x => x.CardName);
+                        columns.Bound(x => x.CardCode);
+                        columns.Bound(x => x.CardValueFormat).HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.OperatorName);
+                        columns.Bound(x => x.PartnerName);
+                        columns.Bound(x => x.Status).ClientTemplate("<#= Status ? 'Hoạt động' : 'Tạm dừng' #>");
+                        columns.Bound(x => x.ExchangeStatus).ClientTemplate("<#= ExchangeStatus ? 'Hoạt động' : 'Tạm dừng' #>");
+                        columns.Bound(x => x.ID)
+                        .Width(100).HtmlAttributes(new { @class = "text-center" })
+                        .Template(x => Html.ActionLink("Edit", "Edit", new { id = x.ID }))
+                        .ClientTemplate("<a href=\"Edit/<#= ID #>\">" + AppConstants.CONFIG.EDIT + "</a>&nbsp").Title(" ");
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding => { dataBinding.Ajax().Select("GetList", "Card"); })
+                    .ClientEvents(x => x.OnError("grid_onError").OnEdit("grid_onEdit").OnDataBinding("onDataBinding"))
+                    .EnableCustomBinding(true))
+
+                <script type="text/javascript">
+                    function grid_onError(e) {
+                        alert(e.XMLHttpRequest.responseText);
+                        e.preventDefault();
+                    }
+
+                    function grid_onEdit(e) {
+
+                    }
+
+                    function onDataBinding(e) {
+                        var searchModel = {
+                            CardName: $('#@Html.IdFor(model => model.CardName)').val().trim(),
+                            CardCode: $('#@Html.IdFor(model => model.CardCode)').val().trim(),
+                            Status: $('#@Html.IdFor(model => model.Status)').val().trim(),
+                            TeleId: $('#@Html.IdFor(model => model.TeleId)').val(),
+                            ServiceID: $('#@Html.IdFor(model => model.ServiceID)').val(),
+                        }
+                        e.data = searchModel
+                    }
+
+                    $(document).ready(function () {
+                        $('#btnSearch').click(function () {
+                            var grid = $('#settings-grid').data('tGrid');
+                            grid.currentPage = 1; //new search. Set page size to 1
+                            grid.ajaxRequest();
+                            return false;
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
+}
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#ServiceID").change(function () {
+            var id = $("#ServiceID").val();
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetPartnersAndTeleByServiceID", "Card")',
+                data: { "ServiceID": id },
+                success: function (json, textStatus) {
+
+                    $('#TeleId').find('option').remove().end()
+
+                    json = json || {};
+                    teles = json.listTelecom;
+                    $("#TeleId").append('<option value=>' + 'Chọn nhà mạng' + '</option>');
+                    for (var i = 0; i < teles.length; i++) {
+                        $("#TeleId").append('<option value="' + teles[i].Value + '">' + teles[i].Text + '</option>');
+                    }
+
+
+                },
+                error: function () {
+                    alert("Data Not Found");
+                }
+            });
+        });
+    });
+</script>

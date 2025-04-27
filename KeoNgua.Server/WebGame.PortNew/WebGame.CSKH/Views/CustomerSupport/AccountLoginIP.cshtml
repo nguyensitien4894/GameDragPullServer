@@ -1,0 +1,29 @@
+﻿@using MsWebGame.CSKH.Controllers
+@model List<MsWebGame.CSKH.Database.DTO.AccountLoginIP>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">STT</th>
+            <th scope="col">Device</th>
+            <th scope="col">Thời gian login</th>
+            <th scope="col">IP</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            var i = 0;
+            foreach (var item in Model)
+            {
+                i++;
+                <tr>
+                    <th scope="row">@i</th>
+                    <td>@InfoHandler.Instance.GetDeviceName(item.DeviceType)</td>
+                    <td>@item.LoginTime.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@item.ClientIP</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

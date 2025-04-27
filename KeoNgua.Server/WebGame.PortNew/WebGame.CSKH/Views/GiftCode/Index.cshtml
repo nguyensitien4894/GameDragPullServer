@@ -1,0 +1,503 @@
+﻿@{
+    ViewBag.Title = "Cấu hình giftcode";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+<link href="~/Content/EasyAutocomplete-1.3.5/easy-autocomplete.css" rel="stylesheet" />
+<script src="~/Content/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.js"></script>
+<script type="text/javascript">
+
+    jQuery(document).ready(function () {
+      
+        var options = {
+
+            url: function (phrase) {
+                return '@Url.Action( "GetCampaignAutoComplete", "GiftCode")';
+            },
+
+            getValue: function (element) {
+                return element.CampaignName;
+            },
+
+            ajaxSettings: {
+                dataType: "json",
+                method: "POST",
+                data: {
+                    dataType: "json"
+                }
+            },
+
+            preparePostData: function (data) {
+                data.name = $("#campaignName").val();
+                data.ServiceID = $("#serviceId").val();
+                return data;
+            },
+
+            requestDelay: 400
+        };
+        $('#campaignName').easyAutocomplete(options);
+
+    });
+    $("#serviceId").change(function () {
+        $('#campaignName').val('');
+    })
+
+</script>
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" />
+            Cấu hình giftcode
+        </div>
+        @if (ViewBag.RoleCode == "ADMIN")
+        {
+            <div class="options">
+                <a href="@Url.Action("GiftCodeAdd")" class="t-button">@AppConstants.CONFIG.ADD_NEW</a>
+            </div>
+        }
+    </div>
+    <table style="float: left; width: 50%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif" />
+                    <label>GiftCode</label>
+                </td>
+                <td class="adminData">
+                    <input type="text" id="giftCode" class="text-box single-line" />
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn chiến dịch</label>
+                </td>
+                <td class="adminData">
+
+                    <input id="campaignName"  name="campaignName" class="text-box single-line" />
+                    <br />
+
+                </td>
+            </tr>
+          
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn loại giftcode</label>
+                </td>
+                <td class="adminData">
+                    <select id="giftCodeType" class="text-box single-line">
+                        <option value="0">Tất cả</option>
+                        <option value="1">Gift Code (1 tài khoản dùng 1 code)</option>
+                        <option value="2">Gift Code (1 tài khoản dùng nhiều code)</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn trạng thái</label>
+                </td>
+                <td class="adminData">
+                    <select id="status" class="text-box single-line">
+                        <option value="null">Tất cả</option>
+                        <option value="true">Hiệu lực</option>
+                        <option value="false">Đã dùng</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif" />
+                    <label>Nick Name sử dụng</label>
+                </td>
+                <td class="adminData">
+                    <input type="text" id="NickName" class="text-box single-line" />
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn loại tài khoản tạo giftcode</label>
+                </td>
+                <td class="adminData">
+                    <select id="accountType" class="text-box single-line">
+                        <option value="0">Tất cả</option>
+                        <option value="1">Admin</option>
+                        <option value="2">Đại lý</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif" />
+                    <label>Người tạo</label>
+                </td>
+                <td class="adminData">
+                    <input type="text" id="CreatedUser" class="text-box single-line" />
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Từ ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("fromDate")
+                    <span class="field-validation-valid" data-valmsg-for="fromDate"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Đến ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("toDate")
+                    <span class="field-validation-valid" data-valmsg-for="toDate"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                    @if (ViewBag.RoleCode == "ADMIN")
+                    {
+                        <a id="btnExportExcel" class="t-button" href="@Url.Content("~/GiftCode/ExportExcel")">Xuất Excel</a>
+                    }
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    if (ViewBag.RoleCode == "ADMIN")
+    {
+        <div style="float: left; width: 50%;">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="adminTitle">
+                            <img src="~/Content/images/ico-help.gif">
+                            <label>Chọn cổng</label>
+                        </td>
+                        <td class="adminData">
+                            @Html.DropDownList("serviceIdReport", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <img src="~/Content/images/ico-help.gif">
+                            <label>Nickname tạo giftcode</label>
+                        </td>
+                        <td class="adminData">
+                            <input type="text" id="nickNameProgress" class="text-box single-line" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <img src="~/Content/images/ico-help.gif">
+                            <label>Chọn loại tài khoản tạo giftcode</label>
+                        </td>
+                        <td class="adminData">
+                            <select id="accountTypeProgress" class="text-box single-line">
+                                <option value="0">Tất cả</option>
+                                <option value="1">Admin</option>
+                                <option value="2">Đại lý</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle"></td>
+                        <td class="adminData">
+                            <input type="button" onclick="GlobalHeader.bindGiftcodeProgress();" id="GiftcodeProgress" class="t-button" value="Thống kê giftcode">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="bindGiftcodeProgress">
+            </div>
+        </div>
+    }
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<GameGiftCode>()
+                    .Name("giftCode-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.CampaignName).Title("Chiến dịch");
+                        columns.Bound(x => x.GiftCode).Title("Giftcode");
+                        columns.Bound(x => x.MoneyRewardFormat).Title("Mệnh giá");
+                        columns.Bound(x => x.DisplayName).Title("Nickname sử dụng");
+                        columns.Bound(x => x.ReceivedDate).Title("Thời gian sử dụng");
+                        columns.Bound(x => x.StatusFormat).Title("Trạng thái");
+                        columns.Bound(x => x.ExpiredDate).Title("Ngày hết hạn");
+                        columns.Bound(x => x.GiftCodeTypeFormat).Title("Loại giftcode");
+                        columns.Bound(x => x.CreateUserName).Title("Người tạo");
+                        columns.Bound(x => x.CreateUserTypeFormat).Title("Nhóm người tạo");
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetListGiftCode", "GiftCode");
+                    })
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var campaignName = $('#campaignName').val().trim();
+                var giftCodeType = $('#giftCodeType').val().trim();
+                var giftCode = $('#giftCode').val().trim();
+                var status = $('#status').val().trim();
+                var fromDate = $('#fromDate').val().trim();
+                var toDate = $('#toDate').val().trim();
+                var nickName = $('#NickName').val().trim();
+                var createdUser = $('#CreatedUser').val().trim();
+                var accountType = $('#accountType').val().trim();
+                var serviceId = $('#serviceId').val().trim();
+                var strExportExcel = "/GiftCode/ExportExcel?campaignName=" + campaignName
+                    + "&giftCodeType=" + giftCodeType + "&giftCode=" + giftCode + "&status=" + status + "&fromDate=" + fromDate + "&toDate=" + toDate + "&createdUser=" + createdUser + "&accountType=" + accountType + "&NickName=" + nickName + "&serviceId=" + serviceId;
+                $('#btnExportExcel').attr('href', strExportExcel);
+                var grid = $('#giftCode-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+                campaignName: $('#campaignName').val().trim(),
+                giftCodeType: $('#giftCodeType').val().trim(),
+                giftCode: $('#giftCode').val().trim(),
+                status: $('#status').val().trim(),
+                fromDate: $('#fromDate').val().trim(),
+                toDate: $('#toDate').val().trim(),
+                nickName: $('#NickName').val().trim(),
+                createdUser: $('#CreatedUser').val().trim(),
+                serviceId: $('#serviceId').val().trim(),
+                accountType: $('#accountType').val().trim()
+            };
+            e.data = searchModel;
+        }
+
+
+
+
+    </script>
+}
+
+
+@*<style>
+        .ui-autocomplete {
+        max-height: 100px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: hidden;
+      }
+      /* IE 6 doesn't support max-height
+       * we use height instead, but this forces the menu to always be this tall
+       */
+      * html .ui-autocomplete {
+        height: 100px;
+      }
+        .custom-combobox {
+            position: relative;
+            display: inline-block;
+        }
+
+        .custom-combobox-toggle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin-left: -1px;
+            padding: 0;
+        }
+
+        .custom-combobox-input {
+            margin: 0;
+            padding: 5px 10px;
+        }
+    </style>*@
+
+@*<script>
+      $( function() {
+        $.widget( "custom.combobox", {
+          _create: function() {
+            this.wrapper = $( "<span>" )
+              .addClass( "custom-combobox" )
+              .insertAfter( this.element );
+
+            this.element.hide();
+            this._createAutocomplete();
+            this._createShowAllButton();
+          },
+
+          _createAutocomplete: function() {
+            var selected = this.element.children( ":selected" ),
+              value = selected.val() ? selected.text() : "";
+
+            this.input = $( "<input>" )
+              .appendTo( this.wrapper )
+              .val( value )
+              .attr( "title", "" )
+              .addClass( "custom-combobox-input ui-widget ui-widget-content  ui-corner-left " )
+              .autocomplete({
+                delay: 0,
+                minLength: 0,
+                source: $.proxy( this, "_source" )
+              })
+              .tooltip({
+                classes: {
+                  "ui-tooltip": "ui-state-highlight"
+                }
+              });
+
+            this._on( this.input, {
+              autocompleteselect: function( event, ui ) {
+                ui.item.option.selected = true;
+                this._trigger( "select", event, {
+                  item: ui.item.option
+                });
+              },
+
+              autocompletechange: "_removeIfInvalid"
+            });
+          },
+
+          _createShowAllButton: function() {
+            var input = this.input,
+              wasOpen = false;
+
+            $( "<a>" )
+              .attr( "tabIndex", -1 )
+              .attr( "title", "Show All Items" )
+              .tooltip()
+              .appendTo( this.wrapper )
+              .button({
+                icons: {
+                  primary: "ui-icon-triangle-1-s"
+                },
+                text: false
+              })
+              .removeClass( "ui-corner-all" )
+              .addClass( "custom-combobox-toggle ui-corner-right" )
+              .on( "mousedown", function() {
+                wasOpen = input.autocomplete( "widget" ).is( ":visible" );
+              })
+              .on( "click", function() {
+                input.trigger( "focus" );
+
+                // Close if already visible
+                if ( wasOpen ) {
+                  return;
+                }
+
+                // Pass empty string as value to search for, displaying all results
+                input.autocomplete( "search", "" );
+              });
+          },
+
+          _source: function( request, response ) {
+            var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+            response( this.element.children( "option" ).map(function() {
+              var text = $( this ).text();
+              if ( this.value && ( !request.term || matcher.test(text) ) )
+                return {
+                  label: text,
+                  value: text,
+                  option: this
+                };
+            }) );
+          },
+
+          _removeIfInvalid: function( event, ui ) {
+
+            // Selected an item, nothing to do
+            if ( ui.item ) {
+              return;
+            }
+
+            // Search for a match (case-insensitive)
+            var value = this.input.val(),
+              valueLowerCase = value.toLowerCase(),
+              valid = false;
+            this.element.children( "option" ).each(function() {
+              if ( $( this ).text().toLowerCase() === valueLowerCase ) {
+                this.selected = valid = true;
+                return false;
+              }
+            });
+
+            // Found a match, nothing to do
+            if ( valid ) {
+              return;
+            }
+
+            // Remove invalid value
+            this.input
+              .val( "" )
+              .attr( "title", value + " didn't match any item" )
+              .tooltip( "open" );
+            this.element.val( "" );
+            this._delay(function() {
+              this.input.tooltip( "close" ).attr( "title", "" );
+            }, 2500 );
+            this.input.autocomplete( "instance" ).term = "";
+          },
+
+          _destroy: function() {
+            this.wrapper.remove();
+            this.element.show();
+          }
+        });
+
+        $("#campaignName").combobox();
+        $( "#toggle" ).on( "click", function() {
+            $("#campaignName").toggle();
+        });
+      } );
+    </script>*@
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#serviceId").change(function () {
+            var id = $("#serviceId").val();
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetCampainByServiceId", "GiftCode")',
+                data: { "ServiceID": id },
+                success: function (json, textStatus) {
+                    $("#campaignName").empty();
+                    json = json || {};
+                    for (var i = 0; i < json.length; i++) {
+                        $("#campaignName").append('<option value="' + json[i].Name + '">' + json[i].Name + '</option>');
+                    }
+
+                },
+                error: function () {
+                    alert("Data Not Found");
+                }
+            });
+        });
+    });
+</script>

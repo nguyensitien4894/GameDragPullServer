@@ -1,0 +1,122 @@
+﻿@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@using TraditionGame.Utilities.Utils;
+@model AgencyGeneralRevenueInfo
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            Thống kê giao dịch của tổng với C1 (Số dư tổng đại lý: @MoneyExtension.LongToMoneyFormat(Model.Balance)
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("ServiceID", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line", @onchange = @"form.submit();" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn tổng đại lý</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("AgencyIDTotal", new SelectList(ViewBag.AgencyTotalBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Từ ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DateTimePicker().Name("FromDate").Value(DateTime.Now.AddDays(-7)).InputHtmlAttributes(new { @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Đến ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DateTimePicker().Name("ToDate").Value(DateTime.Now.AddDays(1)).InputHtmlAttributes(new { @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="submit" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+<style>
+    .t-header_1, .t-grid-header_1 {
+        border-color: #a7bac5;
+        background: #a4d1ea repeat-x 0 -852px;
+    }
+</style>
+
+<div class="t-widget t-grid" id="userCardSwap-grid">
+    <table cellspacing="0" style="border-collapse:collapse!important">
+        <thead class="t-grid-header" style="background: #a4d1ea repeat-x 0 -852px!important">
+            <tr>
+                <th class="t-header" scope="col" rowspan="2" style="background: #a4d1ea repeat-x 0 -852px!important;"><span class="t-link"><b>Ngày</b> </span></th>
+                <th class="t-header" scope="col" colspan="3" style="background: #a4d1ea repeat-x 0 -852px!important"><span class="t-link"><b>TDL bán cho C1</b> </span></th>
+                <th class="t-header" scope="col" colspan="3" style="background: #a4d1ea repeat-x 0 -852px!important"><span class="t-link"><b>TDL mua của C1</b></span></th>
+            </tr>
+            <tr>
+                <th class="t-header" scope="col" style="background: #a4d1ea repeat-x 0 -852px!important"><span class="t-link">Giá trị </span></th>
+                <th class="t-header" scope="col" style="background: #a4d1ea repeat-x 0 -852px!important"><span class="t-link">Số lượng GD </span></th>
+                <th class="t-header text-center" scope="col" style="background: #a4d1ea repeat-x 0 -852px!important"><span>Chi tiết </span></th>
+                <th class="t-header" scope="col" style="background: #a4d1ea repeat-x 0 -852px!important"><span class="t-link">Giá trị </span></th>
+                <th class="t-header" scope="col" style="background: #a4d1ea repeat-x 0 -852px!important"><span class="t-link">Số lượng GD </span></th>
+                <th class="t-header text-center" scope="col" style="background: #a4d1ea repeat-x 0 -852px!important"><span>Chi tiết </span></th>
+            </tr>
+        </thead>
+        <tbody>
+        <tbody>
+            @if (Model.LstReport != null && Model.LstReport.Any())
+            {
+                foreach (var item in Model.LstReport)
+                {
+                    <tr>
+                        <td>@item.TransDay</td>
+                        <td class="text-right">@item.TotalOutValue.LongToMoneyFormat()</td>
+                        <td class="text-right">@item.TotalOutQuantity</td>
+                        <td class="text-center">
+                            <form action="AgencyC1ReportDetails" method="post">
+                                <input type="hidden" name="AgencyIDTotal" value="@Model.AgencyIDTotal" />
+                                <input type="hidden" name="TransType" value="1" />
+                                <input type="hidden" name="ServiceID" value="@Model.ServiceID" />
+                                <input type="hidden" name="FromDate" value="@item.TransDay" />
+                                <input type="submit" class="t-button" value="Chi tiết" />
+                            </form>
+                        </td>
+                        <td class="text-right">@item.TotalInValue.LongToMoneyFormat()</td>
+                        <td class="text-right">@item.TotalInQuantity</td>
+                        <td class="text-center">
+                            <form action="AgencyC1ReportDetails" method="post">
+                                <input type="hidden" name="AgencyIDTotal" value="@Model.AgencyIDTotal" />
+                                <input type="hidden" name="TransType" value="0" />
+                                <input type="hidden" name="ServiceID" value="@Model.ServiceID" />
+                                <input type="hidden" name="FromDate" value="@item.TransDay" />
+                                <input type="submit" class="t-button" value="Chi tiết" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

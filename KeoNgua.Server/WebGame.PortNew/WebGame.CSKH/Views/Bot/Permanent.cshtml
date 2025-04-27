@@ -1,0 +1,112 @@
+﻿@using MsWebGame.CSKH.Utils
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Models.Bot
+@model BotModel
+
+@{
+    ViewBag.Title = "Nhóm BOT thường trực";
+}
+
+<h2>Danh sách nhóm nhóm BOT thường trực </h2>
+@using (Html.BeginForm())
+{
+    <table width="100%">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    Thời gian bắt đầu:
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().TimePicker().Name("StartTime").Format("HH:mm")
+                </td>
+            </tr>
+
+            <tr>
+                <td class="adminTitle">
+                    Thời gian kết thúc:
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().TimePicker().Name("FinishTime").Format("HH:mm")
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    @Html.LabelFor(m => m.BotType):
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(m => m.BotType, new SelectList(ViewBag.PartialBotType, "Value", "Name"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<BotModel>()
+                    .Name("bot-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .DataKeys(x => { x.Add(y => y.BotGroupId).RouteKey("BotGroupId"); })
+                    .DataKeys(x => { x.Add(y => y.BotType).RouteKey("BotType"); })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.BotGroupId).ReadOnly().Title("Nhóm").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.StartTime).ReadOnly().ClientTemplate("<#= StartTime.Hours #> : <#= StartTime.Minutes  #>").Title("Thời gian bắt đầu"); ;
+                        columns.Bound(x => x.FinishTime).ReadOnly().ClientTemplate("<#= FinishTime.Hours #> : <#= FinishTime.Minutes  #>").Title("Thời gian kết thúc");
+                        columns.Bound(x => x.BotTypeName).Title("Loại BOT");
+                        columns.Bound(x => x.BotsPlayMin).Title("Số lượng Min").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.BotsPlayMax).Title("Số lượng Max").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.PermanentBots).Title("Số lượng thường trực").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.QuantityBots).ReadOnly().Title("Số lượng Bot thực có").HtmlAttributes(new { @class = "text-right" });
+                        columns.Command(commands => { commands.Edit().Text(AppConstants.CONFIG.EDIT); }).Width(200).Title("Hành động").HtmlAttributes(new { @class = "text-center" });
+
+                    })
+                    .Editable(x => { x.Mode(GridEditMode.InLine); })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("PermanentSearch", "Bot")
+                                          .Update("PermanentUpdate", "Bot"); ;
+                    })
+                    .ClientEvents(x => x.OnError("grid_onError").OnEdit("grid_onEdit"))
+                    .EnableCustomBinding(true)
+                  )
+            </td>
+        </tr>
+    </table>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#bot-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+                StartTime: $('#@Html.IdFor(model => model.StartTime)').val().trim(),
+                FinishTime: $('#@Html.IdFor(model => model.FinishTime)').val().trim(),
+                BotType: $('#@Html.IdFor(model => model.BotType)').val().trim()
+            };
+            e.data = searchModel;
+        }
+
+        function grid_onError(e) {
+            alert(e.XMLHttpRequest.responseText);
+            e.preventDefault();
+        }
+        function grid_onEdit(e) {
+        }
+    </script>
+
+}

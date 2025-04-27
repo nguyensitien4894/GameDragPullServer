@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "Cấu hình chiến dịch";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Tìm kiếm thông tin Gamebank
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn game <span style="color: red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    <select id="gameId" class="text-box single-line">
+                        <option value="0">Tất cả</option>
+                        @foreach (var item in ViewBag.GameBox)
+                        {
+                            <option value="@item.Value">@item.Name</option>
+                        }
+                    </select>
+                    <span class="field-validation-valid" data-valmsg-for="gameId"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn phòng <span style="color: red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    <select id="roomId" class="text-box single-line">
+                        @foreach (var item in ViewBag.RoomBox)
+                        {
+                            <option value="@item.Value">@item.Name</option>
+                        }
+                    </select>
+                    <span class="field-validation-valid" data-valmsg-for="roomId"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Từ ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DateTimePicker().Name("startDate").Value(DateTime.Today.AddDays(-7)).InputHtmlAttributes(new { @onkeypress = "GlobalHeader.inputKeypress(event.keyCode);" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Đến ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DateTimePicker().Name("endDate").Value(DateTime.Now).InputHtmlAttributes(new { @onkeypress = "GlobalHeader.inputKeypress(event.keyCode);" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Danh sách
+    </h2>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<GameBankInfo>()
+                    .Name("gameBank-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.StartDate).Format("{0:dd/MM/yyyy}");
+                        columns.Bound(x => x.EndDate).Format("{0:dd/MM/yyyy}");
+                        columns.Bound(x => x.CreatedDate).Format("{0:dd/MM/yyyy}");
+                        columns.Bound(x => x.GameIDFormat);
+                        columns.Bound(x => x.RoomIDFormat);
+                        columns.Bound(x => x.NumSpinsFormat);
+                        columns.Bound(x => x.TotalBetFormat);
+                        columns.Bound(x => x.TotalPrizeFormat);
+                        columns.Bound(x => x.TotalPaylineFormat);
+                        columns.Bound(x => x.TotalBonusFormat);
+                        columns.Bound(x => x.TotalPyramidFormat);
+                        columns.Bound(x => x.TotalDoubleFormat);
+                        columns.Bound(x => x.PrizeFundFormat);
+                        columns.Bound(x => x.JackpotFundFormat);
+                        columns.Bound(x => x.PyramidFundFormat);
+                        columns.Bound(x => x.DoubleFundFormat);
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GameBankSearch", "Admin");
+                    })
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var gameId = $('#gameId').val().trim();
+                var roomId = $('#roomId').val().trim();
+
+                if (gameId == 0) {
+                    GlobalHeader.dataValMsgFor('gameId', 'Vui lòng chọn game!');
+                    return;
+                }
+
+                if (roomId == 0) {
+                    GlobalHeader.dataValMsgFor('roomId', 'Vui lòng chọn phòng!');
+                    return;
+                }
+
+                var grid = $('#gameBank-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+                gameId: $('#gameId').val(),
+                roomId: $('#roomId').val(),
+                startDate: $('#startDate').val(),
+                endDate: $('#endDate').val()
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

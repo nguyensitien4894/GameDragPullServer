@@ -1,0 +1,779 @@
+﻿@using MsWebGame.CSKH.Utils
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Models.LuckyDice
+@model EventModel
+@{
+    ViewBag.Title = "Chỉnh cầu Xóc Đĩa Live";
+}
+<style>
+    #myform {
+        width: 80%
+    }
+
+    @@media only screen and (max-width: 1000px) {
+        #myform {
+            width: 90%
+        }
+    }
+
+    @@media only screen and (max-width: 600px) {
+        #myform {
+            width: 100%
+        }
+    }
+
+    label {
+        font-size: 16px;
+        color: bisque;
+    }
+
+    .headerChanLe {
+        background: url('/Images/XocDia/bg-xd.png');
+        background-repeat: no-repeat;
+        height: 285px;
+        background-size: 100% 100%;
+        margin-bottom: 10px;
+    }
+
+        .headerChanLe .item {
+            text-align: center;
+            /*margin-top: 40px;*/
+            /*margin-bottom: 8px;*/
+        }
+
+            .headerChanLe .item strong {
+                font-size: 16px;
+                color: yellow;
+                padding: 7px 10px;
+                display: inline-block;
+            }
+
+    .thead-dark {
+        background: #ffc800;
+    }
+
+    .table {
+        border: 1px solid #ffc800;
+    }
+
+    table tbody {
+        display: block;
+        max-height: 400px;
+        min-height: 150px;
+        overflow-y: scroll;
+    }
+
+        table thead, table tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        table tbody td {
+            text-align: center;
+        }
+
+    .clickResult {
+        width: 20px;
+        height: 20px;
+        margin: 0 auto;
+    }
+
+    input[type="radio"] {
+        -ms-transform: scale(1.5); /* IE 9 */
+        -webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
+        transform: scale(1.5);
+    }
+
+    .light-win {
+        position: absolute;
+        animation-name: rotate;
+        animation-duration: 13s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+    }
+
+    @@keyframes rotate {
+        from {
+            transform: rotate(-360deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .blinking{
+	animation:blinkingText 0.5s infinite;
+    }
+    @@keyframes blinkingText{
+	    0%{		color: #ffcc11;	}
+	    49%{	color: cyan;	}
+	    50%{	color: green;	}
+	    99%{	color: orange;	}
+	    100%{	color: red;	}
+    }
+</style>
+<div class="container1" id="myform">
+    <div class="row">
+        <div class="headerChanLe">
+            <div class="col-md-4 item">
+                <div style="background-color: beige; color: red; font-size: 23px; position: relative; opacity: 0.5;">Chẵn</div>
+                <div style="position: relative;height: 40px;">
+                    <img id="lightWinChan" class="light-win" src="/Images/XocDia/light-win.png" alt="Alternate Text" style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: -56px; width: 88px; height: 88px; opacity: 0.8; display: none; " />
+                    <img src="/Images/XocDia/tworedtwowhite.png" onclick="document.getElementById('TotalBetEven1').checked = true; //SetModelXdLive(2);" alt="Alternate Text" style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; width: 135px; cursor: pointer; " />
+                </div>
+                <div style="">
+                    <label for="TotalBetEven1" class="coinChan" id="TotalBetEven">0</label><label>/</label>
+                    <label for="TotalBetEven1" class="userChan" id="TotalEven">0</label>
+                    <input id="TotalBetEven1" type="radio" style="width: 13px; height: 13px; display: inline-block; margin-top: -5px; margin-left: 10px; cursor: pointer;" name="resulted" value="2" onclick="//SetModelXdLive()">
+                </div>
+            </div>
+            <div class="col-md-4 item">
+                <div style="background:url(/Images/XocDia/bg-text.png);width:140px;margin:0 auto;background-size: 100% 100%;">
+                    <span style="font-size: 18px;color: #ffff;" id="SessionID">#0000000</span>
+                    <div id="Dices" style="z-index: 999999;position: absolute;top: 60px;display:none">
+                        <img id="p1" src="" />
+                        <img id="p2" src="" />
+                        <img id="p3" src="" />
+                        <img id="p4" src="" />
+                        @*<span id="sum" style="width: 35px;height: 35px;background: red;border: 50%;display: inline-block;radidus: 50%;border-radius: 50%;font-size: 24px;position: absolute;color: #FFFFFF;top: -27px;">0</span>*@
+                    </div>
+                </div>
+                <div class="clickResult">
+                    <input type="radio" style="cursor: pointer;" name="resulted" value="-1" checked onclick="//SetModelXdLive()">
+                </div>
+            </div>
+            <div class="col-md-4 item">
+                <div style="background-color: cadetblue; color: white; font-size: 23px; position: relative; opacity: 0.5;">Lẽ</div>
+                <div style="position: relative;height: 40px;">
+                    <img id="lightWinLe" class="light-win" src="/Images/XocDia/light-win.png" alt="Alternate Text" style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: -56px;; width: 88px; height: 88px; opacity: 0.8; display: none; " />
+                    @*<img src="/Images/XocDia/le-small.png" onclick="document.getElementById('TotalBetOdd1').checked = true;//SetModelXdLive(1);" alt="Alternate Text" style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; width: 135px; cursor: pointer; " />*@
+                </div>
+                <div style="">
+                    <br />
+                    <br />
+                    @*<label for="TotalBetOdd1" id="TotalBetOdd">0</label><label>/</label>
+                <label for="TotalBetOdd1" id="TotalOdd">0</label>
+                <input id="TotalBetOdd1" type="radio" style="width: 13px; height: 13px; display: inline-block; margin-top: -5px; margin-left: 10px; cursor: pointer;" name="resulted" value="1" onclick="//SetModelXdLive()">*@
+                </div>
+            </div>
+            <div class="col-md-4 item">
+                <div style="position: relative; height: 40px;">
+                    <img id="lightWinLe" class="light-win" src="/Images/XocDia/light-win.png" alt="Alternate Text" style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: -56px;; width: 88px; height: 88px; opacity: 0.8; display: none; " />
+                    <img src="/Images/XocDia/four-white.png" onclick="document.getElementById('TotalBetFourUp1').checked = true;//SetModelXdLive(3);" alt="Alternate Text" style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; width: 135px; cursor: pointer; " />
+                </div>
+                <div style="">
+                    <label for="TotalBetFourUp1" id="TotalBetFourUp">0</label><label>/</label>
+                    <label for="TotalBetFourUp1" id="TotalFourUp">0</label>
+                    <input id="TotalBetFourUp1" type="radio" style="width: 13px; height: 13px; display: inline-block; margin-top: -5px; margin-left: 10px; cursor: pointer;" name="resulted" value="3" onclick="//SetModelXdLive()">
+                </div>
+            </div>
+            <div class="col-md-4 item">
+                <div>
+                    <h1 id="TimeCountdown" style="position: absolute;left: 0;right: 0;margin-left: auto;margin-right: auto;top: 2px;font-size: 40px;color: yellow; ">00</h1>
+                    <div style="position: relative; margin: 0 auto;">
+                        <img src="/Images/XocDia/circle-light.png" alt="Alternate Text" style="width: 100px; height: 100px; position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; opacity: 0.2; display: none" />
+                        <label id="Phrases">0</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 item">
+                <div style="position: relative; height: 40px;">
+                    <img id="lightWinLe" class="light-win" src="/Images/XocDia/light-win.png" alt="Alternate Text" style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: -56px; width: 88px; height: 88px; opacity: 0.8; display: none; " />
+                    <img src="/Images/XocDia/three-white-red.png" onclick="document.getElementById('TotalBetThreeUp1').checked = true;//SetModelXdLive(1);" alt="Alternate Text" style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; width: 135px; cursor: pointer; " />
+                </div>
+                <div style="">
+                    <label for="TotalBetThreeUp1" id="TotalBetThreeUp">0</label><label>/</label>
+                    <label for="TotalBetThreeUp1" id="TotalThreeUp">0</label>
+                    <input id="TotalBetThreeUp1" type="radio" style="width: 13px; height: 13px; display: inline-block; margin-top: -5px; margin-left: 10px; cursor: pointer;" name="resulted" value="1" onclick="//SetModelXdLive()">
+                </div>
+            </div>
+            <div class="col-md-4 item">
+                <div style="position: relative; height: 40px;">
+                    <img id="lightWinLe" class="light-win" src="/Images/XocDia/light-win.png" alt="Alternate Text" style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: -56px; width: 88px; height: 88px; opacity: 0.8; display: none; " />
+                    <img src="/Images/XocDia/four-red.png" onclick="document.getElementById('TotalBetFourDown1').checked = true;//SetModelXdLive(4);" alt="Alternate Text" style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; width: 135px; cursor: pointer; " />
+                </div>
+                <div style="">
+                    <label for="TotalBetFourDown1" id="TotalBetFourDown">0</label><label>/</label>
+                    <label for="TotalBetFourDown1" id="TotalFourDown">0</label>
+                    <input id="TotalBetFourDown1" type="radio" style="width: 13px; height: 13px; display: inline-block; margin-top: -5px; margin-left: 10px; cursor: pointer;" name="resulted" value="4" onclick="//SetModelXdLive()">
+                </div>
+            </div>
+            <div class="col-md-4 item">
+                <div>
+                    
+                    <div>
+                        <img id="Resume" src="/Images/XocDia/Play.png" title="Bấm vào để tắt bảo trì phiên" alt="Bấm vào để tắt bảo trì phiên" style="width: 62px; height: 62px; cursor: pointer; display: none" value="-1" onclick="SetResumeXdLive()">
+                        <img id="Result" src="/Images/XocDia/result.png" title="Trả kết quả về cho gamer" alt="Trả kết quả về cho gamer" style="width: 62px; height: 62px; cursor: pointer; display: xnone " value="-1" onclick="ComfirmUserResult()">
+                        @*<img id="Pay" src="/Images/XocDia/pay.png" title="Trả thưởng cho gamer" alt="Trả thưởng cho gamer" style="width: 62px; height: 62px; cursor: pointer; display: xnone " value="-1" onclick="#">*@
+                        <img id="Pause" src="/Images/XocDia/Pause.png" title="Bấm vào để ngừng phiên" alt="Bấm vào để ngừng phiên" style="width: 62px; height: 62px; cursor: pointer; display: none " value="-1" onclick="SetPauseXdLive()">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 item">
+                <div style="position: relative; height: 40px;">
+                    <img id="lightWinLe" class="light-win" src="/Images/XocDia/light-win.png" alt="Alternate Text" style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: -56px; width: 88px; height: 88px; opacity: 0.8; display: none; " />
+                    <img src="/Images/XocDia/white-three-red.png" onclick="document.getElementById('TotalBetThreeDown1').checked = true;//SetModelXdLive(0);" alt="Alternate Text" style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; width: 135px; cursor: pointer; " />
+                </div>
+                <div style="">
+                    <label for="TotalBetThreeDown1" id="TotalBetThreeDown">0</label><label>/</label>
+                    <label for="TotalBetThreeDown1" id="TotalThreeDown">0</label>
+                    <input id="TotalBetThreeDown1" type="radio" style="width: 13px; height: 13px; display: inline-block; margin-top: -5px; margin-left: 10px; cursor: pointer;" name="resulted" value="0" onclick="//SetModelXdLive()">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div>
+                <img src="/Images/XocDia/chan-small.png" onclick="document.getElementById('TotalBetEven1').checked = true;//SetModelXdLive(2);" alt="Alternate Text" style=" position: absolute; left: 0; right: 0; margin-left: auto; width: 135px; cursor: pointer">
+                <h3>Tổng đặt : <strong id="total_1">0</strong></h3>
+            </div>
+            <BR>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" style="text-align: center;">STT</th>
+                        <th scope="col" style="text-align: center;">Mã</th>
+                        <th scope="col" style="text-align: center;">Tên đăng nhập</th>
+                        <th scope="col" style="text-align: center;">Cược</th>
+                    </tr>
+                </thead>
+                <tbody id="BetSide_1">
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <div>
+                <img src="/Images/XocDia/le-small.png" onclick="document.getElementById('TotalBetOdd1').checked = true;//SetModelXdLive(1);" alt="Alternate Text" style=" position: absolute; left: 0; right: 0; margin-left: auto; width: 135px; cursor: pointer">
+                <h3>Tổng đặt : <strong id="total_0">0</strong></h3>
+            </div>
+            <BR>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" style="text-align: center;">STT</th>
+                        <th scope="col" style="text-align: center;">Mã</th>
+                        <th scope="col" style="text-align: center;">Tên đăng nhập</th>
+                        <th scope="col" style="text-align: center;">Cược</th>
+                    </tr>
+                </thead>
+                <tbody id="BetSide_0">
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <div>
+                <img src="/Images/XocDia/four-red.png" onclick="document.getElementById('TotalBetFourDown1').checked = true;//SetModelXdLive(4);" alt="Alternate Text" style=" position: absolute; left: 0; right: 0; margin-left: auto; width: 135px; cursor: pointer">
+                <h3>Tổng đặt : <strong id="total_2">0</strong></h3>
+            </div>
+            <BR>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" style="text-align: center;">STT</th>
+                        <th scope="col" style="text-align: center;">Mã</th>
+                        <th scope="col" style="text-align: center;">Tên đăng nhập</th>
+                        <th scope="col" style="text-align: center;">Cược</th>
+                    </tr>
+                </thead>
+                <tbody id="BetSide_2">
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <div>
+                <img src="/Images/XocDia/four-white.png" onclick="document.getElementById('TotalBetFourUp1').checked = true;//SetModelXdLive(3);" alt="Alternate Text" style=" position: absolute; left: 0; right: 0; margin-left: auto; width: 135px; cursor: pointer">
+                <h3>Tổng đặt : <strong id="total_3">0</strong></h3>
+            </div>
+            <BR>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" style="text-align: center;">STT</th>
+                        <th scope="col" style="text-align: center;">Mã</th>
+                        <th scope="col" style="text-align: center;">Tên đăng nhập</th>
+                        <th scope="col" style="text-align: center;">Cược</th>
+                    </tr>
+                </thead>
+                <tbody id="BetSide_3">
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <div>
+                <img src="/Images/XocDia/three-white-red.png" onclick="document.getElementById('TotalBetThreeUp1').checked = true;//SetModelXdLive(1);" alt="Alternate Text" style=" position: absolute; left: 0; right: 0; margin-left: auto; width: 135px; cursor: pointer">
+                <h3>Tổng đặt : <strong id="total_4">0</strong></h3>
+            </div>
+            <BR>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" style="text-align: center;">STT</th>
+                        <th scope="col" style="text-align: center;">Mã</th>
+                        <th scope="col" style="text-align: center;">Tên đăng nhập</th>
+                        <th scope="col" style="text-align: center;">Cược</th>
+                    </tr>
+                </thead>
+                <tbody id="BetSide_4">
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <div>
+                <img src="/Images/XocDia/white-three-red.png" onclick="document.getElementById('TotalBetThreeDown1').checked = true;//SetModelXdLive(0);" alt="Alternate Text" style=" position: absolute; left: 0; right: 0; margin-left: auto; width: 135px; cursor: pointer">
+                <h3>Tổng đặt : <strong id="total_5">0</strong></h3>
+            </div>
+            <BR>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" style="text-align: center;">STT</th>
+                        <th scope="col" style="text-align: center;">Mã</th>
+                        <th scope="col" style="text-align: center;">Tên đăng nhập</th>
+                        <th scope="col" style="text-align: center;">Cược</th>
+                    </tr>
+                </thead>
+                <tbody id="BetSide_5">
+                </tbody>
+            </table>
+        </div>
+
+        <iframe id="StreamIframe" title="StreamIframe" width="986" height="600" src="../xocdia/"></iframe>
+    </div>
+</div>
+<script>
+    function formatDate(date, format, utc) {
+        var MMMM = ["\x00", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        var MMM = ["\x01", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        var dddd = ["\x02", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        var ddd = ["\x03", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        function ii(i, len) {
+            var s = i + "";
+            len = len || 2;
+            while (s.length < len) s = "0" + s;
+            return s;
+        }
+        var y = utc ? date.getUTCFullYear() : date.getFullYear();
+        format = format.replace(/(^|[^\\])yyyy+/g, "$1" + y);
+        format = format.replace(/(^|[^\\])yy/g, "$1" + y.toString().substr(2, 2));
+        format = format.replace(/(^|[^\\])y/g, "$1" + y);
+        var M = (utc ? date.getUTCMonth() : date.getMonth()) + 1;
+        format = format.replace(/(^|[^\\])MMMM+/g, "$1" + MMMM[0]);
+        format = format.replace(/(^|[^\\])MMM/g, "$1" + MMM[0]);
+        format = format.replace(/(^|[^\\])MM/g, "$1" + ii(M));
+        format = format.replace(/(^|[^\\])M/g, "$1" + M);
+        var d = utc ? date.getUTCDate() : date.getDate();
+        format = format.replace(/(^|[^\\])dddd+/g, "$1" + dddd[0]);
+        format = format.replace(/(^|[^\\])ddd/g, "$1" + ddd[0]);
+        format = format.replace(/(^|[^\\])dd/g, "$1" + ii(d));
+        format = format.replace(/(^|[^\\])d/g, "$1" + d);
+        var H = utc ? date.getUTCHours() : date.getHours();
+        format = format.replace(/(^|[^\\])HH+/g, "$1" + ii(H));
+        format = format.replace(/(^|[^\\])H/g, "$1" + H);
+        var h = H > 12 ? H - 12 : H == 0 ? 12 : H;
+        format = format.replace(/(^|[^\\])hh+/g, "$1" + ii(h));
+        format = format.replace(/(^|[^\\])h/g, "$1" + h);
+        var m = utc ? date.getUTCMinutes() : date.getMinutes();
+        format = format.replace(/(^|[^\\])mm+/g, "$1" + ii(m));
+        format = format.replace(/(^|[^\\])m/g, "$1" + m);
+        var s = utc ? date.getUTCSeconds() : date.getSeconds();
+        format = format.replace(/(^|[^\\])ss+/g, "$1" + ii(s));
+        format = format.replace(/(^|[^\\])s/g, "$1" + s);
+        var f = utc ? date.getUTCMilliseconds() : date.getMilliseconds();
+        format = format.replace(/(^|[^\\])fff+/g, "$1" + ii(f, 3));
+        f = Math.round(f / 10);
+        format = format.replace(/(^|[^\\])ff/g, "$1" + ii(f));
+        f = Math.round(f / 10);
+        format = format.replace(/(^|[^\\])f/g, "$1" + f);
+        var T = H < 12 ? "AM" : "PM";
+        format = format.replace(/(^|[^\\])TT+/g, "$1" + T);
+        format = format.replace(/(^|[^\\])T/g, "$1" + T.charAt(0));
+        var t = T.toLowerCase();
+        format = format.replace(/(^|[^\\])tt+/g, "$1" + t);
+        format = format.replace(/(^|[^\\])t/g, "$1" + t.charAt(0));
+        var tz = -date.getTimezoneOffset();
+        var K = utc || !tz ? "Z" : tz > 0 ? "+" : "-";
+        if (!utc) {
+            tz = Math.abs(tz);
+            var tzHrs = Math.floor(tz / 60);
+            var tzMin = tz % 60;
+            K += ii(tzHrs) + ":" + ii(tzMin);
+        }
+        format = format.replace(/(^|[^\\])K/g, "$1" + K);
+        var day = (utc ? date.getUTCDay() : date.getDay()) + 1;
+        format = format.replace(new RegExp(dddd[0], "g"), dddd[day]);
+        format = format.replace(new RegExp(ddd[0], "g"), ddd[day]);
+        format = format.replace(new RegExp(MMMM[0], "g"), MMMM[M]);
+        format = format.replace(new RegExp(MMM[0], "g"), MMM[M]);
+        format = format.replace(/\\(.)/g, "$1");
+        return format;
+    };
+    function formatMoney(n, c, d, t) {
+        var c = isNaN(c = Math.abs(c)) ? 0 : c,
+            d = d == undefined ? "." : d,
+            t = t == undefined ? "," : t,
+            s = n < 0 ? "-" : "",
+            i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+            j = (j = i.length) > 3 ? j % 3 : 0;
+        return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+    };
+
+    function ComfirmUserResult(val) {
+        var myval = -1;
+        if (val == null) myval = $('input[name=resulted]:checked', '#myform').val();
+        else myval = val;
+        if (myval == -1) {
+            alert("Vui lòng chọn 1 kết quả phù hợp!");
+        } else
+        {
+            if (confirm("Bạn chắc chắn chọn kết quả là : " + myval +  " ?")) {
+                SetModelXdLive(myval);
+            }
+        }
+    }
+
+    function SetModelXdLive(val) {
+        $.ajax({
+            type: "POST",
+            url: "/LuckyDice/SetModelXdLive",
+            dataType: "json",
+            data: { model: val ? val : $("#myform input[name='resulted']:checked").val() },
+            success: function (result) {
+                console.log(result);
+                try {
+                    if (result.IsOke) {
+                    } else {
+                        $("#myform input[name=resulted][value=-1]").prop('checked', true);
+                    }
+                } catch (e) {
+                    location.reload();
+                }
+            }
+        });
+    }
+
+    function SetPauseXdLive(val) {
+        $.ajax({
+            type: "POST",
+            url: "/LuckyDice/SetPauseXdLive",
+            dataType: "json",
+            data: { model: val ? val : $("#myform input[name='resulted']:checked").val() },
+            success: function (result) {
+                console.log(result);
+                try {
+                    if (result.IsOke)
+                    {
+                        var p = document.getElementById('Pause');
+                        p.style = "width: 62px;height: 62px;cursor: pointer;display: none";
+                        //var r = document.getElementById('Resume');
+                        //r.style = "width: 70px;height: 62px;";
+                    }
+                } catch (e) {
+                    location.reload();
+                }
+            }
+        });
+    }
+
+    function SetResumeXdLive(val) {
+        $.ajax({
+            type: "POST",
+            url: "/LuckyDice/SetResumeXdLive",
+            dataType: "json",
+            data: { model: val ? val : $("#myform input[name='resulted']:checked").val() },
+            success: function (result) {
+                console.log(result);
+                try {
+                    if (result.IsOke) {
+                        var r = document.getElementById('Resume');
+                        r.style = "width: 62px;height: 62px; cursor: pointer; display: none";
+                        //var p = document.getElementById('Pause');
+                        //p.style = "width: 70px;height: 62px;";
+                    }
+                } catch (e) {
+                    location.reload();
+                }
+            }
+        });
+    }
+
+    function GetSession(init) {
+        let isDice = false;
+        let LastEllapsed = -1;
+        $.ajax({
+            type: "POST",
+            url: "/LuckyDice/InitSessionXdLive",
+            dataType: "json",
+            success: function (result) {
+                if (init === true) {
+                    if (result.Model == 0) {
+                        $("#myform input[name=resulted][value=1]").prop('checked', true);
+                    } else if (result.Model == 1) {
+                        $("#myform input[name=resulted][value=2]").prop('checked', true);
+                    } else {
+                        $("#myform input[name=resulted][value=-1]").prop('checked', true);
+                    }
+                }
+                $("#SessionID").html("#" + result.SessionID);
+
+                $("#TotalBetEven").html(formatMoney(result.TotalBetEven));
+                $("#TotalBetOdd").html(formatMoney(result.TotalBetOdd));
+
+                $("#TotalBetFourDown").html(formatMoney(result.TotalBetFourDown));
+                $("#TotalBetFourUp").html(formatMoney(result.TotalBetFourUp));
+                $("#TotalBetThreeDown").html(formatMoney(result.TotalBetThreeDown));
+                $("#TotalBetThreeUp").html(formatMoney(result.TotalBetThreeUp));
+
+                $("#TotalEven").html(result.TotalEven);
+                $("#TotalOdd").html(result.TotalOdd);
+
+                $("#TotalFourDown").html(result.TotalFourDown);
+                $("#TotalFourUp").html(result.TotalFourUp);
+                $("#TotalThreeDown").html(result.TotalThreeDown);
+                $("#TotalThreeUp").html(result.TotalThreeUp);
+                let PhrasesString = "";
+                switch (result.CurrentState) {
+                    case 0:
+                        PhrasesString = "Bắt đầu phiên mới (3s)";
+                        break;
+                    case 1:
+                        PhrasesString = "Xóc đĩa (5s)";
+                        break;
+                    case 2:
+                        PhrasesString = "Khách đang đặt cược (30s)";
+                        break;
+                    case 3:
+                        PhrasesString = "Mở bát (10s)";
+                        break;
+                    case 4:
+                        PhrasesString = "Trả thưởng (7s)";
+                        break;
+                    default:
+
+                }
+
+                if (result.CurrentState == 3 && result.Ellapsed <= 5) {
+                    PhrasesString = "<span class=\"blinking\">Xin hãy thiết lập kết quả:</span>";
+                }
+
+                $("#Phrases").html(result.CurrentState + " | " + PhrasesString);
+
+                if (result.CurrentState != 0) {
+                    $("#buttonAction").hide();
+                }
+
+                $("#TimeCountdown").html(result.Ellapsed > 9 ? result.Ellapsed : '0' + result.Ellapsed);
+
+                var r = document.getElementById('Resume');
+                var p = document.getElementById('Pause');
+
+                if (result.Ellapsed > 30) {
+                    r.style = "width: 62px; height: 62px;cursor: pointer;";
+                    p.style = "width: 62px; height: 62px;cursor: pointer;display:none";
+                } else {
+                    p.style = "width: 62px; height: 62px;cursor: pointer;";
+                    r.style = "width: 62px; height: 62px;cursor: pointer;display:none";
+                }
+
+
+
+                if (result.CurrentState == 0 || result.CurrentState == 2) {
+
+                    var BetSide_0 = "";
+                    var BetSide_1 = "";
+                    var BetSide_2 = "";
+                    var BetSide_3 = "";
+                    var BetSide_4 = "";
+                    var BetSide_5 = "";
+
+                    var total_0 = 0;
+                    var total_1 = 0;
+                    var total_2 = 0;
+                    var total_3 = 0;
+                    var total_4 = 0;
+                    var total_5 = 0;
+
+                    //get ra 2 array
+                    var listEvenBetArr = new Array();
+                    var listOddBetArr = new Array();
+                    var listFourUpBetArr = new Array();
+                    var listFourDownBetArr = new Array();
+                    var listThreeUpBetArr = new Array();
+                    var listThreeDownBetArr = new Array();
+                    for (let i = 0; i < result.BetBalancesEven.length; i++) {
+                        listEvenBetArr.push(result.BetBalancesEven[i]);
+                    };
+                    listEvenBetArr.sort(function (a, b) { return b.Amount - a.Amount; });
+                    for (let i = 0; i < result.BetBalancesOdd.length; i++) {
+                        listOddBetArr.push(result.BetBalancesOdd[i]);
+                    };
+                    listOddBetArr.sort(function (a, b) { return b.Amount - a.Amount; });
+                    for (let i = 0; i < result.BetBalancesFourDown.length; i++) {
+                        listFourDownBetArr.push(result.BetBalancesFourDown[i]);
+                    };
+                    listFourDownBetArr.sort(function (a, b) { return b.Amount - a.Amount; });
+                    for (let i = 0; i < result.BetBalancesFourUp.length; i++) {
+                        listFourUpBetArr.push(result.BetBalancesFourUp[i]);
+                    };
+                    listFourUpBetArr.sort(function (a, b) { return b.Amount - a.Amount; });
+                    for (let i = 0; i < result.BetBalancesThreeUp.length; i++) {
+                        listThreeUpBetArr.push(result.BetBalancesThreeUp[i]);
+                    };
+                    listThreeUpBetArr.sort(function (a, b) { return b.Amount - a.Amount; });
+                    for (let i = 0; i < result.BetBalancesThreeDown.length; i++) {
+                        listThreeDownBetArr.push(result.BetBalancesThreeDown[i]);
+                    };
+                    listThreeDownBetArr.sort(function (a, b) { return b.Amount - a.Amount; });
+
+                    for (let i = 0; i < listEvenBetArr.length; i++) {
+                        var BetSide = "<tr><td>" + i + "</td><td>" + listEvenBetArr[i].AccountID + "</td><td>" + listEvenBetArr[i].AccountName + "</td><td>" + formatMoney(listEvenBetArr[i].Amount) + "</td></tr>";
+                        BetSide_1 += BetSide;
+                        total_1 += listEvenBetArr[i].Amount;
+                    }
+
+                    for (let i = 0; i < listOddBetArr.length; i++) {
+                        var BetSide = "<tr><td>" + i + "</td><td>" + listOddBetArr[i].AccountID + "</td><td>" + listOddBetArr[i].AccountName + "</td><td>" + formatMoney(listOddBetArr[i].Amount) + "</td></tr>";
+                        BetSide_0 += BetSide;
+                        total_0 += listOddBetArr[i].Amount;
+                    }
+
+                    for (let i = 0; i < listFourDownBetArr.length; i++) {
+                        var BetSide = "<tr><td>" + i + "</td><td>" + listFourDownBetArr[i].AccountID + "</td><td>" + listFourDownBetArr[i].AccountName + "</td><td>" + formatMoney(listFourDownBetArr[i].Amount) + "</td></tr>";
+                        BetSide_2 += BetSide;
+                        total_2 += listFourDownBetArr[i].Amount;
+                    }
+
+                    for (let i = 0; i < listFourUpBetArr.length; i++) {
+                        var BetSide = "<tr><td>" + i + "</td><td>" + listFourUpBetArr[i].AccountID + "</td><td>" + listFourUpBetArr[i].AccountName + "</td><td>" + formatMoney(listFourUpBetArr[i].Amount) + "</td></tr>";
+                        BetSide_3 += BetSide;
+                        total_3 += listFourUpBetArr[i].Amount;
+                    }
+
+                    for (let i = 0; i < listThreeUpBetArr.length; i++) {
+                        var BetSide = "<tr><td>" + i + "</td><td>" + listThreeUpBetArr[i].AccountID + "</td><td>" + listThreeUpBetArr[i].AccountName + "</td><td>" + formatMoney(listThreeUpBetArr[i].Amount) + "</td></tr>";
+                        BetSide_4 += BetSide;
+                        total_4 += listThreeUpBetArr[i].Amount;
+                    }
+
+                    for (let i = 0; i < listThreeDownBetArr.length; i++) {
+                        var BetSide = "<tr><td>" + i + "</td><td>" + listThreeDownBetArr[i].AccountID + "</td><td>" + listThreeDownBetArr[i].AccountName + "</td><td>" + formatMoney(listThreeDownBetArr[i].Amount) + "</td></tr>";
+                        BetSide_5 += BetSide;
+                        total_5 += listThreeDownBetArr[i].Amount;
+                    }
+
+                    if (BetSide_0.length == 0) {
+                        BetSide_0 = "<tr><th cospan='3'>Không có người chơi</th></tr>";
+                    }
+                    if (BetSide_1.length == 0) {
+                        BetSide_1 = "<tr><th cospan='3'>Không có người chơi</th></tr>";
+                    }
+                    if (BetSide_2.length == 0) {
+                        BetSide_2 = "<tr><th cospan='3'>Không có người chơi</th></tr>";
+                    }
+                    if (BetSide_3.length == 0) {
+                        BetSide_3 = "<tr><th cospan='3'>Không có người chơi</th></tr>";
+                    }
+                    if (BetSide_4.length == 0) {
+                        BetSide_4 = "<tr><th cospan='3'>Không có người chơi</th></tr>";
+                    }
+                    if (BetSide_5.length == 0) {
+                        BetSide_5 = "<tr><th cospan='3'>Không có người chơi</th></tr>";
+                    }
+                    $("#total_0").html(formatMoney(total_0));
+                    $("#total_1").html(formatMoney(total_1));
+                    $("#total_2").html(formatMoney(total_2));
+                    $("#total_3").html(formatMoney(total_3));
+                    $("#total_4").html(formatMoney(total_4));
+                    $("#total_5").html(formatMoney(total_5));
+                    $("#BetSide_0").html(BetSide_0);
+                    $("#BetSide_1").html(BetSide_1);
+                    $("#BetSide_2").html(BetSide_2);
+                    $("#BetSide_3").html(BetSide_3);
+                    $("#BetSide_4").html(BetSide_4);
+                    $("#BetSide_5").html(BetSide_5);
+                } else {
+                    if (result.Ellapsed == 25 || isDice == false && result.Ellapsed < 25) {
+                        if (isDice == false && result.Ellapsed < 25) {
+                            //$("#timeMini").html("25").show();
+                            //$("#TimeCountdown").hide();
+                            //$("#Dices").show();
+                            $("#Dices").hide();
+                        }
+                        if (result.Dices && result.Dices[0] != -1 && result.Dices[1] != -1 && result.Dices[2] != -1 && result.Dices[3] != -1) {
+                            let initDice = [];
+                            $("#Dices").attr("view", "1");
+                            initDice.push(new Promise((resolve, reject) => {
+                                var p = document.getElementById('p1');
+                                var newImg = new Image;
+                                newImg.onload = function () {
+                                    p.src = this.src;
+                                    resolve(result.Dices[0]);
+                                }
+                                newImg.src = '/Images/XocDia/p-' + result.Dices[0] + '.png';
+                            }));
+                            initDice.push(new Promise((resolve, reject) => {
+                                var p = document.getElementById('p2');
+                                var newImg = new Image;
+                                newImg.onload = function () {
+                                    p.src = this.src;
+                                    resolve(result.Dices[1]);
+                                }
+                                newImg.src = '/Images/XocDia/p-' + result.Dices[1] + '.png';
+                            }));
+                            initDice.push(new Promise((resolve, reject) => {
+                                var p = document.getElementById('p3');
+                                var newImg = new Image;
+                                newImg.onload = function () {
+                                    p.src = this.src;
+                                    resolve(result.Dices[2]);
+                                }
+                                newImg.src = '/Images/XocDia/p-' + result.Dices[2] + '.png';
+                            }));
+                            initDice.push(new Promise((resolve, reject) => {
+                                var p = document.getElementById('p4');
+                                var newImg = new Image;
+                                newImg.onload = function () {
+                                    p.src = this.src;
+                                    resolve(result.Dices[3]);
+                                }
+                                newImg.src = '/Images/XocDia/p-' + result.Dices[3] + '.png';
+                            }));
+
+                            Promise.all(initDice).then((values) => {
+                                $("#Dices").show();
+                                var sum = values.reduce((a, b) => a + b, 0);
+                                //$("#sum").html(sum);
+                                if (sum == 0 || sum == 2 || sum == 4) {
+                                    $("#lightWinChan").show();
+                                } else {
+                                    $("#lightWinLe").show();
+                                }
+                                isDice = true;
+                            });
+                        }
+                    }
+                    $("#timeMini").html("00:" + (result.Ellapsed > 9 ? result.Ellapsed : '0' + result.Ellapsed));
+                    if (result.CurrentState == 4 && result.Ellapsed < 1) {
+                        console.log("Session New");
+                        $("#Dices").hide();
+                        $("#TimeCountdown").show();
+                        isDice = false;
+                        $("#Dices").attr("view", 0);
+                        $("#timeMini").hide();
+                        $("#buttonAction").show();
+                        //$("#TimeCountdown").html('20');
+                        $("#myform input[name=resulted][value=-1]").prop('checked', true);
+                        $("#lightWinChan").hide();
+                        $("#lightWinLe").hide();
+                        SetModelXdLive(-1);
+                    }
+                }
+            }
+        });
+    }
+    $(document).ready(function () {
+        GetSession(true);
+        setInterval(GetSession, 900);
+    })
+</script>

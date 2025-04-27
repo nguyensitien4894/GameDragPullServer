@@ -1,0 +1,92 @@
+﻿@using MsWebGame.CSKH.Utils
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Models.LuckySpin
+
+@{
+    ViewBag.Title = "Cấu hình số lượt quay";
+}
+
+
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            Cấu hình số lượt quay
+        </div>
+        <div class="options">
+            <a href="@Url.Action("CreatePresentSpins")" class="t-button">@AppConstants.CONFIG.ADD_NEW</a>
+
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                   @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+       
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="submit" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<PresentSpinsModel>().Name("custom-grid")
+                 .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                .Columns(columns =>
+                {
+                    columns.Bound(x => x.StartDate).Format("{0:dd/MM/yyyy}").Width(100);
+                    columns.Bound(x => x.EndDate).Format("{0:dd/MM/yyyy}").Width(100);
+                    columns.Bound(x => x.Quantity).Width(100).HtmlAttributes(new { @class = "text-right" });
+                    columns.Bound(x => x.CreatedDate).Format("{0:dd/MM/yyyy}").Width(100);
+                    columns.Bound(x => x.ID).Title("Hành động").Width(100)
+                      .Template(x => Html.ActionLink("Delete", "Delete", new { id = x.ID }))
+                      .ClientTemplate("<a onclick=\"return GlobalHeader.ConfirmDelete();\" href=\"DeleteConfigPresentSpins/<#= ID #>\">" + AppConstants.CONFIG.DELETE + "</a>")
+                      .HtmlAttributes(new { @class = "text-center" });
+                })
+                .Pageable(settings => settings.PageSize(100).Position(GridPagerPosition.Both))
+                 .DataBinding(dataBinding => dataBinding.Ajax().Select("GetPresentSpinsList", "LuckySpin"))
+                .EnableCustomBinding(true))
+
+            </td>
+        </tr>
+    </table>
+}
+<script type="text/javascript">
+                $(document).ready(function () {
+                    $('#btnSearch').click(function () {
+                        var grid = $('#custom-grid').data('tGrid');
+                        console.log(grid);
+                        grid.currentPage = 1; //new search. Set page size to 1
+                        grid.ajaxRequest();
+                        return false;
+                    });
+                });
+
+                function onDataBinding(e) {
+                    var searchModel = {
+                       
+                        serviceId: $('#serviceId').val().trim(),
+                       
+
+                    };
+                    e.data = searchModel;
+                }
+</script>
+
+

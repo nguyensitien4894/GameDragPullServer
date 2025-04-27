@@ -1,0 +1,160 @@
+﻿@{
+    ViewBag.Title = "Luồng tiền Admin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@using MsWebGame.CSKH.Database.DTO
+@model MsWebGame.CSKH.Models.Param.ParsAdminTrans
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            Luồng tiền Admin
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Nickname Admin</label>
+                </td>
+                <td class="adminData">
+                    <input id="nicknameAdmin" name="nicknameAdmin" class="text-box single-line" />
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Loại giao dịch</label>
+                </td>
+                <td class="adminData">
+                    <select id="transferType" name="transferType" class="text-box single-line">
+                        <option value="-1">Tất cả</option>
+                        <option value="1">Chuyển</option>
+                        <option value="0">Nhận</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Loại Nickname</label>
+                </td>
+                <td class="adminData">
+                    <select id="partnerType" name="partnerType" class="text-box single-line">
+                        <option value="0">Tất cả</option>
+                        <option value="1">Người chơi</option>
+                        <option value="2">Đại lý</option>
+                        <option value="3">Admin</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Nickname</label>
+                </td>
+                <td class="adminData">
+                    <input id="partnerName" name="partnerName" class="text-box single-line" />
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Từ ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("fromDate").Value(DateTime.Today.AddDays(-7)).InputHtmlAttributes(new { @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Đến ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("toDate").Value(DateTime.Today).InputHtmlAttributes(new { @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<AdminTrans>()
+                    .Name("cash-flow-grid")
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.UserName).Title("Nickname chuyển");
+                        columns.Bound(x => x.PartnerName).Title("Nickname nhận");
+                        columns.Bound(x => x.TransCode).Title("Mã giao dịch");
+                        columns.Bound(x => x.AmountFormat).Title("Số tiền chuyển").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.Fee).Title("Phí").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.OrgAmountFormat).Title("Tổng chuyển").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.TransDate).Title("Ngày giao dịch").Format("{0:dd/MM/yyyy HH:mm:ss}");
+                        columns.Bound(x => x.WalletFormat).Title("Số dư").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.Note).Title("Nội dung");
+                        columns.Bound(x => x.Description).Title("Mô tả");
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetCashFlow", "Admin");
+                    })
+                    .ClientEvents(x => x.OnError("grid_onError").OnDataBinding("onDataBinding"))
+                    .EnableCustomBinding(true))
+
+                <script type="text/javascript">
+                    function grid_onError(e) {
+                        alert(e.XMLHttpRequest.responseText);
+                        e.preventDefault();
+                    }
+
+                    function onDataBinding(e) {
+                        var searchModel = {
+                            nicknameAdmin: $('#nicknameAdmin').val().trim(),
+                            transferType: $('#transferType').val().trim(),
+                            partnerType: $('#partnerType').val().trim(),
+                            partnerName: $('#partnerName').val().trim(),
+                            fromDate: $('#fromDate').val(),
+                            toDate: $('#toDate').val(),
+                            serviceId: $('#serviceId').val().trim()
+                        }
+                        e.data = searchModel
+                    }
+
+                    $(document).ready(function () {
+                        $('#btnSearch').click(function () {
+                            var grid = $('#cash-flow-grid').data('tGrid');
+                            grid.currentPage = 1; //new search. Set page size to 1
+                            grid.ajaxRequest();
+                            return false;
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
+}

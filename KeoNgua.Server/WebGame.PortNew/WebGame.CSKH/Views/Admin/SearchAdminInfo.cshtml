@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Tìm kiếm thông tin Admin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Utils
+@model MsWebGame.CSKH.Database.DTO.Admin
+
+<div class="section-header">
+    <div class="title">
+        Tìm kiếm thông tin Admin
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Loại tài khoản</label>
+                </td>
+                <td class="adminData">
+                    <select id="roleId" name="roleId" class="text-box single-line">
+                        <option value="1" @(ViewBag.SearchType == 1 ? "selected" : string.Empty)>Admin</option>
+                        <option value="2" @(ViewBag.SearchType == 2 ? "selected" : string.Empty)>CSKH</option>
+                        <option value="4" @(ViewBag.SearchType == 4 ? "selected" : string.Empty)>Monitor</option>
+                        <option value="5" @(ViewBag.SearchType == 5 ? "selected" : string.Empty)>Business</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Nickname</label>
+                </td>
+                <td class="adminData">
+                    <input id="nickName" name="nickName" class="text-box single-line" required />
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="submit" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@if(Model != null && Model.AdminID > 0)
+{
+
+}
+

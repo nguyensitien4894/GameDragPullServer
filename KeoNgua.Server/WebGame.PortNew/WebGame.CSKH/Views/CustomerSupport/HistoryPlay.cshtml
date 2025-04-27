@@ -1,0 +1,168 @@
+﻿@{
+    ViewBag.Title = "Lịch sử chơi game";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@model HistoryPlay
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            Lịch sử chơi game
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Nickname <span style="color:red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="nickname" type="text" onkeypress="GlobalHeader.inputKeypress(event.keyCode);">
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Phiên</label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="spinid" type="text">
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn game</label>
+                </td>
+                <td class="adminData">
+                    <select id="gameId" name="gameId" class="text-box single-line">
+                        <option value="0">Tất cả</option>
+                        @foreach (var item in ViewBag.GameBox)
+                        {
+                            <option value="@item.Value">@item.Name</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Từ ngày <span style="color:red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DateTimePicker().Name("fromDate").Value(DateTime.Today.AddDays(-7)).Interval(1)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Đến ngày <span style="color:red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DateTimePicker().Name("toDate").Value(DateTime.Now).Interval(1)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Sắp xếp theo </label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("orderBy", new SelectList(ViewBag.Orders, "Value", "Text","1"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+
+
+            
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Danh sách
+    </h2>
+    <link href="~/Content/label.css" rel="stylesheet" />
+    <style>
+        .adminContent tr:nth-child(even) {
+            background-color: #f7f7f7;
+        }
+
+        .adminContent td {
+            width: 1px;
+            white-space: nowrap;
+        }
+    </style>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<HistoryPlay>()
+                    .Name("historyPlay-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.GameTypeFormat).Title("Game");
+                        columns.Bound(x => x.STT).Title("STT").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.OrgBalanceFormat).Title("Số dư trước Bet").HtmlAttributes(new { @class = "text-right" });
+
+                        columns.Bound(x => x.BetValueFormat).Title("Cược").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.BalanceFormat).Title("Số dư sau Bet").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.PrizeValueFormat).Title("Thưởng").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.RefundValueFormat).Title("Hoàn").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.SpinID).Title("Phiên");
+
+                        columns.Bound(x => x.Description).Title("Miêu tả");
+                        columns.Bound(x => x.PlayTime).Title("Thời gian chơi").Format("{0:dd/MM/yyyy HH:mm:ss}");
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetHistoryPlay", "CustomerSupport");
+                    })
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#historyPlay-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+                NickName: $('#nickname').val().trim(),
+                SpinID: $('#spinid').val().trim(),
+                GameID: $('#gameId').val(),
+                FromDate: $('#fromDate').val(),
+                ToDate: $('#toDate').val(),
+                ServiceID: $('#serviceId').val().trim(),
+                OrderBy:$('#orderBy').val().trim()
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

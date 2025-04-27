@@ -210,7 +210,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\TraditionGame.Utilities\packages.config" />
-    <None Include="libman.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Momos\Utils\" />

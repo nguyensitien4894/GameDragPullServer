@@ -1,0 +1,137 @@
+﻿@using TraditionGame.Utilities.Utils
+@using MsWebGame.CSKH.Database.DTO
+@model  BotFundInfo
+
+
+@{
+    ViewBag.Title = "Hạn mức";
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">Hạn mức</div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <a href="@Url.Action("BotInjectMoney")" class="t-button">CẬP NHẬT QUỸ</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="t-widget t-grid">
+        <table cellspacing="0">
+            <colgroup><col><col><col></colgroup>
+            <thead class="t-grid-header">
+                <tr>
+                    <th class="t-header" scope="col">
+                        <span class="t-link">Quỹ</span>
+                    </th>
+                    <th class="t-header" scope="col">
+                        <span class="t-link">Số dư</span>
+                    </th>
+                    <th class="t-header" scope="col">
+                        <span class="t-link">Hạn mức dương tối đa</span>
+                    </th>
+                    <th class="t-header" scope="col">
+                        <span class="t-link">Hạn mức âm tối đa</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.LstBotFund != null && Model.LstBotFund.Any())
+                {
+                    foreach (var item in Model.LstBotFund)
+                    {
+                        <tr class="t-no-data">
+                            @if (item.FundSetID == 1)
+                            {
+                                <td>Tài xỉu</td>
+                            }
+                            else if (item.FundSetID == 2)
+                            {
+                                <td>Slot</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            <td class="text-right">@MoneyExtension.LongToMoneyFormat(item.PrizeValue)</td>
+                            <td class="text-right">@MoneyExtension.LongToMoneyFormat(item.PrizeMaxWin)</td>
+                            <td class="text-right">@MoneyExtension.LongToMoneyFormat(item.PrizeMaxLose)</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="t-widget t-tabstrip t-header" style="margin-top: 20px;">
+        <div class="t-content t-state-active" style="display: block;">
+            <table class="adminContent customer-info-tab">
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <span class="@(ViewBag.Message.IndexOf("thành công") > -1 ? "txttransferMsgSuccess" : "txttransferMsg")">@ViewBag.Message</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        Hạn mức dương
+                    </td>
+                    <td class="adminData">
+                        <input type="text" id="PrizeMaxWin" name="PrizeMaxWin" onkeypress="return GlobalHeader.isNumber(event);"
+                               onkeyup="GlobalHeader.changeNumber(this)" class="text-box single-line" placeholder="Hạn mức dương" required />
+                        <span class="field-validation-valid" data-valmsg-for="PrizeMaxWin"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        Hạn mức âm
+                    </td>
+                    <td class="adminData">
+                        <input type="text" id="PrizeMaxLose" name="PrizeMaxLose" onkeypress="return GlobalHeader.isNumber(event);"
+                               onkeyup="GlobalHeader.changeNumber(this)" class="text-box single-line" placeholder="Hạn mức âm" required />
+                        <span class="field-validation-valid" data-valmsg-for="PrizeMaxLose"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        Loại qũy
+                    </td>
+                    <td class="adminData">
+                        <select name="TypeFund" class="text-box single-line">
+                            <option value="1">Tài xỉu</option>
+                        </select>
+                        <span class="field-validation-valid" data-valmsg-for="TypeFund"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <input type="submit" name="save" class="t-button" value="Xác nhận" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#botfund-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        @*function onDataBinding(e) {
+            var searchModel = {
+                BotName: $('#@Html.IdFor(model => model.BotName)').val().trim(),
+                Type: $('#@Html.IdFor(model => model.Type)').val().trim()
+            };
+            e.data = searchModel;
+        }*@
+    </script>
+}

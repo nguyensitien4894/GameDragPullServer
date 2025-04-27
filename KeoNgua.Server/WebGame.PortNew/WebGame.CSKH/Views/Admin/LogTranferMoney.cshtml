@@ -1,0 +1,126 @@
+﻿@using MsWebGame.CSKH.Models.HistoryTranfers;
+@using MsWebGame.CSKH.Utils
+@using Telerik.Web.Mvc.UI
+@model ListHistoryTransferModel
+
+@{
+    ViewBag.Title = "Lịch sử giao dịch của admin";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            Lịch sử giao dịch của admin
+        </div>
+    </div>
+    <table style="width: 100%">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("ServiceID", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Loại giao dịch</label>
+                </td>
+                <td class="adminData">
+                    <select id="TransType" class="text-box single-line">
+                        <option value="0">Tất cả</option>
+                        <option value="1">Chuyển</option>
+                        <option value="2">Nhận</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img alt="A billing email address." src="~/Content/images/ico-help.gif" title="Tên đăng nhập">
+                    @Html.LabelFor(m => m.ReceiverName)  :
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(m => m.ReceiverName, new { @class = "text-box single-line", @onkeypress = "GlobalHeader.inputKeypress(event.keyCode);" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img alt="A billing email address." src="~/Content/images/ico-help.gif" title="Tên đăng nhập">
+                    @Html.LabelFor(m => m.StartDate)  :
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(m => m.StartDate, new { @class = "text-box single-line", @onkeypress = "GlobalHeader.inputKeypress(event.keyCode);" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img alt="A billing email address." src="~/Content/images/ico-help.gif" title="Tên đăng nhập">
+                    @Html.LabelFor(m => m.EndDate)  :
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(m => m.EndDate, new { @class = "text-box single-line", @onkeypress = "GlobalHeader.inputKeypress(event.keyCode);" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p></p>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<HistoryTransferModel>()
+                .Name("custom-grid")
+                .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                .Columns(columns =>
+                {
+                    columns.Bound(x => x.ReceiverDisplayName);
+                    columns.Bound(x => x.ReceiverTypeStr);
+                    columns.Bound(x => x.AmoutFormat).HtmlAttributes(new { @class = "text-right" });
+                    columns.Bound(x => x.OrgAmountFormat).HtmlAttributes(new { @class = "text-right" });
+                    columns.Bound(x => x.TransDate).Format("{0:dd/MM/yyyy HH:mm:ss}");
+                    columns.Bound(x => x.Description);
+                    columns.Bound(x => x.TranStatusFormat);
+                })
+                .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                .DataBinding(dataBinding => dataBinding.Ajax().Select("LogTranferMoneyList", "Admin"))
+                .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //search button
+        $('#btnSearch').click(function () {
+            //search
+            var grid = $('#custom-grid').data('tGrid');
+            grid.currentPage = 1; //new search. Set page size to 1
+            grid.ajaxRequest();
+            return false;
+        });
+    });
+
+    function onDataBinding(e) {
+        var searchModel = {
+            StartDate: $('#@Html.IdFor(model => model.StartDate)').val(),
+            EndDate: $('#@Html.IdFor(model => model.EndDate)').val(),
+            ReceiverName: $('#@Html.IdFor(model => model.ReceiverName)').val(),
+            ServiceID: $('#@Html.IdFor(model => model.ServiceID)').val(),
+            TransType: $('#@Html.IdFor(model => model.TransType)').val(),
+            
+            
+        };
+        e.data = searchModel;
+    }
+</script>

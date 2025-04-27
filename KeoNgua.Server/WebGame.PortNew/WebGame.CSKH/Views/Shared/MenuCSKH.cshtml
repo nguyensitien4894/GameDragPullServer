@@ -1,0 +1,198 @@
+﻿@using Telerik.Web.Mvc.UI;
+@functions{
+    private bool IsDisplayMenu(string UserRoles)
+    {
+        string RoleCode = Session["RoleCode"] != null ? Session["RoleCode"].ToString() : string.Empty;
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    private bool IsDisplayMenuByUserName(string UserRoles)
+    {
+        string RoleCode = Session["UserName"] != null ? Session["UserName"].ToString() : string.Empty;
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+@(Html.Telerik().Menu()
+  .Name("Menu")
+  .Items(items =>
+  {
+  items.Add()
+    .Text("Tổng quan").Visible(IsDisplayMenuByUserName("admin,adminref,admin_test,cskh_01"))
+    .ImageUrl(Url.Content("~/Content/images/ico-catalog.png"))
+    .Items(children =>
+    {
+        children.Add().Text("Cộng Tiền User").Visible(IsDisplayMenu("ADMIN,MONITOR,CALLCENTER")).Url(Url.Action("TranferMoneyToUser", "Admin"));
+        children.Add().Text("Trừ Tiền User").Visible(IsDisplayMenu("ADMIN,MONITOR,CALLCENTER")).Url(Url.Action("TranferMoneyToUserSubtraction", "Admin"));
+
+    });
+  items.Add()
+    .Text("Tra cứu  ").Visible(IsDisplayMenu("ADMIN,CALLCENTER"))
+    .ImageUrl(Url.Content("~/Content/images/ico-catalog.png"))
+    .Items(children =>
+    {
+    children.Add().Text("Người chơi").Visible(IsDisplayMenu("ADMIN,CALLCENTER")) // 7
+            .Items(innerChildren =>
+            {
+
+                innerChildren.Add().Text("Overview").Url(Url.Action("AccountOverview", "CustomerSupport"));
+                innerChildren.Add().Text("LS chơi Game").Url(Url.Action("HistoryPlay", "CustomerSupport"));
+                innerChildren.Add().Text("LS thay đổi số dư").Url(Url.Action("HistoryWalletLog", "CustomerSupport"));
+                innerChildren.Add().Text("LSGD").Visible(IsDisplayMenu("ADMIN,CALLCENTER")).Url(Url.Action("TransactionHistory", "CustomerSupport")); // 9
+                innerChildren.Add().Text("Gửi mail tới user").Url(Url.Action("Index", "Mail")).Visible(IsDisplayMenuByUserName("admin,adminref,admin_test,cskh_01"));
+                innerChildren.Add().Text("Otp").Visible(IsDisplayMenu("ADMIN,CALLCENTER")).Url(Url.Action("Index", "Otp")).Visible(IsDisplayMenuByUserName("admin,adminref,admin_test,cskh_01")); // 9
+                innerChildren.Add().Text("LS Game Bài").Url(Url.Action("Index", "GameBai"));
+                innerChildren.Add().Text("BackList TX").Url(Url.Action("Index", "TxBackList")).Visible(IsDisplayMenuByUserName("admin,adminref,admin_test,cskh_01,monitor_01,cskh_04_tq"));
+                innerChildren.Add().Text("Thu hồi GD User-User").Visible( IsDisplayMenuByUserName("admin,adminref,admin_test,cskh_01")).Url(Url.Action("TransactionFree", "Admin"));
+                innerChildren.Add().Text("Chuyển khoản cho user").Visible(IsDisplayMenuByUserName("admin,adminref,admin_test,cskh_01")).Url(Url.Action("TranferMoneyToUser", "Admin"));
+                innerChildren.Add().Text("VIP").Visible(IsDisplayMenuByUserName("admin,adminref,admin_test,cskh_01"))
+                    .Items(innerSubChildren =>
+                    {
+                        //innerSubChildren.Add().Text("Vip").Url(Url.Action("VIP", "CustomerSupport")).Visible(IsDisplayMenu("ADMIN,MONITOR"));
+                        innerSubChildren.Add().Text("Lịch sử đổi thưởng").Url(Url.Action("HistoryVipRedemption", "CustomerSupport"));
+                        //innerSubChildren.Add().Text("Lịch sử thay đổi thứ hạng Vip").Url(Url.Action("HistoryChangeVip", "CustomerSupport")).Visible(IsDisplayMenu("ADMIN,MONITOR"));
+                        //innerSubChildren.Add().Text("Tiến trình VP").Visible(IsDisplayMenu("ADMIN")).Url(Url.Action("VpProgress", "CustomerSupport"));
+                        innerSubChildren.Add().Text("Tra cứu Vip").Url(Url.Action("Lookup", "Privilege"));
+                    }); // 8
+                innerChildren.Add().Text("Cập nhật thông tin FB").Visible(IsDisplayMenu("ADMIN,CALLCENTER")).Url(Url.Action("ChangUserPopup", "Account"));
+                innerChildren.Add().Text("Kiểm tra clone").Visible(IsDisplayMenu("ADMIN,CALLCENTER")).Url(Url.Action("CheckCloneByAccount", "CustomerSupport"));
+
+            });
+
+    children.Add().Text("Thẻ ").Visible(IsDisplayMenu("ADMIN,CALLCENTER"))
+            .Items(innerChildren =>
+            {
+                innerChildren.Add().Text("Nạp thẻ ").Visible(IsDisplayMenu("ADMIN,CALLCENTER"))
+                    .Items(innerSubChildren =>
+                    {
+                        innerSubChildren.Add().Text("LS Nạp").Url(Url.Action("CardRechard", "Card"));
+                    }); // 8
+
+                innerChildren.Add().Text("Đổi thẻ  ").Visible(IsDisplayMenu("ADMIN,CALLCENTER"))
+                .Items(innerSubChildren =>
+                {
+                    innerSubChildren.Add().Text("Duyệt thẻ").Visible(IsDisplayMenu("ADMIN,CALLCENTER")).Url(Url.Action("CardExChange", "Card"));
+                }); // 8
+
+            });// 11. Yes
+
+    children.Add().Text("Ngân Hàng").Visible(IsDisplayMenu("ADMIN,CALLCENTER"))
+      .Items(innerSubChildren =>
+      {
+          innerSubChildren.Add().Text("LS Nạp").Url(Url.Action("Index", "USDT")).Visible(IsDisplayMenu("ADMIN,CALLCENTER"));
+          innerSubChildren.Add().Text("Duyệt Nạp").Url(Url.Action("IndexNap", "USDT")).Visible(IsDisplayMenu("ADMIN,CALLCENTER"));
+          innerSubChildren.Add().Text("Duyệt Rút").Url(Url.Action("Index", "BankExchagne")).Visible(IsDisplayMenu("ADMIN,CALLCENTER"));
+      }); // 8
+    children.Add().Text("Momo").Visible(IsDisplayMenu("ADMIN,CALLCENTER"))
+   .Items(innerSubChildren =>
+   {
+       innerSubChildren.Add().Text("LS Nạp").Url(Url.Action("Index", "Momo")).Visible(IsDisplayMenu("ADMIN,CALLCENTER"));
+       innerSubChildren.Add().Text("Duyệt Nạp").Url(Url.Action("MomoExchangeCharge", "Momo")).Visible(IsDisplayMenu("ADMIN,CALLCENTER"));
+       innerSubChildren.Add().Text("Duyệt Rút").Url(Url.Action("MomoExchange", "Momo")).Visible(IsDisplayMenu("ADMIN,CALLCENTER"));
+
+   }); // 8
+
+    children.Add().Text("Giftcode").Visible(IsDisplayMenuByUserName("admin,adminref,admin_test,cskh_01"))
+   .Items(innerChildren =>
+   {
+       innerChildren.Add().Text("Giftcode").Visible(IsDisplayMenuByUserName("admin,adminref,admin_test,cskh_01")).Url(Url.Action("Index", "Giftcode"));
+       innerChildren.Add().Text("GitCode Check").Visible(IsDisplayMenuByUserName("admin,adminref,admin_test,cskh_01")).Url(Url.Action("GiftCodeCheck", "Giftcode"));
+
+
+   });
+            @*children.Add().Text("SmsCharge").Visible(IsDisplayMenu("ADMIN,CALLCENTER"))
+          .Items(innerSubChildren =>
+          {
+              innerSubChildren.Add().Text("LS Nạp").Url(Url.Action("Index", "SmsCharge")).Visible(IsDisplayMenu("ADMIN,CALLCENTER"));
+
+          }); // 8*@
+
+            children.Add().Text("XoSo").Visible(IsDisplayMenuByUserName("admin,adminref,admin_test,cskh_01"))
+          .Items(innerSubChildren =>
+          {
+              innerSubChildren.Add().Text("Cập nhật kết quả").Url(Url.Action("Index", "XoSo")).Visible(IsDisplayMenu("ADMIN,CALLCENTER"));
+
+          }); // 8
+            children.Add().Text("Cảnh báo").Visible(IsDisplayMenuByUserName("admin,adminref,admin_test,cskh_01"))
+            .Items(innerChildren =>
+            {
+                innerChildren.Add().Text("Cảnh báo đầu vào ").Url(Url.Action("Index", "Warning")).Visible(IsDisplayMenu("ADMIN,CALLCENTER"));
+
+            }); // 8
+            children.Add().Text("Jackpot").Visible(IsDisplayMenuByUserName("admin,adminref,admin_test,cskh_01"))
+                .Items(innerChildren =>
+                {
+                    innerChildren.Add().Text("Lịch sử trúng hũ").Url(Url.Action("HistoryJackpot", "CustomerSupport"));
+                    innerChildren.Add().Text("Thống kê trúng hũ").Url(Url.Action("StatisticsJackpot", "Statistics"));
+                });// 13. Yes
+            //children.Add().Text("Đại lý").Visible(IsDisplayMenu("ADMIN"))
+            //    .Items(innerChildren =>
+            //    {
+            //        innerChildren.Add().Text("Luồng tiền đại lý").Url(Url.Action("CashFlow", "Agency"));
+            //        innerChildren.Add().Text("Tra cứu giao dịch đại lý").Url(Url.Action("Transaction", "Agency"));
+            //    }); // 14
+            //children.Add().Text("Kho thẻ").Visible(IsDisplayMenu("ADMIN"))
+            //    .Items(innerChildren =>
+            //    {
+            //        innerChildren.Add().Text("Kiểm kê").Url(Url.Action("CardBankCheck", "Card"));
+            //    });
+            //children.Add().Text("Duyệt thẻ").Visible(IsDisplayMenu("ADMIN,CALLCENTER"))
+            //    .Items(innerSubChildren =>
+            //    {
+            //        innerSubChildren.Add().Text("Lịch sử đổi thẻ").Visible(IsDisplayMenu("ADMIN,CALLCENTER")).Url(Url.Action("CardExChange", "Card"));
+            //    });// 16
+            children.Add().Text("Vòng quay may mắn").Visible(IsDisplayMenuByUserName("admin,adminref,admin_test,cskh_01"))
+                .Items(innerChildren =>
+                {
+                    innerChildren.Add().Text("Người chơi").Url(Url.Action("AccountReport", "LuckySpin"));
+                    innerChildren.Add().Text("Giải Bit").Url(Url.Action("DBitReport", "LuckySpin"));
+                    innerChildren.Add().Text("Giải FreeSpin").Url(Url.Action("FreeSpinReport", "LuckySpin"));
+                });
+            //children.Add().Text("Phát lộc").Visible(IsDisplayMenu("ADMIN"))
+            //    .Items(innerChildren =>
+            //    {
+            //        innerChildren.Add().Text("BigWin phát lộc").Url(Url.Action("TransferToUser", "PhatLoc"));
+            //        innerChildren.Add().Text("Test phát lộc").Url(Url.Action("TestTransferToUser", "PhatLoc"));
+            //        innerChildren.Add().Text("Tài khoản thường phát lộc").Url(Url.Action("NormalTransferToUser", "PhatLoc"));
+            //    });
+            //children.Add().Text("CSKH").Visible(IsDisplayMenu("ADMIN")).Url(Url.Action("CallCenter", "Admin"));
+        });
+
+      items.Add()
+        .Text("Tracking").Visible(IsDisplayMenu("ADMIN,MARKETING_BB"))
+        .ImageUrl(Url.Content("~/Content/images/ico-catalog.png"))
+         .Items(children =>
+         {
+             children.Add().Text("Lượt người đăng kí").Visible(IsDisplayMenu("ADMIN,MARKETING_BB")).Url(Url.Action("TrackingUser", "Statistics"));
+             children.Add().Text("Danh sách download").Visible(IsDisplayMenu("ADMIN,MARKETING_BB")).Url(Url.Action("TrackingDownload", "Statistics"));
+
+         });
+  })
+)

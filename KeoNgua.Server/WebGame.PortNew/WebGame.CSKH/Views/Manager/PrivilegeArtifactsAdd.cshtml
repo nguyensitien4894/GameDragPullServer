@@ -1,0 +1,211 @@
+﻿@using MsWebGame.CSKH.Utils
+@Html.ValidationSummary(true)
+
+@{
+    ViewBag.Title = "Quản lý mapping hạng người chơi với sản phẩm đổi";
+}
+
+@model MsWebGame.CSKH.Database.DTO.PrivilegeArtifacts
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            @AppConstants.CONFIG.ADD_NEW
+        </div>
+        <div class="options">
+            <a href="@Url.Action("PrivilegeArtifacts")" class="t-button">Quay lại</a>
+        </div>
+    </div>
+    <div class="t-widget t-tabstrip t-header">
+        <div class="t-content t-state-active" style="display: block;">
+            <table class="adminContent customer-info-tab">
+                @if (Model != null)
+                {
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Chọn hạng <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <select id="privilegeId" name="privilegeId" class="text-box single-line">
+                                <option value="0">Tất cả</option>
+                                @foreach (var item in ViewBag.RankBox)
+                                {
+                                    <option value="@item.Value" @(item.Value == Model.PrivilegeID ? "selected" : string.Empty)>@item.Name</option>
+                                }
+                            </select>
+                            <span class="field-validation-valid" data-valmsg-for="privilegeId"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Chọn hiện vật <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <select id="artifactId" name="artifactId" onchange="GlobalHeader.onchangeArtifacts();" class="text-box single-line">
+                                @foreach (var item in ViewBag.ArtifactsBox)
+                                {
+                                    <option value="@item.Value" @(item.Value == Model.ArtifactID ? "selected" : string.Empty)>@item.Name</option>
+                                }
+                            </select>
+                            <span class="field-validation-valid" data-valmsg-for="artifactId"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Giá</label>
+                        </td>
+                        <td class="adminData">
+                            <input class="text-box single-line" id="price" type="text" value="@ViewBag.Price" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Số lượng <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <input class="text-box single-line" id="quantity" name="quantity" value="@Model.QuantityStr" onkeypress="return GlobalHeader.isNumber(event);"
+                                   onchange="GlobalHeader.changeNumber(this);" onblur="GlobalHeader.quantityArtifacts(this, 0);" type="text">
+                            <span class="field-validation-valid" data-valmsg-for="quantity"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Số lượng còn lại</label>
+                        </td>
+                        <td class="adminData">
+                            <input class="text-box single-line" id="remainQuantity" name="remainQuantity" value="@Model.RemainQuantityStr" type="text" readonly>
+                            <span class="field-validation-valid" data-valmsg-for="remainQuantity"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Tổng giải</label>
+                        </td>
+                        <td class="adminData">
+                            <input class="text-box single-line" id="totalPrize" name="totalPrize" value="@Model.TotalPrizeStr" type="text" readonly>
+                            <span class="field-validation-valid" data-valmsg-for="totalPrize"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Trạng thái <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <select id="status" name="status" class="text-box single-line">
+                                <option value="true" @(Model.Status ? "selected" : string.Empty)>Hiệu lực</option>
+                                <option value="false" @(Model.Status ? string.Empty : "selected")>Hết hiệu lực</option>
+                            </select>
+                            <span class="field-validation-valid" data-valmsg-for="status"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Miêu tả <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <input class="text-box single-line" id="description" name="description" value="@Model.Description" type="text">
+                            <span class="field-validation-valid" data-valmsg-for="description"></span>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Chọn hạng <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <select id="privilegeId" name="privilegeId" class="text-box single-line">
+                                @foreach (var item in ViewBag.RankBox)
+                                {
+                                    <option value="@item.Value">@item.Name</option>
+                                }
+                            </select>
+                            <span class="field-validation-valid" data-valmsg-for="privilegeId"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Chọn hiện vật <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <select id="artifactId" name="artifactId" onchange="GlobalHeader.onchangeArtifacts();" class="text-box single-line">
+                                @foreach (var item in ViewBag.ArtifactsBox)
+                                {
+                                    <option value="@item.Value">@item.Name</option>
+                                }
+                            </select>
+                            <span class="field-validation-valid" data-valmsg-for="artifactId"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Giá</label>
+                        </td>
+                        <td class="adminData">
+                            <input class="text-box single-line" id="price" name="price" type="text" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Số lượng <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <input class="text-box single-line" id="quantity" name="quantity" onkeypress="return GlobalHeader.isNumber(event);"
+                                   onchange="GlobalHeader.changeNumber(this);" onblur="GlobalHeader.quantityArtifacts(this, 0);" type="text">
+                            <span class="field-validation-valid" data-valmsg-for="quantity"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Số lượng còn lại</label>
+                        </td>
+                        <td class="adminData">
+                            <input class="text-box single-line" id="remainQuantity" name="remainQuantity" type="text" readonly>
+                            <span class="field-validation-valid" data-valmsg-for="remainQuantity"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Tổng giải</label>
+                        </td>
+                        <td class="adminData">
+                            <input class="text-box single-line" id="totalPrize" name="totalPrize" type="text" readonly>
+                            <span class="field-validation-valid" data-valmsg-for="totalPrize"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Trạng thái <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <select id="status" name="status" class="text-box single-line">
+                                <option value="true">Hiệu lực</option>
+                                <option value="false">Hết hiệu lực</option>
+                            </select>
+                            <span class="field-validation-valid" data-valmsg-for="status"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Miêu tả <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <input class="text-box single-line" id="description" name="description" type="text">
+                            <span class="field-validation-valid" data-valmsg-for="description"></span>
+                        </td>
+                    </tr>
+                }
+
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <input type="submit" onclick="return GlobalHeader.validationPrivilegeArtifacts(0);" name="save" class="t-button" value="@AppConstants.CONFIG.SAVE" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}

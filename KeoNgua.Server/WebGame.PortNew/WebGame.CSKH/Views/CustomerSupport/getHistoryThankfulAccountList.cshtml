@@ -1,0 +1,117 @@
+@using MsWebGame.CSKH.Database.DTO
+@using TraditionGame.Utilities.Utils
+@model List<HistoryThankfulAccountList>
+@{ 
+    var status =(List<SelectListItem>) ViewBag.GetStatus;
+}
+<style>
+    .adminContent tr:nth-child(even) {
+        background-color: #e4cfcf;
+    }
+
+    .adminContent tr:nth-child(odd) {
+        background-color: white;
+    }
+    .adminContent td {
+        width: 1px;
+        white-space: nowrap;
+    }
+</style>
+<div class="t-widget t-grid" id="userCardSwap-grid">
+    <table cellspacing="0">
+        <thead class="t-grid-header">
+        <th class="t-header"><span class="t-link">&nbsp; </span></th>
+        <th class="t-header"><span class="t-link">Display Name </span></th>
+        <th class="t-header"><span class="t-link">Sum Loose </span></th>
+        <th class="t-header"><span class="t-link">Thankful Award </span></th>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr id="@item.AccountID">
+                        <script>
+                            var inputDataAjax = { AccountID: @item.AccountID, FromDate: '@ViewBag.fromDate', ToDate: '@ViewBag.ToDate', page: 1, size: 20 };
+                            var GameMode = @ViewBag.GameMode;
+                            $.ajax({
+                            type: "POST",
+                            data: JSON.stringify(inputDataAjax),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: 'json',
+                            url: GlobalHeader.Config.Root_Url + "CustomerSupport/GetHistoryThankful?AccountID=" + @item.AccountID,
+                            success: function (data) {
+                                if (data.total > 0) {
+
+                                    if (GameMode == 0) //Khách thua
+                                    {
+                                        if (data.data[0].SumLoose > 0) {
+                                            if ($("td[id='NickName-@item.AccountID']")[0] !== undefined) $("td[id='NickName-@item.AccountID']")[0].innerHTML = data.data[0].NickName;
+                                            if ($("td[id='SumLoose-@item.AccountID']")[0] !== undefined) $("td[id='SumLoose-@item.AccountID']")[0].innerHTML = parseFloat(data.data[0].SumLoose, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
+                                            if ($("td[id='ThankfulAward-@item.AccountID']")[0] !== undefined) $("td[id='ThankfulAward-@item.AccountID']")[0].innerHTML = parseFloat(data.data[0].ThankfulAward, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
+                                        } else {
+                                            $("tr#@item.AccountID").remove();
+                                        }
+                                    } else if (GameMode == 1) //Khách thắng
+                                    {
+                                        if (data.data[0].SumLoose < 0) {
+                                            if ($("td[id='NickName-@item.AccountID']")[0] !== undefined) $("td[id='NickName-@item.AccountID']")[0].innerHTML = data.data[0].NickName;
+                                            if ($("td[id='SumLoose-@item.AccountID']")[0] !== undefined) $("td[id='SumLoose-@item.AccountID']")[0].innerHTML = parseFloat(data.data[0].SumLoose, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
+                                            if ($("td[id='ThankfulAward-@item.AccountID']")[0] !== undefined) $("td[id='ThankfulAward-@item.AccountID']")[0].innerHTML = parseFloat(data.data[0].ThankfulAward, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
+                                        } else {
+                                            $("tr#@item.AccountID").remove();
+                                        }
+                                    } else if (GameMode == 2) //Tất cả
+                                    {
+                                        if ($("td[id='NickName-@item.AccountID']")[0] !== undefined) $("td[id='NickName-@item.AccountID']")[0].innerHTML = data.data[0].NickName;
+                                        if ($("td[id='SumLoose-@item.AccountID']")[0] !== undefined) $("td[id='SumLoose-@item.AccountID']")[0].innerHTML = parseFloat(data.data[0].SumLoose, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
+                                        if ($("td[id='ThankfulAward-@item.AccountID']")[0] !== undefined) $("td[id='ThankfulAward-@item.AccountID']")[0].innerHTML = parseFloat(data.data[0].ThankfulAward, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
+                                    }
+                                }
+                            },
+                            fail: function (fail) {
+                                console.log("Loi");
+                            }
+                        });
+                        </script>
+                        <td> @item.AccountID </td>
+                        <td id="NickName-@item.AccountID"></td>
+                        <td id="SumLoose-@item.AccountID"></td>
+                        <td id="ThankfulAward-@item.AccountID"></td>
+
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <div class="t-grid-pager t-grid-bottom">
+        <div class="t-pager t-reset">
+            <a class="t-link" href="javascript:GlobalHeader.getHistoryThankfulList(1);">
+                <span class="t-icon t-arrow-first">first</span>
+            </a>
+            <a class="t-link" href="javascript:GlobalHeader.getHistoryThankfulList(@ViewBag.Prev);">
+                <span class="t-icon t-arrow-prev">prev</span>
+            </a>
+            <div class="t-numeric">
+                @for (int i = ViewBag.Start; i <= ViewBag.End; i++)
+                {
+                    if (i == ViewBag.CurrentPage)
+                    {
+                        <span class="t-state-active">@(i)</span>
+                    }
+                    else
+                    {
+                        <a href="javascript:GlobalHeader.getHistoryThankfulList(@(i));" class="t-link">@(i)</a>
+                    }
+                }
+            </div>
+            <a class="t-link" href="javascript:GlobalHeader.getHistoryThankfulList(@ViewBag.Next);">
+                <span class="t-icon t-arrow-next">next</span>
+            </a>
+            <a class="t-link" href="javascript:GlobalHeader.getHistoryThankfulList(@ViewBag.TotalPage);">
+                <span class="t-icon t-arrow-last">last</span>
+            </a>
+        </div>
+        <div class="t-status-text">Displaying items @ViewBag.StartIndex - @ViewBag.EndIndex of @ViewBag.TotalRecord</div>
+    </div>
+</div>

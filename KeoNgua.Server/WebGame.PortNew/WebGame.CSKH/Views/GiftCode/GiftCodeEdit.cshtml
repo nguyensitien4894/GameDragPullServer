@@ -1,0 +1,98 @@
+﻿@using MsWebGame.CSKH.Utils
+@model  MsWebGame.CSKH.Database.DTO.GameGiftCode
+@{
+    ViewBag.Title = "Cấu hình giftcode";
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            @AppConstants.CONFIG.EDIT
+        </div>
+        <div class="options">
+            <a href="@Url.Action("GiftCode")" class="t-button">Quay lại</a>
+        </div>
+    </div>
+    if (Model != null && Model.ID > 0)
+    {
+        <div class="t-widget t-tabstrip t-header">
+            <div class="t-content t-state-active" style="display: block;">
+                <table class="adminContent customer-info-tab">
+                    @Html.HiddenFor(m => m.ID)
+                    @Html.HiddenFor(m => m.CampaignID)
+                    @Html.HiddenFor(m => m.UserID)
+                    @Html.HiddenFor(m => m.GiftCode)
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Loại giftcode <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <select id="giftcodeType" name="GiftCodeType" class="text-box single-line">
+                                <option value="1" @(Model.GiftCodeType == 1 ? "selected" : string.Empty)>Vip</option>
+                                <option value="2" @(Model.GiftCodeType == 2 ? "selected" : string.Empty)>Người chơi</option>
+                            </select>
+                            <span class="field-validation-valid" data-valmsg-for="giftcodeType"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Tiền thưởng <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <input class="text-box single-line" value="@Model.MoneyRewardFormat" id="moneyReward" name="MoneyReward" type="text" onchange="GlobalHeader.changeNumber(this);"
+                                   onkeypress="return GlobalHeader.isNumber(event);">
+                            <span class="field-validation-valid" data-valmsg-for="moneyReward"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Tổng người chơi <span style="color:red;">*</span></label>
+                        </td>s
+                        <td class="adminData">
+                            <input class="text-box single-line" value="@Model.TotalUsedFormat" id="totalUsed" name="TotalUsed" type="text" onchange="GlobalHeader.changeNumber(this);"
+                                   onkeypress="return GlobalHeader.isNumber(event);">
+                            <span class="field-validation-valid" data-valmsg-for="totalUsed"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Giới hạn <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <input class="text-box single-line" value="@Model.TotalUsedFormat" id="limitQuota" name="LimitQuota" type="text" onchange="GlobalHeader.changeNumber(this);"
+                                   onkeypress="return GlobalHeader.isNumber(event);">
+                            <span class="field-validation-valid" data-valmsg-for="limitQuota"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Trạng thái <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <select id="status" name="Status">
+                                <option value="true" @(Model.Status ? "selected" : string.Empty)>Hiệu lực</option>
+                                <option value="false" @(Model.Status ? string.Empty : "selected")>Hết hiệu lực</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Ngày hết hạn <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <input class="text-box single-line" value="@Model.ExpiredDate" id="expiredDate" name="ExpiredDate" type="datetime">
+                            <span class="field-validation-valid" data-valmsg-for="expiredDate"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle"></td>
+                        <td class="adminData">
+                            <input type="submit" onclick="return GlobalHeader.validationSetGiftcode(1);"  name="save" class="t-button" value="@AppConstants.CONFIG.SAVE" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    }
+}

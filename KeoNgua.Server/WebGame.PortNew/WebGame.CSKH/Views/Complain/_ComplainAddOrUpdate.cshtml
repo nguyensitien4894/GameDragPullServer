@@ -1,0 +1,88 @@
+﻿@model  MsWebGame.CSKH.Database.DTO.Complain
+@Html.ValidationSummary(true)
+@using MsWebGame.CSKH.Utils
+
+<div class="t-widget t-tabstrip t-header">
+    <div class="t-content t-state-active" style="display: block;">
+        <table class="adminContent customer-info-tab">
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model => model.Title):
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model => model.Title, new { @class = "text-box single-line" })
+                    @Html.ValidationMessageFor(model => model.Title)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model => model.Content):
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model => model.Content, new { @class = "text-box single-line" })
+                    @Html.ValidationMessageFor(model => model.Content)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model => model.UserExplain):
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model => model.UserExplain, new { @class = "text-box single-line" })
+                    @Html.ValidationMessageFor(model => model.UserExplain)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model => model.UserProcessResult):
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model => model.UserProcessResult, new { @class = "text-box single-line" })
+                    @Html.ValidationMessageFor(model => model.UserProcessResult)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model => model.DefendantExplain):
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model => model.DefendantExplain, new { @class = "text-box single-line" })
+                    @Html.ValidationMessageFor(model => model.DefendantExplain)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model => model.DefendantProcessResult):
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model => model.DefendantProcessResult, new { @class = "text-box single-line" })
+                    @Html.ValidationMessageFor(model => model.DefendantProcessResult)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model => model.Result):
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model => model.Result, new { @class = "text-box single-line" })
+                    @Html.ValidationMessageFor(model => model.Result)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model => model.ComplainStatus):
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(m => m.ComplainStatus, new SelectList(ViewBag.PartialComplainStatus, "Value", "Name", Model.ComplainStatus), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                </td>
+                <td class="adminData">
+                    <input type="submit" name="save" class="t-button" value="@AppConstants.CONFIG.SAVE" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

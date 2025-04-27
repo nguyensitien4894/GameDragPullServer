@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "Cấu hình giftcode";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" />
+            Cấu hình giftcode
+        </div>
+        @if (ViewBag.RoleCode == "ADMIN")
+        {
+            <div class="options">
+                <a href="@Url.Action("GiftCodeAdd")" class="t-button">@AppConstants.CONFIG.ADD_NEW</a>
+            </div>
+        }
+    </div>
+    <table style="float: left; width: 50%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif" />
+                    <label>GiftCode</label>
+                </td>
+                <td class="adminData">
+                    <input type="text" id="giftCode" class="text-box single-line" />
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                 
+                </td>
+            </tr>
+        
+           
+          
+        </tbody>
+    </table>
+  
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<GameGiftCode>()
+                    .Name("giftCode-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.CampaignName).Title("Chiến dịch");
+                        columns.Bound(x => x.GiftCode).Title("Giftcode");
+                        columns.Bound(x => x.MoneyRewardFormat).Title("Mệnh giá");
+                        columns.Bound(x => x.DisplayName).Title("Nickname sử dụng");
+                        columns.Bound(x => x.ReceivedDate).Title("Thời gian sử dụng");
+                        columns.Bound(x => x.StatusFormat).Title("Trạng thái");
+                        columns.Bound(x => x.ExpiredDate).Title("Ngày hết hạn");
+                        columns.Bound(x => x.GiftCodeTypeFormat).Title("Loại giftcode");
+                        columns.Bound(x => x.CreateUserName).Title("Người tạo");
+                        columns.Bound(x => x.CreateUserTypeFormat).Title("Nhóm người tạo");
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetListGiftListCodeCheck", "GiftCode");
+                    })
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+             
+                var giftCode = $('#giftCode').val().trim();
+           
+
+      
+                var grid = $('#giftCode-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+             
+                giftCode: $('#giftCode').val().trim()
+               
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

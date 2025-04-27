@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "Cấu hình chiến dịch";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Tìm kiếm dữ liệu đã thẩm định
+        </div>
+    </div>
+    <div class="t-widget t-tabstrip t-header">
+        <div class="t-content t-state-active" style="display: block;">
+            <table class="adminContent customer-info-tab">
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Chọn game</label>
+                    </td>
+                    <td class="adminData">
+                        <select name="GameID" class="text-box single-line">
+                            <option value="0">Tất cả</option>
+                            @foreach (var item in ViewBag.GameBox)
+                            {
+                                <option value="@item.Value">@item.Name</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Chọn phòng</label>
+                    </td>
+                    <td class="adminData">
+                        <select name="RoomID" class="text-box single-line">
+                            @foreach (var item in ViewBag.RoomBox)
+                            {
+                                <option value="@item.Value">@item.Name</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Từ ngày</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.Telerik().DateTimePicker().Name("StartDate").Value(DateTime.Today.AddDays(-7)).InputHtmlAttributes(new { @onkeypress = "GlobalHeader.inputKeypress(event.keyCode);" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Đến ngày</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.Telerik().DateTimePicker().Name("EndDate").Value(DateTime.Now).InputHtmlAttributes(new { @onkeypress = "GlobalHeader.inputKeypress(event.keyCode);" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <input type="submit" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.CONFIRM">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}

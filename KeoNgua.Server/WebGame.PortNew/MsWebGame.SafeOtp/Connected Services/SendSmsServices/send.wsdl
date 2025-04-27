@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:tns="http://send_sms.vienthongdidong.vn/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" name="send" targetNamespace="http://send_sms.vienthongdidong.vn/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema>
+      <xsd:import schemaLocation="http://210.211.109.118:80/apibrandname/send?xsd=1" namespace="http://send_sms.vienthongdidong.vn/" />
+    </xsd:schema>
+  </types>
+  <message name="send">
+    <part name="parameters" element="tns:send" />
+  </message>
+  <message name="sendResponse">
+    <part name="parameters" element="tns:sendResponse" />
+  </message>
+  <message name="getip">
+    <part name="parameters" element="tns:getip" />
+  </message>
+  <message name="getipResponse">
+    <part name="parameters" element="tns:getipResponse" />
+  </message>
+  <message name="sendQuestion">
+    <part name="parameters" element="tns:sendQuestion" />
+  </message>
+  <message name="sendQuestionResponse">
+    <part name="parameters" element="tns:sendQuestionResponse" />
+  </message>
+  <message name="checkTrans">
+    <part name="parameters" element="tns:checkTrans" />
+  </message>
+  <message name="checkTransResponse">
+    <part name="parameters" element="tns:checkTransResponse" />
+  </message>
+  <message name="Question">
+    <part name="parameters" element="tns:Question" />
+  </message>
+  <message name="QuestionResponse">
+    <part name="parameters" element="tns:QuestionResponse" />
+  </message>
+  <message name="checkBalance">
+    <part name="parameters" element="tns:checkBalance" />
+  </message>
+  <message name="checkBalanceResponse">
+    <part name="parameters" element="tns:checkBalanceResponse" />
+  </message>
+  <message name="sendCskh">
+    <part name="parameters" element="tns:sendCskh" />
+  </message>
+  <message name="sendCskhResponse">
+    <part name="parameters" element="tns:sendCskhResponse" />
+  </message>
+  <message name="sendQc">
+    <part name="parameters" element="tns:sendQc" />
+  </message>
+  <message name="sendQcResponse">
+    <part name="parameters" element="tns:sendQcResponse" />
+  </message>
+  <message name="sendQc2">
+    <part name="parameters" element="tns:sendQc2" />
+  </message>
+  <message name="sendQc2Response">
+    <part name="parameters" element="tns:sendQc2Response" />
+  </message>
+  <message name="AdsSend">
+    <part name="parameters" element="tns:AdsSend" />
+  </message>
+  <message name="AdsSendResponse">
+    <part name="parameters" element="tns:AdsSendResponse" />
+  </message>
+  <portType name="send">
+    <operation name="send">
+      <input wsam:Action="http://send_sms.vienthongdidong.vn/send/sendRequest" message="tns:send" />
+      <output wsam:Action="http://send_sms.vienthongdidong.vn/send/sendResponse" message="tns:sendResponse" />
+    </operation>
+    <operation name="getip">
+      <input wsam:Action="http://send_sms.vienthongdidong.vn/send/getipRequest" message="tns:getip" />
+      <output wsam:Action="http://send_sms.vienthongdidong.vn/send/getipResponse" message="tns:getipResponse" />
+    </operation>
+    <operation name="sendQuestion">
+      <input wsam:Action="http://send_sms.vienthongdidong.vn/send/sendQuestionRequest" message="tns:sendQuestion" />
+      <output wsam:Action="http://send_sms.vienthongdidong.vn/send/sendQuestionResponse" message="tns:sendQuestionResponse" />
+    </operation>
+    <operation name="checkTrans">
+      <input wsam:Action="http://send_sms.vienthongdidong.vn/send/checkTransRequest" message="tns:checkTrans" />
+      <output wsam:Action="http://send_sms.vienthongdidong.vn/send/checkTransResponse" message="tns:checkTransResponse" />
+    </operation>
+    <operation name="Question">
+      <input wsam:Action="http://send_sms.vienthongdidong.vn/send/QuestionRequest" message="tns:Question" />
+      <output wsam:Action="http://send_sms.vienthongdidong.vn/send/QuestionResponse" message="tns:QuestionResponse" />
+    </operation>
+    <operation name="checkBalance">
+      <input wsam:Action="http://send_sms.vienthongdidong.vn/send/checkBalanceRequest" message="tns:checkBalance" />
+      <output wsam:Action="http://send_sms.vienthongdidong.vn/send/checkBalanceResponse" message="tns:checkBalanceResponse" />
+    </operation>
+    <operation name="sendCskh">
+      <input wsam:Action="http://send_sms.vienthongdidong.vn/send/sendCskhRequest" message="tns:sendCskh" />
+      <output wsam:Action="http://send_sms.vienthongdidong.vn/send/sendCskhResponse" message="tns:sendCskhResponse" />
+    </operation>
+    <operation name="sendQc">
+      <input wsam:Action="http://send_sms.vienthongdidong.vn/send/sendQcRequest" message="tns:sendQc" />
+      <output wsam:Action="http://send_sms.vienthongdidong.vn/send/sendQcResponse" message="tns:sendQcResponse" />
+    </operation>
+    <operation name="sendQc2">
+      <input wsam:Action="http://send_sms.vienthongdidong.vn/send/sendQc2Request" message="tns:sendQc2" />
+      <output wsam:Action="http://send_sms.vienthongdidong.vn/send/sendQc2Response" message="tns:sendQc2Response" />
+    </operation>
+    <operation name="AdsSend">
+      <input wsam:Action="http://send_sms.vienthongdidong.vn/send/AdsSendRequest" message="tns:AdsSend" />
+      <output wsam:Action="http://send_sms.vienthongdidong.vn/send/AdsSendResponse" message="tns:AdsSendResponse" />
+    </operation>
+  </portType>
+  <binding name="sendPortBinding" type="tns:send">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="send">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getip">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="sendQuestion">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="checkTrans">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="Question">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="checkBalance">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="sendCskh">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="sendQc">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="sendQc2">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AdsSend">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="send">
+    <port name="sendPort" binding="tns:sendPortBinding">
+      <soap:address location="http://210.211.109.118:80/apibrandname/send" />
+    </port>
+  </service>
+</definitions>

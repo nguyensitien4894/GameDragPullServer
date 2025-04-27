@@ -1,0 +1,21 @@
+﻿@using MsWebGame.CSKH.Utils
+@{
+    ViewBag.Title = "Chỉnh sửa nhà mạng";
+}
+@model MsWebGame.CSKH.Models.Telecoms.TelecomOperatorModel
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            @AppConstants.CONFIG.EDIT
+        </div>
+        <div class="options">
+            <a href="@Url.Action("Index")" class="t-button">Quay lại</a>
+        </div>
+    </div>
+    @Html.HiddenFor(m=>m.ID)
+    <div class="t-widget t-tabstrip t-header">
+        @Html.Partial("_CreateOrUpdate", Model)
+    </div>
+}

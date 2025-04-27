@@ -1,0 +1,70 @@
+﻿@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+        Dự chốt
+    </div>
+</div>
+
+
+
+
+<table class="adminContent">
+    <tr>
+        <td>
+
+            @(Html.Telerik().Grid<AgencyRaceTopAward>()
+                    .Name("agc-resultdt-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBindingRessultDt"))
+                   
+                     .DataKeys(x => { x.Add(y => y.AccountID); })
+                    .Columns(columns =>
+                    {
+
+                        columns.Bound(e => e.AccountID).Hidden();
+                        columns.Bound(e => e.PrizeID).Title("Hạng").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.DisplayName).Title("NickName");
+                        columns.Bound(e => e.TotalTransfer).Title("Tổng luồng giao dịch");
+                        columns.Bound(e => e.TotalVP).Title("Tổng VIP").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.BonusRate).Title("Hệ số").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.PrizeValue).Title("Tiền thưởng").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.RaceDate).Title("Ngày chốt").HtmlAttributes(new { @class = "text-right" });
+                       
+                       
+
+
+                    })
+                    .DataBinding(dataBinding => dataBinding.Ajax().Select("GetPrepare2RaceTop", "Agency"))
+                    .Selectable()
+                    .EnableCustomBinding(true))
+        </td>
+    </tr>
+</table>
+
+
+<h2 style="text-align:center">
+    <br />
+    <input type="button" value="Chốt danh sách" id="btnWeekClose" onclick="GlobalHeader.WeekCloseRaceTop()" class="btn btn-danger btn-lg" />
+    <br />
+
+</h2>
+
+
+
+
+<script type="text/javascript">
+
+        
+        function onDataBindingRessultDt(e) {
+            var searchModel = {
+
+                raceDate: $('#raceDate').val().trim(),
+              
+                ServiceID: $('#serviceId').val().trim()
+            };
+            e.data = searchModel;
+        }
+</script>

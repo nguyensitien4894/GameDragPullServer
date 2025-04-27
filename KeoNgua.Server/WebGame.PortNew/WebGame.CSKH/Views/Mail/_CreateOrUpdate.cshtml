@@ -1,0 +1,77 @@
+﻿@using Telerik.Web.Mvc.UI
+@model MsWebGame.CSKH.Models.Mails.MailModel
+@using MsWebGame.CSKH.Utils
+<div class="t-content t-state-active" style="display: block;">
+    <table class="adminContent customer-info-tab">
+        <tr>
+            <td class="adminTitle">
+                <label>@Html.LabelFor(m => m.Title)  <span style="color:red;">*</span></label>
+            </td>
+            <td class="adminData">
+                @Html.TextBoxFor(m => m.Title, new { @class = "text-box single-line", placeholder = "Tiêu đề mail" })
+                @Html.ValidationMessageFor(m => m.Title)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                <label>@Html.LabelFor(m => m.Content) <span style="color:red;">*</span></label>
+            </td>
+            <td class="adminData">
+                @Html.TextAreaFor(m => m.Content, new { @class = "text-box single-line", cols = "30", rows = "10", placeholder = "Nội dung mail" })
+                @Html.ValidationMessageFor(m => m.Content)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                <label>@Html.LabelFor(m => m.RecevierNickname)  <span style="color:red;">*</span></label>
+            </td>
+            <td class="adminData">
+                @Html.TextBoxFor(m => m.RecevierNickname, new { @class = "text-box single-line", placeholder = "Nickname nhận", })
+                @Html.ValidationMessageFor(m => m.RecevierNickname)
+            </td>
+        </tr>
+        @if (Model != null && Model.ID == 0)
+        {
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label> Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(m => m.ServiceID, new SelectList(ViewBag.ServiceBox, "Value", "Text", Model.ServiceID.ToString()), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+        }
+        @if (Model != null && Model.Reciever > 0)
+        {
+            <tr>
+                <td class="adminTitle">
+                    <label>@Html.LabelFor(m => m.Status)  <span style="color:red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(m => m.Status, Model.listStatus, new { @class = "text-box single-line" })
+                    @Html.ValidationMessageFor(m => m.Status)
+                </td>
+            </tr>
+        }
+
+        @if (Model != null && Model.ID == 0)
+        {
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="submit" name="save" class="t-button" value="Send" />
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="submit" name="save" class="t-button" value="@AppConstants.CONFIG.SAVE" />
+                </td>
+            </tr>
+        }
+    </table>
+</div>

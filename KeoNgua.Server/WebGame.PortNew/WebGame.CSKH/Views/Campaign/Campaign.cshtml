@@ -1,0 +1,157 @@
+﻿@{
+    ViewBag.Title = "Cấu hình chiến dịch";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Cấu hình chiến dịch
+        </div>
+        <div class="options">
+            <a href="@Url.Action("CampaignAdd")" class="t-button">@AppConstants.CONFIG.ADD_NEW</a>
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), "Tất cả chiến dịch", new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Tên chiến dịch</label>
+                </td>
+                <td class="adminData">
+                    <input type="text" id="campaignName" class="text-box single-line" placeholder="Tên chiến dịch" onkeypress = "GlobalHeader.inputKeypress(event.keyCode);" />
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Mã chiến dịch</label>
+                </td>
+                <td class="adminData">
+                    <input type="text" id="campaignCode" class="text-box single-line" placeholder="Mã chiến dịch" onkeypress = "GlobalHeader.inputKeypress(event.keyCode);" />
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn trạng thái</label>
+                </td>
+                <td class="adminData">
+                    <select id="status" class="text-box single-line">
+                        <option value="null">Tất cả</option>
+                        <option value="true">Hiệu lực</option>
+                        <option value="false">Hết hiệu lực</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Ngày hiệu lực</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DateTimePicker().Name("effectDate").Value(DateTime.Today.AddMonths(-1))
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Ngày hết hạn</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DateTimePicker().Name("expiredDate").Value(DateTime.Today.AddMonths(1))
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        
+    </h2>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<GameCampaign>()
+                    .Name("campaign-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.ServiceID).Title("Cổng")
+                      .ClientTemplate("<# if (ServiceID==0) { #>" +
+               "<p class=\"btn btn-danger\" > Event</p>" +
+                   "<# }else{ #>" +
+                    "<p class=\"btn btn-success\" >Cổng <#= ServiceName #></p>" +
+                   
+                   "<# } #>"
+              );
+                        columns.Bound(x => x.CampaignName).Title("Tên Chiến dịch");
+                        columns.Bound(x => x.CampaignCode).Title("Mã chiến dịch");
+                        columns.Bound(x => x.EffectDate).Title("Ngày hiệu lực").Format("{0:dd/MM/yyyy}");
+                        columns.Bound(x => x.ExpiredDate).Title("Ngày hết hạn").Format("{0:dd/MM/yyyy}");
+                        columns.Bound(x => x.StatusFormat).Title("Trạng thái");
+                        columns.Bound(x => x.Description).Title("Miêu tả");
+
+
+
+
+
+                        columns.Bound(x => x.ServiceID)
+                        .Width(80)
+                        .Template(x => Html.ActionLink("CampaignEdit", "CampaignEdit", new { id = x.CampaignID }))
+                        .ClientTemplate("<a href=\"CampaignEdit/<#= CampaignID #>\">" + AppConstants.CONFIG.EDIT + "</a>")
+                        .Title("Action").HtmlAttributes(new { @class = "text-center" });
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetCampaign", "Campaign");
+                    })
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#campaign-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+                campaignName: $('#campaignName').val().trim(),
+                campaignCode: $('#campaignCode').val().trim(),
+                effectDate: $('#effectDate').val().trim(),
+                expiredDate: $('#expiredDate').val().trim(),
+                status: $('#status').val().trim(),
+                serviceId: $('#serviceId').val().trim()
+                
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

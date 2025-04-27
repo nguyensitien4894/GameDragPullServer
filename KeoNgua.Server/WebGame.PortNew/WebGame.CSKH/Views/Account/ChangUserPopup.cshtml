@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Thay đổi username facebook";
+}
+
+@using TraditionGame.Utilities.Utils;
+@model MsWebGame.CSKH.Models.Accounts.AccountPopupModel
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">Thay đổi username facebook</div>
+    </div>
+    <div class="t-widget t-tabstrip t-header">
+        <div class="t-content t-state-active" style="display: block;">
+            <table class="adminContent customer-info-tab">
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <span id="txttransferMsg" class="@(ViewBag.Message == "Cập nhật thành công" ? "txttransferMsgSuccess" : "txttransferMsg")">@ViewBag.Message</span>
+                    </td>
+                </tr>
+                
+                @*<tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Chọn cổng</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.DropDownListFor(m => m.ServiceID, new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                    </td>
+                </tr>*@
+                <tr>
+                    <td class="adminTitle">
+                        <label>NickName thay đổi <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        <input class="text-box single-line" id="GameAccountName" name="GameAccountName" value="@Model.GameAccountName" type="text">
+                        <span class="field-validation-valid" data-valmsg-for="receiverName"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Username cập nhật <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        <input class="text-box single-line" id="Username" name="Username" type="text" value="@Model.Username"  >
+                        <span class="field-validation-valid" data-valmsg-for="amount"></span>
+                    </td>
+                </tr>
+             
+           
+               
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <input type="submit" name="save" class="t-button" value="Cập nhật" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+   
+}

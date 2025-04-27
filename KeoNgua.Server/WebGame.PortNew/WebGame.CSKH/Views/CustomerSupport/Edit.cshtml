@@ -1,0 +1,22 @@
+﻿@using MsWebGame.CSKH.Utils
+@model  MsWebGame.CSKH.Models.Accounts.AdminModel
+@{
+    //page title
+    ViewBag.Title = AppConstants.CONFIG.EDIT;
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            @AppConstants.CONFIG.EDIT @Html.ActionLink("(" + AppConstants.CONFIG.BACK + ")", "Index")
+        </div>
+        <div class="options">
+            <input type="submit" name="save" class="t-button" value="@AppConstants.CONFIG.SAVE" />
+            <a id="category-delete" class="t-button" href="@Url.Action("Delete",new {Id=Model.AdminID })" onclick="return GlobalHeader.ConfirmDelete();">@AppConstants.CONFIG.DELETE</a>
+        </div>
+    </div>
+    @Html.HiddenFor(m=>m.AdminID)
+    @Html.HiddenFor(m => m.UserName)
+    @Html.Partial("_CreateOrUpdate", Model)
+}

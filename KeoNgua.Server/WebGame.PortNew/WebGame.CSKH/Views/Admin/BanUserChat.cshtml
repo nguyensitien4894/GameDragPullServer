@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "Ban user chat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Utils
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Khóa chat
+        </div>
+    </div>
+    <div class="t-widget t-tabstrip t-header">
+        <div class="t-content t-state-active" style="display: block;">
+            <table class="adminContent customer-info-tab">
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <span id="txttransferMsg" class="@(ViewBag.Message.IndexOf("thành công") != -1 ? "txttransferMsgSuccess" : "txttransferMsg")">@ViewBag.Message</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Nickname:</label>
+                    </td>
+                    <td class="adminData">
+                        <input id="nickname" name="nickName" class="text-box single-line" onblur="GlobalHeader.validateNickName(1);" />
+                        <span class="field-validation-valid" data-valmsg-for="nickName"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Chọn trạng thái:</label>
+                    </td>
+                    <td class="adminData">
+                        <input type="radio" name="rdoStatus" value="0" checked>Khóa chat
+                        <input type="radio" name="rdoStatus" value="1" style="margin-left: 20px;">Mở chat
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <input type="submit" class="t-button" value="@AppConstants.CONFIG.CONFIRM">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txttransferMsg').html('');
+            }, 4000);
+        });
+    </script>
+}

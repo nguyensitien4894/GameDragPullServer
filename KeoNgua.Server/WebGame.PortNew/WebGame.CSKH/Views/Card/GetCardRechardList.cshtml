@@ -1,0 +1,168 @@
+﻿@using MsWebGame.CSKH.Database.DTO
+@using TraditionGame.Utilities.Utils;
+
+@model List<UserCardRecharge>
+  @functions{
+      private bool IsDisplayMenu(string UserRoles)
+      {
+          string RoleCode = Session["RoleCode"] != null ? Session["RoleCode"].ToString() : string.Empty;
+          if (UserRoles != "*")
+          {
+              var arrRoles = UserRoles.Split(',');
+              var curRoles = RoleCode.Split(',');
+              var listCommon = arrRoles.Intersect(curRoles).ToList();
+              if (listCommon != null && listCommon.Any())
+              {
+                  return true;
+              }
+              else
+              {
+                  return false;
+              }
+          }
+          return true;
+      }
+      private bool IsDisplayMenuByUserName(string UserRoles)
+      {
+          string RoleCode = Session["UserName"] != null ? Session["UserName"].ToString() : string.Empty;
+          if (UserRoles != "*")
+          {
+              var arrRoles = UserRoles.Split(',');
+              var curRoles = RoleCode.Split(',');
+              var listCommon = arrRoles.Intersect(curRoles).ToList();
+              if (listCommon != null && listCommon.Any())
+              {
+                  return true;
+              }
+              else
+              {
+                  return false;
+              }
+          }
+          return true;
+      }
+}          
+<link href="~/Content/label.css" rel="stylesheet" />
+<style>
+    .adminContent tr:nth-child(even) {
+        background-color: #f7f7f7;
+    }
+    .adminContent  td{width:1px;white-space:nowrap;}
+</style>
+
+<div class="t-widget t-grid" id="userCardSwap-grid">
+    <table cellspacing="0" class="adminContent">
+        <thead class="t-grid-header">
+            <tr>
+                <th class="t-header" scope="col" style="padding: 1em 2em"><span class="t-link">Trạng thái </span></th>
+                <th class="t-header" scope="col"><span class="t-link">Đối tác </span></th>
+                <th class="t-header" scope="col"><span class="t-link">Mã Request </span></th>
+               
+                <th class="t-header" scope="col"><span class="t-link">Nhà mạng </span></th>
+                <th class="t-header" scope="col"><span class="t-link">Nickname nạp thẻ </span></th>
+                <th class="t-header" scope="col"><span class="t-link">Mã thẻ </span></th>
+                <th class="t-header" scope="col"><span class="t-link">Serial thẻ </span></th>
+                <th class="t-header" scope="col" style="padding: 1em 0.3em"><span class="t-link">Giá trị thẻ </span></th>
+                <th class="t-header" scope="col" style="padding: 1em 0.3em"><span class="t-link">Số tiền thực nhận </span></th>
+                <th class="t-header" scope="col" style="padding: 1em 0.3em"><span class="t-link">Số tiền hoàn</span></th>
+                <th class="t-header" scope="col" style="padding: 1em 0.3em"><span class="t-link">Giá trị nhận khi hoàn </span></th>
+                <th class="t-header" scope="col"><span class="t-link">Ngày tạo </span></th>
+                <th class="t-header" scope="col" style="padding: 1em 0.3em"><span class="t-link">Mã yêu cầu </span></th>
+                <th class="t-header" scope="col"><span class="t-link">Mô tả(mã yêu cầu ) </span></th>
+                <th class="t-header" scope="col" style="padding: 1em 0.3em"><span class="t-link">Mã phản hồi </span></th>
+                <th class="t-header" scope="col"><span class="t-link">Mô tả(mã phản hồi ) </span></th>
+                <th class="t-header" scope="col" style="padding: 1em 0.3em"><span class="t-link">Mệnh giá thực </span></th>
+                
+                
+                <th class="t-header" scope="col"><span class="t-link">Action </span></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <span class="@item.ColorStr ">@item.StatusStr</span>
+                        </td>
+                        <td>@item.PartnerStr</td>
+                        <td class="text-right">@item.UserCardRechargeID</td>
+                        <td>@item.OperatorName</td>
+                        <td>@item.DisplayName</td>
+                        <td>@item.CardNumber</td>
+                        <td>@item.SerialNumber</td>
+                        <td class="text-right">@item.CardValue.IntToMoneyFormat()</td>
+
+                        <td class="text-right">
+                            @if (item.BonusStatus == 1)
+                            {
+
+                                <img src="~/Content/images/100p.png" />
+                            }
+                            @item.ReceivedMoney.LongToMoneyFormat()
+                        
+                        </td>
+                        <td class="text-right">@item.RefundCardValude.LongToMoneyFormat()</td>
+                        <td class="text-right">@item.RefundReceivedMoney.LongToMoneyFormat()</td>
+                        <td>@item.CreateDate</td>
+                        <td class="text-right">@item.PartnerErrorCode</td>
+                        <td>@item.PartnerMessageFormat</td>
+                        <td class="text-right">@item.FeedbackErrorCode</td>
+                        <td>@item.FeedbackMessageFormat</td>
+                        <td class="text-right">@item.ValidAmount.IntToMoneyFormat()</td>
+                       
+                       
+                        <td class="t-last" style="width: 200px; text-align: center;">
+                            @*@if ((item.Status == 0 || item.Status == 1 || item.Status == 3) && item.CreateDate <= DateTime.Now.AddMinutes(-5))*@
+                            @if ((item.Status == 0 || item.Status == 1 || item.Status == 3))
+                            {
+                                if (IsDisplayMenuByUserName("admin_test,cskh_01,cskh_09,cskh_02,cskh_08,admin"))
+                                {
+                                    <a href="javascript:GlobalHeader.RefundToUser(@item.UserCardRechargeID);" class="t-button">Chỉ cập nhật thành công(Ko cộng tiền)</a>
+                                }
+
+                            }
+                            @*@if (ViewBag.IsDisplay && (item.Status == 0) && item.CreateDate <= DateTime.Now.AddMinutes(-5))*@
+                                @if (ViewBag.IsDisplay && (item.Status == 0))
+                                {
+                                    <a href="javascript:GlobalHeader.RejectToUser(@item.UserCardRechargeID);" class="t-button">Thẻ nạp thất bại </a>
+                                }
+                            </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <div class="t-grid-pager t-grid-bottom">
+        <div class="t-pager t-reset">
+            <a class="t-link t-state-disabled" href="javascript:GlobalHeader.getHistoryCardRechard(1);">
+                <span class="t-icon t-arrow-first">first</span>
+            </a>
+            <a class="t-link t-state-disabled" href="javascript:GlobalHeader.getHistoryCardRechard(@ViewBag.Prev);">
+                <span class="t-icon t-arrow-prev">prev</span>
+            </a>
+            <div class="t-numeric">
+                
+                @for (int i = ViewBag.Start; i <= ViewBag.End; i++)
+                {
+                    if (i == ViewBag.CurrentPage )
+                    {
+                        <span class="t-state-active">@(i)</span>
+                    }
+                    else
+                    {
+                        <a href="javascript:GlobalHeader.getHistoryCardRechard(@(i));" class="t-link">@(i)</a>
+                    }
+                }
+            </div>
+            <a class="t-link" href="javascript:GlobalHeader.getHistoryCardRechard(@ViewBag.Next);">
+                <span class="t-icon t-arrow-next">next</span>
+            </a>
+            <a class="t-link" href="javascript:GlobalHeader.getHistoryCardRechard(@ViewBag.TotalPage);">
+                <span class="t-icon t-arrow-last">last</span>
+            </a>
+        </div>
+        <div class="t-status-text">Displaying items @ViewBag.StartIndex - @ViewBag.EndIndex of @ViewBag.TotalRecord</div>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="Scripts/jquery-3.3.1.min.js"></script>
+    <script src="Scripts/jquery.signalR-2.3.0.min.js"></script>
+    <script>
+        var SignalrConnection;
+        var HubProxy;
+        function Connect() {
+            ChatServerUrl = "https://taixiu.navip1.com/";
+            var ChatUrl = ChatServerUrl + "signalr";
+            //This will hold the connection to the signalr hub
+            SignalrConnection = $.hubConnection(ChatUrl, {
+                useDefaultPath: false
+            });
+            HubProxy = SignalrConnection.createHubProxy('luckydiceHub');
+            HubProxy.on("EnterLobby", function (temperature) {
+                console.log(temperature);
+            });
+            
+            //connecting the client to the signalr hub
+            SignalrConnection.start().done(function () {
+                document.getElementById("result").append("Connected to Signalr Server");
+                HubProxy.invoke("EnterLobby");
+            })
+            .fail(function () {
+                alert("failed in connecting to the signalr server");
+                showlog("failed in connecting to the signalr server!!!");
+            })
+        }
+
+        $(function () {
+            Connect();
+        });
+    </script>
+</head>
+<body>
+    <div id="result"></div>
+</body>
+</html>

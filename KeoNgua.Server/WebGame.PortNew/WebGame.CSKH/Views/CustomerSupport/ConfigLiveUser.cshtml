@@ -1,0 +1,123 @@
+﻿@using MsWebGame.CSKH.Controllers
+@model MsWebGame.CSKH.Database.DTO.ParConfigLive
+
+
+
+
+<table style="width: 100%;">
+   <tbody>
+      <tr>
+         <td class="adminTitle">
+            <img src="/Content/images/ico-help.gif">
+            Số tiền được phép chuyển
+         </td>
+         <td class="adminData">
+            <input type="checkbox" name="price[]" value ="10000" @(Model.Tranfer.Contains("10000")?"checked":"")> 10K
+            <input type="checkbox" name="price[]" value ="20000" @(Model.Tranfer.Contains("20000")?"checked":"")> 20K
+            <input type="checkbox" name="price[]" value ="30000" @(Model.Tranfer.Contains("30000")?"checked":"")> 30K
+            <input type="checkbox" name="price[]" value ="40000" @(Model.Tranfer.Contains("40000")?"checked":"")> 40K
+            <input type="checkbox" name="price[]" value ="50000" @(Model.Tranfer.Contains("50000")?"checked":"")> 50K
+         </td>
+      </tr>
+	  <tr>
+         <td class="adminTitle">
+            <img src="/Content/images/ico-help.gif">
+            Cấm Chơi
+         </td>
+         <td class="adminData">
+            <table>
+				<!--
+                <tr>
+                  <td>
+                     
+                     <input type="checkbox" name="game[]" value ="1" @(Model.Game.Contains("1")?"checked":"")>Thủy Cung
+                  </td>
+               </tr>
+                <tr>
+                  <td><input type="checkbox" name="game[]" value ="2" @(Model.Game.Contains("2")?"checked":"")>Tam Quốc</td>
+               </tr>
+              <tr>
+                  <td><input type="checkbox" name="game[]" value ="3" @(Model.Game.Contains("3")?"checked":"")>Cao Bồi</td>
+               </tr>
+               <tr>
+                  <td>	<input type="checkbox" name="game[]" value ="4" @(Model.Game.Contains("4")?"checked":"")>Ai Cập</td>
+               </tr>
+               <tr>
+                  <td><input type="checkbox" name="game[]" value ="7" @(Model.Game.Contains("7")?"checked":"")>Candy</td>
+               </tr>
+               <tr>
+                  <td><input type="checkbox" name="game[]" value ="8" @(Model.Game.Contains("8")?"checked":"")>Tài xỉu</td>
+               </tr>
+               <tr>
+                  <td><input type="checkbox" name="game[]" value ="10" @(Model.Game.Contains("10")?"checked":"")>Vòng quay may mắn</td>
+               </tr>
+               <tr>
+                  <td><input type="checkbox" name="game[]" value ="11" @(Model.Game.Contains("11")?"checked":"")>Mini Pocker</td>
+               </tr>
+               <tr>
+                  <td><input type="checkbox" name="game[]" value ="12" @(Model.Game.Contains("12")?"checked":"")>Siêu Xe</td>
+               </tr>
+               <tr>
+                  <td><input type="checkbox" name="game[]" value ="14" @(Model.Game.Contains("14")?"checked":"")>Rồng Hổ</td>
+               </tr>
+               <tr>
+                  <td><input type="checkbox" name="game[]" value ="15" @(Model.Game.Contains("15")?"checked":"")>Songoku</td>
+               </tr>
+                <tr>
+                  <td><input type="checkbox" name="game[]" value ="16" @(Model.Game.Contains("16")?"checked":"")>Bến Thượng Hải</td>
+               </tr>
+                <tr>
+                  <td><input type="checkbox" name="game[]" value ="17" @(Model.Game.Contains("17")?"checked":"")>Gái Nhảy</td>
+               </tr>
+                <tr>
+                  <td>	<input type="checkbox" name="game[]" value ="18" @(Model.Game.Contains("18")?"checked":"")>Racing Wild</td>
+               </tr>
+                <tr>
+                  <td><input type="checkbox" name="game[]" value ="19" @(Model.Game.Contains("19")?"checked":"")>Baccarat</td>
+               </tr>
+                <tr>
+                  <td>	<input type="checkbox" name="game[]" value ="20" @(Model.Game.Contains("20")?"checked":"")>Bầu Cua</td>
+               </tr>
+                <tr>
+                  <td>	<input type="checkbox" name="game[]" value ="21" @(Model.Game.Contains("21")?"checked":"")>Lô Đề</td>
+               </tr>
+                <tr>
+                  <td><input type="checkbox" name="game[]" value ="23" @(Model.Game.Contains("23")?"checked":"")>Bắn Cá</td>
+               </tr>
+			   -->
+                <tr>
+                  <td><input type="checkbox" name="game[]" value ="51" @(Model.Game.Contains("51")?"checked":"")>Ba Cây</td>
+               </tr>
+                <tr>
+                  <td>	<input type="checkbox" name="game[]" value ="54" @(Model.Game.Contains("54")?"checked":"")>TIEN_LEN_MN</td>
+               </tr>
+               <tr>
+                  <td><input type="checkbox" name="game[]" value ="55" @(Model.Game.Contains("55")?"checked":"")>MAU_BINH</td>
+               </tr>
+               <tr>
+                  <td><input type="checkbox" name="game[]" value ="57" @(Model.Game.Contains("57")?"checked":"")>Poker Texas Holdeim</td>
+               </tr>
+			   <!--
+               <tr>
+                  <td><input type="checkbox" name="game[]" value ="61" @(Model.Game.Contains("61")?"checked":"")>BA_CAY_GA</td>
+               </tr>
+               <tr>
+                  <td><input type="checkbox" name="game[]" value ="62" @(Model.Game.Contains("62")?"checked":"")>BA_CAY_BIEN</td>
+               </tr>
+               <tr>
+                  <td><input type="checkbox" name="game[]" value ="63" @(Model.Game.Contains("63")?"checked":"")>Xóc Đĩa</td>
+               </tr>-->
+               <tr>
+                  <td><input type="checkbox" name="game[]" value ="66" @(Model.Game.Contains("66")?"checked":"")>TIEN_LEN_MN_SOLO</td>
+               </tr>
+            </table>
+         </td>
+      </tr>
+      <tr>
+         <td class="adminData"></td>
+         <td class="adminData">
+            <input onclick="GlobalHeader.submitFormConfigLive(this)" type="button" id="btnComplainAdd" class="t-button" value="Cấu Hình">
+         </td>
+      </tr>
+   </tbody>
+</table>

@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "Luồng tiền đại lý";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@using TraditionGame.Utilities.Utils
+@model List<MsWebGame.CSKH.Database.DTO.AgencyRaceTop>
+
+@using (Html.BeginForm("RaceTop", "Agency", FormMethod.Get))
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            Luồng tiền đại lý
+        </div>
+    </div>
+    <table style="float: left; width: 40%; position: relative;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <label>Từ ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("fromDate").Value(DateTime.Today.AddDays(-7)).InputHtmlAttributes(new { @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <label>Đến ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("toDate").Value(DateTime.Today).InputHtmlAttributes(new { @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr style="position: absolute; left: 500px; top:0px;">
+                <td class="adminTitle">
+                    <label style="margin-right: 10px;">Kỳ chốt</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("raceDate", new SelectList(ViewBag.RaceDateBox, "Value", "Text", ""), new { @class = "text-box single-line", @OnChange = "racetopChange();" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="submit" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="adminContent">
+        <tr>
+            <td>
+                <div>
+                    <div class="t-widget t-grid" id="agc-racetop-grid">
+                        <table cellspacing="0">
+                            <thead class="t-grid-header">
+                                <tr>
+                                    <th class="t-header" scope="col"><span class="t-link">Hạng</span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">NickName</span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Tổng luồng giao dịch</span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Tổng VIP</span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Hệ số</span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Thưởng</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Any())
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td class="text-right">@item.PrizeID</td>
+                                            <td>@item.DisplayName</td>
+                                            <td class="text-right">@MoneyExtension.LongToMoneyFormat(item.TotalTransfer)</td>
+                                            <td class="text-right">@MoneyExtension.DecimalToMoneyFormat(item.TotalVP)</td>
+                                            <td class="text-right">@MoneyExtension.IntToMoneyFormat(item.BonusRate)</td>
+                                            @if (ViewBag.IsClosed)
+                                            {
+                                                <td class="text-right">@MoneyExtension.LongToMoneyFormat(item.PrizeValue)</td>
+                                            }
+                                            else
+                                            {
+                                                <td class="text-right">@MoneyExtension.DecimalToMoneyFormat(item.TotalBom)</td>
+                                            }
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2"><span class="t-link"><b>Thống kê</b></span></td>
+                                        <td class="text-right"><span class="t-link"><b>@Model.Select(a => a.TotalTransfer).Sum().LongToMoneyFormat()</b> </span></td>
+                                        <td class="text-right"><span class="t-link"><b>@MoneyExtension.DecimalToMoneyFormat(Model.Select(a => a.TotalVP).Sum())</b></span></td>
+                                        <td class="text-right"><span class="t-link"><b>@Model.Select(a => a.BonusRate).Sum().IntToMoneyFormat() </b></span></td>
+                                        @if (ViewBag.IsClosed)
+                                        {
+                                            <td class="text-right"><span class="t-link"><b>@Model.Select(a => a.PrizeValue).Sum().LongToMoneyFormat() </b></span></td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-right"><span class="t-link"><b>@MoneyExtension.DecimalToMoneyFormat(Model.Select(a => a.TotalBom).Sum())</b></span></td>
+                                        }
+                                    </tr>
+                                </tfoot>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        function racetopChange() {
+            $('#btnSearch').click();
+        }
+
+        $(document).ready(function () {
+            $('#raceDate').val('');
+        });
+    </script>
+}

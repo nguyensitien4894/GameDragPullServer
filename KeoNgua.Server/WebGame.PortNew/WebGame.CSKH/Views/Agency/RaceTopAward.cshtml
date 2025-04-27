@@ -1,0 +1,172 @@
+﻿@{
+    ViewBag.Title = "Luồng tiền đại lý";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+
+ 
+@Html.Partial("_PrepareRaceTopAward")
+
+<div class="section-header">
+    <div class="title">
+        <h2 style="text-align:center">Kết quả chốt</h2>
+       
+    </div>
+</div>
+
+<div class="demo-section k-content">
+    @(Html.Telerik().TabStrip()
+      .Name("tabstrip")
+     
+      .Items(tabstrip =>
+      {
+      tabstrip.Add().Text("Dự chốt ")
+              .Selected(true)
+              .Content(@<text>
+                <div class="weather">
+                    @Html.Partial("_RaceTopAwardResultDT")
+                </div>
+                
+            </text>);
+
+      tabstrip.Add().Text("Chốt thành công")
+              .Content(@<text>
+            <div class="weather">
+              @Html.Partial("_RaceTopAwardResult")
+            </div>
+            </text>);
+
+     
+
+      })
+    )
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        function RealoadGridPepare() {
+            var grid = $('#agc-transaction-grid').data('tGrid');
+            grid.currentPage = 1; //new search. Set page size to 1
+            grid.ajaxRequest();
+        }
+        function RealoadDuChot() {
+            var grid = $('#agc-resultdt-grid').data('tGrid');
+            grid.currentPage = 1; //new search. Set page size to 1
+            grid.ajaxRequest();
+        }
+
+            $('#btnSearch').click(function () {
+                RealoadGridPepare();
+                RealoadDuChot();
+                return;
+
+                
+            });
+            $('#btnSearchResult').click(function () {
+               
+
+
+                var grid2 = $('#agc-result-grid').data('tGrid');
+                grid2.currentPage = 1; //new search. Set page size to 1
+                grid2.ajaxRequest();
+                return false;
+            });
+
+
+            GetAgencyRaceTopListRaceDate
+            $("#serviceIdResult").change(function () {
+                GetAgencyRaceTopListRaceDate();
+            });
+
+            $('#btnWeekClose').click(function () {
+
+                $serviceId = $("#serviceId").val();
+                $raceDate = $("#raceDate").val();
+                var inputData = { ServiceID: $serviceId, raceDate: $raceDate };
+                if (!confirm("Chốt danh sách tuần của đại lý?")) {
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: GlobalHeader.Config.Root_Url + "Agency/UpdateWeekClose",
+                    data: JSON.stringify(inputData),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+
+                    success: function (data) {
+                        console.log(data)
+                        if (data.ResponseCode == 1) {
+                            alert(data.Message);
+                            RealoadGridPepare();
+                            GetAgencyRaceTopListRaceDate();
+                            RealoadDuChot();
+
+                        } else {
+                            alert(data.Message);
+                        }
+                       
+                        
+                    },
+                    fail: function (fail) {
+                        console.log("Loi");
+                    }
+                });
+
+               
+            });
+
+            function GetAgencyRaceTopListRaceDate() {
+                $serviceId = $("#serviceIdResult").val();
+                var inputData = { ServiceID: $serviceId };
+                $.ajax({
+                    type: "POST",
+                    url: GlobalHeader.Config.Root_Url + "Agency/GetAgencyRaceTopListRaceDate",
+                    data: JSON.stringify(inputData),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+
+                    success: function (data) {
+                        console.log(data);
+                        var items = '<option>Chọn kì chốt</option>';
+                        $.each(data.data, function (i, state) {
+                            items += "<option value='" + state.Value + "'>" + state.Text + "</option>";
+                            // state.Value cannot contain ' character. We are OK because state.Value = cnt++; 
+                        });
+                        $('#raceDateResult').html(items);
+                        
+
+                    },
+                    fail: function (fail) {
+                        console.log("Loi");
+                    }
+                });
+            }
+             
+           
+        });
+    </script>
+
+
+
+
+
+
+

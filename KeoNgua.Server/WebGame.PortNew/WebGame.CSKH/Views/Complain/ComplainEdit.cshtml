@@ -1,0 +1,25 @@
+﻿@using MsWebGame.CSKH.Utils
+@using Telerik.Web.Mvc.UI;
+@model  MsWebGame.CSKH.Models.Complains.ComplainModel
+@{
+    ViewBag.Title = AppConstants.CONFIG.EDIT;
+}
+
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+        Xử lý khiếu nại @Html.ActionLink("(" + AppConstants.CONFIG.BACK + ")", "ComplainManager")
+    </div>
+</div>
+    @Html.Telerik().TabStrip().Name("news-edit").Items(x =>
+{
+
+    x.Add().Text("Thông tin khiếu nại").Content(Html.Partial("~/Views/Complain/_ComplainDetails.cshtml").ToHtmlString());
+    x.Add().Text("Xử lý khiếu nại").Content(Html.Partial("~/Views/Complain/_Process.cshtml").ToHtmlString());
+
+    x.Add().Text("Cập nhật trạng thái giao dịch").Content(Html.Partial("~/Views/Complain/_TransactionMarketUpdate.cshtml").ToHtmlString());
+
+
+}).SelectedIndex(Model.Active)
+
+

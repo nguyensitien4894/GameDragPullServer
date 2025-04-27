@@ -1,0 +1,46 @@
+﻿@using MsWebGame.CSKH.Models.Games;
+@using MsWebGame.CSKH.Utils
+@using Telerik.Web.Mvc.UI
+
+
+@{
+    ViewBag.Title = "CCU";
+}
+
+@using (Html.BeginForm())
+{
+    <link href="~/Content/label.css" rel="stylesheet" />
+<style>
+    .adminContent tr:nth-child(even) {
+        background-color: #e4cfcf;
+    }
+
+    .adminContent td {
+        width: 1px;
+        white-space: nowrap;
+    }
+</style>
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+           Game Funds
+        </div>
+    </div>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<CCUModel>()
+                .Name("gamefund-grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(x => x.gamename);
+                    columns.Bound(x => x.CCU);
+             
+                                    })
+                .Pageable(settings => settings.PageSize(50).Position(GridPagerPosition.Both))
+                .DataBinding(dataBinding => dataBinding.Ajax().Select("CCUList", "Game"))
+                .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+}

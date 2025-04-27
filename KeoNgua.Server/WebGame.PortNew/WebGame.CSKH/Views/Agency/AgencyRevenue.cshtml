@@ -1,0 +1,110 @@
+﻿
+@using MsWebGame.CSKH.Models.Agencies;
+@using MsWebGame.CSKH.Database.DTO;
+@using MsWebGame.CSKH.Utils
+@using Telerik.Web.Mvc.UI
+@model ListAgencyRevenueModel
+
+
+@{
+    //page title
+    ViewBag.Title = " Lịch sử cash out của đại lý";
+
+}
+
+
+@using (Html.BeginForm("AgencyRevenue", "Agency",FormMethod.Get))
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+           Lịch sử cash out của đại lý
+        </div>
+
+    </div>
+
+    <table width="100%">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img alt="A billing email address." src="~/Content/images/ico-help.gif" title="Tên đăng nhập">
+                    @Html.LabelFor(m => m.ParrentID)  :
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(model => model.ParrentID, Model.listAgencyOne, "--Chọn đại lý cha--", new { @class = "single-line text-box" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img alt="A billing email address." src="~/Content/images/ico-help.gif" title="Tên đăng nhập">
+                    @Html.LabelFor(m => m.Level)  :
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(model => model.Level, Model.listLevel, "--Chọn đại cấp đại lý--", new { @class = "single-line text-box" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img alt="A billing email address." src="~/Content/images/ico-help.gif" title="Tên đăng nhập">
+                    @Html.LabelFor(m => m.StartDate)  :
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(m => m.StartDate, new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img alt="A billing email address." src="~/Content/images/ico-help.gif" title="Tên đăng nhập">
+                    @Html.LabelFor(m => m.EndDate)  :
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(m => m.EndDate, new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                   &nbsp;
+                </td>
+                <td >
+                    <input type="submit" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p>
+    </p>
+
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<AgencyRevenue>()
+                .Name("custom-grid-report")
+
+
+                .Columns(columns =>
+                {
+
+                    columns.Bound(x => x.TransDateInt).Title("Ngày giao dịch")
+                        .Width(100);
+                    columns.Bound(x => x.TotalAmountFormat).Title("Tổng nhận")
+                        .Width(100);
+                    columns.Bound(x => x.TotalFeeAmountFormat).Title("Tổng phí")
+                     .Width(100);
+                    columns.Bound(x => x.TotalOrgAmountFormat).Title("Tổng chuyển")
+                        .Width(100);
+                    columns.Bound(x => x.Type).Title("Loại giao dịch")
+                        .Width(100);
+                    columns.Bound(x => x.Status).Title("Trạng thái")
+                        .Width(100);
+
+                })
+                .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                .BindTo(Model.listReport)
+                .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+}
+
+
+

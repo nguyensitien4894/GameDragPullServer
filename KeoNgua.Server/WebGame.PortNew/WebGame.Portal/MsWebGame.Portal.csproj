@@ -1,0 +1,577 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AA043E1A-4ED6-4B58-AA6F-784C8804774C}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MsWebGame.Portal</RootNamespace>
+    <AssemblyName>MsWebGame.Portal</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
+    <TargetFrameworkProfile />
+    <Use64BitIISExpress />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="1Pay">
+      <HintPath>..\1PayDLL\1Pay.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.3.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.3.0\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=5.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.5.4.0\lib\net451\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=5.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.5.4.0\lib\net451\Microsoft.IdentityModel.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.5.4.0\lib\net451\Microsoft.IdentityModel.Tokens.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Cors, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Cors.3.1.0\lib\net45\Microsoft.Owin.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.2.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.4.2.3\lib\net40\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="QRCoder, Version=1.4.3.0, Culture=neutral, PublicKeyToken=c4ed5b9ae8358a28, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.4.3\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
+    <Reference Include="SkiaSharp, Version=1.60.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\SkiaSharp.1.60.0\lib\net45\SkiaSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SkiaSharp.Extended.Svg, Version=1.60.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\SkiaSharp.Svg.1.60.0\lib\portable-net45+win8+wp8+wpa81\SkiaSharp.Extended.Svg.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\netstandard1.1\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Json, Version=2.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Json.4.7.1\lib\net461\System.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.6\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.0\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Cors, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.6\lib\net45\System.Web.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.6\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.6\lib\net45\System.Web.Http.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.0.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.1\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <!--
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  -->
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\DeviceDetectionConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Authen.aspx.cs">
+      <DependentUpon>Authen.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Authen.aspx.designer.cs">
+      <DependentUpon>Authen.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\SendSmsServices\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AgencyController.cs" />
+    <Compile Include="Controllers\BankChargeController - Copy.cs" />
+    <Compile Include="Controllers\BankChargeController.cs" />
+    <Compile Include="Controllers\BankExchangeController.cs" />
+    <Compile Include="Controllers\BaseApiController.cs" />
+    <Compile Include="Controllers\BomOneController.cs" />
+    <Compile Include="Controllers\CardChargingController.cs" />
+    <Compile Include="Controllers\CardChargingFunnyController.cs" />
+    <Compile Include="Controllers\CardChargingSimexController.cs" />
+    <Compile Include="Controllers\CardExchangeController.cs" />
+    <Compile Include="Controllers\CardFcconnClubController.cs" />
+    <Compile Include="Controllers\CardThuMuaTheController.cs" />
+    <Compile Include="Controllers\CashController.cs" />
+    <Compile Include="Controllers\CardChargingEasyPayController.cs" />
+    <Compile Include="Controllers\CastOutBankController.cs" />
+    <Compile Include="Controllers\CockFight\CockFightController.cs" />
+    <Compile Include="Controllers\DownloadController.cs" />
+    <Compile Include="Controllers\EsportsController.cs" />
+    <Compile Include="Controllers\GSController.cs" />
+    <Compile Include="Controllers\HistoryController.cs" />
+    <Compile Include="Controllers\JackpotController.cs" />
+    <Compile Include="Controllers\MomoController.cs" />
+    <Compile Include="Controllers\MopayBankController.cs" />
+    <Compile Include="Controllers\OTPController.cs" />
+    <Compile Include="Controllers\OtpMarketController.cs" />
+    <Compile Include="Controllers\RankRacingController.cs" />
+    <Compile Include="Controllers\ServiceOffController.cs" />
+    <Compile Include="Controllers\SmartBankController.cs" />
+    <Compile Include="Controllers\SmsChargeController.cs" />
+    <Compile Include="Controllers\SystemController.cs" />
+    <Compile Include="Controllers\TeleNotiController.cs" />
+    <Compile Include="Controllers\Transaction\BankV2Controller.cs" />
+    <Compile Include="Controllers\Transaction\CardController.cs" />
+    <Compile Include="Controllers\Transaction\MomoV2Controller.cs" />
+    <Compile Include="Controllers\Transaction\TransactionController.cs" />
+    <Compile Include="Controllers\Transaction\ViettelPayV2Controller.cs" />
+    <Compile Include="Controllers\Transaction\ZaloPayController.cs" />
+    <Compile Include="Controllers\UserTranferController.cs" />
+    <Compile Include="Controllers\TelecomController.cs" />
+    <Compile Include="Controllers\ViettelPayController.cs" />
+    <Compile Include="Controllers\VIP2Controller.cs" />
+    <Compile Include="Controllers\VIPController.cs" />
+    <Compile Include="Database\DAO\AgencyDAO.cs" />
+    <Compile Include="Database\DAO\BankPartnersDAO.cs" />
+    <Compile Include="Database\DAO\CasoutDAO.cs" />
+    <Compile Include="Database\DAO\EsportsDAO.cs" />
+    <Compile Include="Database\DAO\MOMODAO.cs" />
+    <Compile Include="Database\DAO\ServiceOffDAO.cs" />
+    <Compile Include="Database\DAO\SmsChargeDAO.cs" />
+    <Compile Include="Database\DAO\TransactionDAO.cs" />
+    <Compile Include="Database\DAO\TreasureDAO.cs" />
+    <Compile Include="Database\DAO\USDTDAO.cs" />
+    <Compile Include="Database\DAO\BankOperators.cs" />
+    <Compile Include="Database\DAO\Bom1DAO.cs" />
+    <Compile Include="Database\DAO\CardDAO.cs" />
+    <Compile Include="Database\DAO\CardPartnersDAO.cs" />
+    <Compile Include="Database\DAO\CardRefDAO.cs" />
+    <Compile Include="Database\DAO\CashDAO.cs" />
+    <Compile Include="Database\DAO\ChoSaoDAO.cs" />
+    <Compile Include="Database\DAO\GiftCodeDAO.cs" />
+    <Compile Include="Database\DAO\HistoryDAO.cs" />
+    <Compile Include="Database\DAO\AccountDAO.cs" />
+    <Compile Include="Database\DAO\MailDAO.cs" />
+    <Compile Include="Database\DAO\MarketStarSMSOTPDAO.cs" />
+    <Compile Include="Database\DAO\NotificationDAO.cs" />
+    <Compile Include="Database\DAO\ParaConfigDAO.cs" />
+    <Compile Include="Database\DAO\RankRacingDAO.cs" />
+    <Compile Include="Database\DAO\SMSDAO.cs" />
+    <Compile Include="Database\DAO\UserCardSwapDAO.cs" />
+    <Compile Include="Database\DAO\UserPrivilegeDAO.cs" />
+    <Compile Include="Database\DAO\UserTranferDAO.cs" />
+    <Compile Include="Database\DAO\VIPDAO.cs" />
+    <Compile Include="Database\DTO\AgencyInfo.cs" />
+    <Compile Include="Database\DTO\Bank.cs" />
+    <Compile Include="Database\DTO\BankOperatorsSecondary.cs" />
+    <Compile Include="Database\DTO\BankPartners.cs" />
+    <Compile Include="Database\DTO\Bom1User.cs" />
+    <Compile Include="Database\DTO\CardBonus.cs" />
+    <Compile Include="Database\DTO\CardPartners.cs" />
+    <Compile Include="Database\DTO\ChargeCode.cs" />
+    <Compile Include="Database\DTO\EffectJackpot.cs" />
+    <Compile Include="Database\DTO\EventBigBom\UserBom1AidBoxes.cs" />
+    <Compile Include="Database\DTO\EventBigBom\DegreePrize.cs" />
+    <Compile Include="Helpers\Chargings\NewBoc\BtvnApi.cs" />
+    <Compile Include="Helpers\Chargings\NewBoc\RequestData.cs" />
+    <Compile Include="Helpers\Chargings\NewBoc\UseCardRequest.cs" />
+    <Compile Include="Lib\Constant.cs" />
+    <Compile Include="Lib\General.cs" />
+    <Compile Include="Lib\WebClass.cs" />
+    <Compile Include="Models\Bank1s.cs" />
+    <Compile Include="Models\Momo\Momo.cs" />
+    <Compile Include="Models\ParConfigLive.cs" />
+    <Compile Include="Database\DTO\SmsCard.cs" />
+    <Compile Include="Database\DTO\SMSOperators.cs" />
+    <Compile Include="Database\DTO\TopJackPot.cs" />
+    <Compile Include="Database\DTO\TopVpToDate.cs" />
+    <Compile Include="Database\DTO\GameGiftCode.cs" />
+    <Compile Include="Database\DTO\EventXJackpot.cs" />
+    <Compile Include="Database\DTO\TopBalance.cs" />
+    <Compile Include="Database\DTO\USDTPartners.cs" />
+    <Compile Include="Database\DTO\UserAgency.cs" />
+    <Compile Include="Database\DTO\AccountSafeInfo.cs" />
+    <Compile Include="Database\DAO\JackpotInfoDAO.cs" />
+    <Compile Include="Database\DAO\UserDAO.cs" />
+    <Compile Include="Database\DTO\Account.cs" />
+    <Compile Include="Database\DTO\AccountInfo.cs" />
+    <Compile Include="Database\DTO\Agency.cs" />
+    <Compile Include="Database\DTO\BalanceLogs.cs" />
+    <Compile Include="Database\DTO\BigWiner.cs" />
+    <Compile Include="Database\DTO\Cards.cs" />
+    <Compile Include="Database\DTO\Friend.cs" />
+    <Compile Include="Database\DTO\GameHistory.cs" />
+    <Compile Include="Database\DTO\PrivilegeArtifacts.cs" />
+    <Compile Include="Database\DTO\PrivilegeType.cs" />
+    <Compile Include="Database\DTO\RankRacingInfo.cs" />
+    <Compile Include="Database\DTO\SystemMail.cs" />
+    <Compile Include="Database\DTO\Mail.cs" />
+    <Compile Include="Database\DTO\Notification.cs" />
+    <Compile Include="Database\DTO\TelecomOperators.cs" />
+    <Compile Include="Database\DTO\UserBankRequest.cs" />
+    <Compile Include="Database\DTO\UserCardRecharge.cs" />
+    <Compile Include="Database\DTO\UserCardSwap.cs" />
+    <Compile Include="Database\DTO\UserHistory.cs" />
+    <Compile Include="Database\DTO\JackpotInfo.cs" />
+    <Compile Include="Database\DTO\UserJackPotInfo.cs" />
+    <Compile Include="Database\DTO\UserMomoRequest.cs" />
+    <Compile Include="Database\DTO\UserRank.cs" />
+    <Compile Include="Database\DTO\UserRedemption.cs" />
+    <Compile Include="Database\DTO\Users.cs" />
+    <Compile Include="Database\DTO\UserToken.cs" />
+    <Compile Include="Database\DTO\UserTrackingPage.cs" />
+    <Compile Include="Database\DTO\UserVip.cs" />
+    <Compile Include="Database\DAO\SafeOtpDAO.cs" />
+    <Compile Include="Database\DTO\VipCardRedemption.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\CachingHandler.cs" />
+    <Compile Include="Handlers\ConnectionHandler.cs" />
+    <Compile Include="Handlers\ExtensionConvert.cs" />
+    <Compile Include="Handlers\PortalHandler.cs" />
+    <Compile Include="Helpers\1Pays\SMSs\SMSRequest.cs" />
+    <Compile Include="Helpers\AnphaHelper.cs" />
+    <Compile Include="Helpers\AZTech\AgentSmsApi.cs" />
+    <Compile Include="Helpers\CaptchaCache.cs" />
+    <Compile Include="Helpers\CaptchaImage.cs" />
+    <Compile Include="Helpers\Chargings\Cards\CardApi.cs" />
+    <Compile Include="Helpers\Chargings\Cards\CardHelper.cs" />
+    <Compile Include="Helpers\Chargings\Cards\CardResponse.cs" />
+    <Compile Include="Helpers\Chargings\Cards\CardVinaHelper.cs" />
+    <Compile Include="Helpers\Chargings\Cards\MobilePhone\CardMobileApi.cs" />
+    <Compile Include="Helpers\Chargings\Cards\MobilePhone\CardMobileHelper.cs" />
+    <Compile Include="Helpers\Chargings\Cards\MobilePhone\MobileResponse.cs" />
+    <Compile Include="Helpers\Chargings\FconnClub\FconnClubApi.cs" />
+    <Compile Include="Helpers\Chargings\FconnClub\FconnClubCallBackRequest.cs" />
+    <Compile Include="Helpers\Chargings\HaDongPho\HaDongPhoAPI.cs" />
+    <Compile Include="Helpers\Chargings\HaDongPho\HaDongPhoResponse.cs" />
+    <Compile Include="Helpers\Chargings\MobileSMS\MobileRequest.cs" />
+    <Compile Include="Helpers\Chargings\MobileSMS\MobileRequestResponse.cs" />
+    <Compile Include="Helpers\Chargings\MobileSMS\MobileSMSApi.cs" />
+    <Compile Include="Helpers\Chargings\ShopMuaThe\APIResponse.cs" />
+    <Compile Include="Helpers\Chargings\ShopMuaThe\CallBackRequest.cs" />
+    <Compile Include="Helpers\Chargings\ShopMuaThe\Encrypts.cs" />
+    <Compile Include="Helpers\Chargings\ShopMuaThe\RequestData.cs" />
+    <Compile Include="Helpers\Chargings\ShopMuaThe\ShopMuaTheApi.cs" />
+    <Compile Include="Helpers\Chargings\ShopMuaThe\UseCardRequest.cs" />
+    <Compile Include="Helpers\GameHelper.cs" />
+    <Compile Include="Helpers\MessageConvetor.cs" />
+    <Compile Include="Helpers\OTPs\ApiOtpUtil.cs" />
+    <Compile Include="Helpers\OTPs\MobileSMS\OtpResponse.cs" />
+    <Compile Include="Helpers\OTPs\MobileSMS\OtpSend.cs" />
+    <Compile Include="Helpers\OTPs\OtpAps\OtpAppResponse.cs" />
+    <Compile Include="Helpers\OTPs\OtpAps\OtpAppVerifyApi.cs" />
+    <Compile Include="Helpers\ValidateInput.cs" />
+    <Compile Include="Hubs\CacheLogin.cs" />
+    <Compile Include="Hubs\PortalHub.cs" />
+    <Compile Include="Models\AccountHack.cs" />
+    <Compile Include="Models\BankObject.cs" />
+    <Compile Include="Models\BankSecondaryRequest.cs" />
+    <Compile Include="Models\Momo\MomoInfoResponse.cs" />
+    <Compile Include="Models\Momo\MomoSendObject.cs" />
+    <Compile Include="Models\Momo\MomoInfoObject.cs" />
+    <Compile Include="Models\Momo\MomoResult.cs" />
+    <Compile Include="Models\NextVP.cs" />
+    <Compile Include="Models\OTPs\OTPModel.cs" />
+    <Compile Include="Models\OTPs\OtpType.cs" />
+    <Compile Include="Models\ParConfigLiveSport.cs" />
+    <Compile Include="Models\ReturnData.cs" />
+    <Compile Include="Models\RoomFunds\RoomFunds.cs" />
+    <Compile Include="Models\SmsCardModel.cs" />
+    <Compile Include="Models\SmsChargeConfigModel.cs" />
+    <Compile Include="Models\USDTBanks\QienGate.cs" />
+    <Compile Include="Models\USDTBanks\USDTChargeConfig.cs" />
+    <Compile Include="Models\UserData.cs" />
+    <Compile Include="Models\ViettelPay\ViettelPayInfo.cs" />
+    <Compile Include="Models\ViettelPay\ViettelPayRequest.cs" />
+    <Compile Include="Models\ViettelPay\ViettelPayResult.cs" />
+    <Compile Include="Models\VIP2Model.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Authen.aspx" />
+    <None Include="Connected Services\SendSmsServices\configuration91.svcinfo" />
+    <None Include="Connected Services\SendSmsServices\configuration.svcinfo" />
+    <Content Include="Connected Services\SendSmsServices\MsWebGame.Portal.SendSmsServices.AdsSendResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\SendSmsServices\MsWebGame.Portal.SendSmsServices.checkBalanceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\SendSmsServices\MsWebGame.Portal.SendSmsServices.checkTransResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\SendSmsServices\MsWebGame.Portal.SendSmsServices.getipResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\SendSmsServices\MsWebGame.Portal.SendSmsServices.QuestionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\SendSmsServices\MsWebGame.Portal.SendSmsServices.sendCskhResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\SendSmsServices\MsWebGame.Portal.SendSmsServices.sendQc2Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\SendSmsServices\MsWebGame.Portal.SendSmsServices.sendQcResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\SendSmsServices\MsWebGame.Portal.SendSmsServices.sendQuestionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\SendSmsServices\MsWebGame.Portal.SendSmsServices.sendResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\SendSmsServices\MsWebGame.Portal.SendSmsServices.sendsmsresponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Connected Services\SendSmsServices\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="Contents\Avatars\1.jpg" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery.signalR-2.3.0.js" />
+    <Content Include="Scripts\jquery.signalR-2.3.0.min.js" />
+    <Content Include="TestSignalR.html" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Helpers\Momo\" />
+    <Folder Include="Views\Bank\" />
+    <Folder Include="Views\BomOne\" />
+    <Folder Include="Views\CardChargingFunny\" />
+    <Folder Include="Views\Momo\" />
+    <Folder Include="Views\ServiceOff\" />
+    <Folder Include="Views\ViettelPay\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+    <Content Include="NLog.config" />
+    <None Include="Connected Services\SendSmsServices\send.wsdl" />
+    <None Include="Connected Services\SendSmsServices\send.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Project_Readme.html" />
+    <None Include="Properties\PublishProfiles\portal.pubxml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\TraditionGame.Utilities\TraditionGame.Utilities.csproj">
+      <Project>{e3359588-c7d5-465b-b89e-1bc7ff1a9633}</Project>
+      <Name>TraditionGame.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WebGame.RedisCache\MsWebGame.RedisCache.csproj">
+      <Project>{6a195b17-8f33-4b4a-aba2-1414ddbba4bc}</Project>
+      <Name>MsWebGame.RedisCache</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\SendSmsServices\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>37261</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:37261/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!--
+  <Import Project="..\packages\SkiaSharp.1.60.0\build\net45\SkiaSharp.targets" Condition="Exists('..\packages\SkiaSharp.1.60.0\build\net45\SkiaSharp.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\SkiaSharp.1.60.0\build\net45\SkiaSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SkiaSharp.1.60.0\build\net45\SkiaSharp.targets'))" />
+  </Target>
+  -->
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

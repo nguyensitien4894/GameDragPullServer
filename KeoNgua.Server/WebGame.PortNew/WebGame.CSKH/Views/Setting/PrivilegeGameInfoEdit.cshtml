@@ -1,0 +1,81 @@
+﻿@using MsWebGame.CSKH.Utils
+@model  MsWebGame.CSKH.Database.DTO.PrivilegeGameInfo
+@{
+    ViewBag.Title = "Cấu hình thông tin game";
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            @AppConstants.CONFIG.EDIT
+        </div>
+        <div class="options">
+            <a href="@Url.Action("PrivilegeGameInfo")" class="t-button">Quay lại</a>
+        </div>
+    </div>
+    if (Model != null && Model.GameID > 0)
+    {
+        @Html.HiddenFor(m => m.GameID)
+        @Html.HiddenFor(m => m.GameCode)
+        <div class="t-widget t-tabstrip t-header">
+            <div class="t-content t-state-active" style="display: block;">
+                <table class="adminContent customer-info-tab">
+                    <tr>
+                        <td class="adminTitle">
+                            @Html.LabelFor(model => model.GameName):
+                        </td>
+                        <td class="adminData">
+                            @Html.TextBoxFor(model => model.GameName, new { @class = "text-box single-line", @readonly = "readonly" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            @Html.LabelFor(model => model.GameWeight):
+                        </td>
+                        <td class="adminData">
+                            <input type="text" name="GameWeight" value="@Model.GameWeight" class="text-box single-line" />
+                            @Html.ValidationMessageFor(model => model.GameWeight)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            @Html.LabelFor(model => model.ProfitMargin):
+                        </td>
+                        <td class="adminData">
+                            <input type="text" name="ProfitMargin" value="@Model.ProfitMargin" class="text-box single-line" />
+                            @Html.ValidationMessageFor(model => model.ProfitMargin)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            @Html.LabelFor(model => model.ConversionCoefficient):
+                        </td>
+                        <td class="adminData">
+                            <input type="text" name="ConversionCoefficientStr" value="@Model.ConversionCoefficientFormat" class="text-box single-line"
+                                   onchange="GlobalHeader.changeNumber(this);" onkeypress="return GlobalHeader.isNumber(event);" />
+                            @Html.ValidationMessageFor(model => model.ConversionCoefficient)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            @Html.LabelFor(model => model.Status):
+                        </td>
+                        <td class="adminData">
+                            <select id="Status" name="Status" class="text-box single-line">
+                                <option value="true" @(Model.Status ? "selected" : string.Empty)>Hiệu lực</option>
+                                <option value="false" @(!Model.Status ? "selected" : string.Empty)>Hết hiệu lực</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle"></td>
+                        <td class="adminData">
+                            <input type="submit" name="save" class="t-button" value="@AppConstants.CONFIG.SAVE" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    }
+}

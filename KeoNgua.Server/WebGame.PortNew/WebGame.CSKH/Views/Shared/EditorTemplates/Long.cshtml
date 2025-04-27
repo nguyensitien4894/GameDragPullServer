@@ -1,0 +1,10 @@
+@model System.Int64
+@using Telerik.Web.Mvc.UI
+
+@(Html.Telerik().NumericTextBox<Int64>()
+        .Name(ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty))
+        .Value(Model)
+        .EmptyMessage(string.Empty)
+        .DecimalDigits(0).NumberGroupSeparator(".")
+)
+

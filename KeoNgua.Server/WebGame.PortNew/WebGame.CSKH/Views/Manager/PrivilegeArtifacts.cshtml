@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "Quản lý mapping hạng người chơi với sản phẩm đổi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Quản lý mapping hạng người chơi với sản phẩm đổi
+        </div>
+        <div class="options">
+            <a href="@Url.Action("PrivilegeArtifactsAdd")" class="t-button">@AppConstants.CONFIG.ADD_NEW</a>
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn hạng</label>
+                </td>
+                <td class="adminData">
+                    <select id="privilegeId" name="privilegeId" class="text-box single-line">
+                        <option value="0">Tất cả</option>
+                        @foreach (var item in ViewBag.RankBox)
+                        {
+                            <option value="@item.Value">@item.Name</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Tên hiện vật</label>
+                </td>
+                <td class="adminData">
+                    <input type="text" id="artifactName" name="artifactName" class="text-box single-line" onkeypress = "GlobalHeader.inputKeypress(event.keyCode);"  />
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Ngày tạo</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("createDate").Value(DateTime.Today.AddMonths(-1))
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Danh sách
+    </h2>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<PrivilegeArtifacts>()
+                    .Name("privilegeArtifacts-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.PrivilegeName).Title("Hạng");
+                        columns.Bound(x => x.ArtifactName).Title("Tên hiện vật");
+                        columns.Bound(x => x.QuantityFormat).Title("Số lượng").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.RemainQuantityFormat).Title("Số còn lại").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.TotalPrizeFormat).Title("Tổng giải").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.StatusFormat).Title("Trạng thái");
+                        columns.Bound(x => x.Description).Title("Miêu tả");
+                        columns.Bound(x => x.CreateDate).Title("Ngày tạo").Format("{0:dd/MM/yyyy}");
+                        columns.Bound(x => x.PriArtID)
+                        .Width(100)
+                        .Template(x => Html.ActionLink("PrivilegeArtifactsEdit", "PrivilegeArtifactsEdit", new { id = x.ArtifactID }))
+                        .ClientTemplate("<a href=\"PrivilegeArtifactsEdit/<#= PriArtID #>\">" + AppConstants.CONFIG.EDIT + "</a>")
+                        .Title("Action").HtmlAttributes(new { @class = "text-center" });
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetListPrivilegeArtifacts", "Manager");
+                    })
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#privilegeArtifacts-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+                privilegeId: $('#privilegeId').val().trim(),
+                artifactName: $('#artifactName').val().trim(),
+                createDate: $('#createDate').val().trim()
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

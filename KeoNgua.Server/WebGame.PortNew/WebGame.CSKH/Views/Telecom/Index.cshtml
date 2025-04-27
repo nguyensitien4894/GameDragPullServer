@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "Cấu hình mức phí đại lý";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Models.Telecoms
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Cấu hình  nhà mạng
+        </div>
+        <div class="options">
+            <a href="@Url.Action("Create")" class="t-button">@AppConstants.CONFIG.ADD_NEW</a>
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="submit" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Danh sách
+    </h2>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<TelecomOperatorModel>()
+                    .Name("settings-grid")
+                    .DataKeys(x => { x.Add(y => y.ID); })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.OperatorName).Width(800);
+                        columns.Bound(x => x.Rate);
+                        columns.Bound(x => x.ExchangeRate);
+                        columns.Bound(x => x.Status).ClientTemplate("<#= Status ? 'Hoạt động' : 'Tạm dừng' #>");
+                        columns.Bound(x => x.ExchangeStatus).ClientTemplate("<#= ExchangeStatus ? 'Hoạt động' : 'Tạm dừng' #>");
+                        columns.Bound(x => x.ActiveByNPP).ClientTemplate("<#= ActiveByNPP ? 'Hoạt động' : 'Bị khóa' #>");
+                        columns.Bound(x => x.serviceId).Title("Cổng");
+                        columns.Bound(x => x.ID)
+                        .Width(100)
+                        .Template(x => Html.ActionLink("Edit", "Edit", new { id = x.ID }))
+                        .ClientTemplate(
+                            "<a href=\"Edit/<#= ID #>\">" + AppConstants.CONFIG.EDIT + "</a>&nbsp"  ).Title(" ");
+                    })
+
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetList", "Telecom");
+                    })
+                    .ClientEvents(x => x.OnError("grid_onError").OnEdit("grid_onEdit").OnDataBinding("onDataBinding"))
+                    .EnableCustomBinding(true))
+
+                <script type="text/javascript">
+                    function grid_onError(e) {
+                        alert(e.XMLHttpRequest.responseText);
+                        e.preventDefault();
+                    }
+
+                    function grid_onEdit(e) {
+                        $(e.form).find('#serviceId').attr('readonly', true);
+                    }
+
+                    function onDataBinding(e) {
+                        var searchModel = {
+                            serviceId: $('#serviceId').val().trim(),
+                        };
+                        e.data = searchModel;
+                    }
+
+                    $(document).ready(function () {
+                        $('#btnSearch').click(function () {
+                            var grid = $('#settings-grid').data('tGrid');
+                            grid.currentPage = 1; //new search. Set page size to 1
+                            grid.ajaxRequest();
+                            return false;
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
+}
+
+

@@ -1,0 +1,48 @@
+﻿@model MsWebGame.CSKH.Models.DemoModel
+
+@using Telerik.Web.Mvc.UI;
+@Html.ValidationSummary(true)
+@Html.HiddenFor(model => model.Id)
+<div class="t-widget t-tabstrip t-header">
+    <div class="t-content t-state-active" style="display: block;">
+        <table class="adminContent customer-info-tab">
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model => model.Name):
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model => model.Subject):
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model => model.Subject)
+                    @Html.ValidationMessageFor(model => model.Subject)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model => model.Body):
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model => model.Body, "RichEditor")
+                    @Html.ValidationMessageFor(model => model.Body)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model => model.AllowedTokens):
+                </td>
+                <td class="adminData">
+                    @Html.DisplayFor(model => model.AllowedTokens)
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+</div>
+

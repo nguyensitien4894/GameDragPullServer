@@ -1,0 +1,160 @@
+﻿    @using MsWebGame.CSKH.Database.DTO
+@using TraditionGame.Utilities.Utils
+@model List<UserBankRequest>
+@{ 
+    var status =(List<SelectListItem>) ViewBag.GetStatus;
+}
+<link href="~/Content/label.css" rel="stylesheet" />
+<style>
+    .adminContent tr:nth-child(even) {
+        background-color: #e4cfcf;
+    }
+
+    .adminContent td {
+        width: 1px;
+        white-space: nowrap;
+    }
+</style>
+<div class="t-widget t-grid" id="userCardSwap-grid">
+    <table cellspacing="0">
+        <thead class="t-grid-header">
+            
+                <th class="t-header"  ><span class="t-link">&nbsp; </span></th>
+                
+               
+                <th class="t-header"  ><span class="t-link">Mã giao dịch</span></th>
+                <th class="t-header"  ><span class="t-link">Nickname</span></th>
+                <th class="t-header"  ><span class="t-link">Ngày tạo giao dịch</span></th>
+   
+                <th class="t-header" ><span class="t-link">Tỷ giá</span></th>
+                <th class="t-header" ><span class="t-link">Tên ngân hàng</span></th>
+                <th class="t-header" ><span class="t-link">Tên tài khoản</span></th>
+                <th class="t-header" ><span class="t-link">Số tài khoản</span></th>
+                <th class="t-header" ><span class="t-link">Tiền nhận</span></th>
+                
+                <th class="t-header" ><span class="t-link">Tiền tiêu thụ </span></th>
+                <th class="t-header"  ><span class="t-link">Trạng thái </span></th>
+                <th class="t-header"  ><span class="t-link">Hành động</span></th>
+                
+                
+
+                
+             
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                 
+                       
+
+                   
+                    <tr>
+                        <td>@item.ServieName</td>
+                        
+                       
+                        <td>@item.RequestID</td>
+                        
+
+                        <td>@item.DisplayName</td>
+                        <td>@item.RequestDate</td>
+                        <td>
+                            
+                               @item.Rate
+      
+                           
+                        </td>
+                        <td>
+                            @item.BankName
+                       
+                        </td>
+                        <td>
+                            @item.Description
+                       
+                        </td>
+                        <td>
+                            @item.BankNumber
+                       
+                        </td>
+                        <td>
+                            @if (item.RequestType == 1)
+                            {
+                                @item.ReceivedMoney.Value.LongToMoneyFormat()
+                            }
+                            else
+                            {
+                                @item.Amount.LongToMoneyFormat()
+                            }
+                       
+                        </td>
+                        
+                       
+                        <td>
+                            @if (item.RequestType == 1)
+                            {
+                                @item.Amount.LongToMoneyFormat()
+                            }
+                            else
+                            {
+                                @item.ReceivedMoney.LongToMoneyFormat()
+                            }
+
+                        </td>
+                       <td>
+                           <span class="@item.ColorCss">@(status.FirstOrDefault(c => c.Value == item.Status.ToString()).Text)</span> 
+
+                        </td>
+                        <td class="t-last" style="width: 200px; text-align: center;">
+                            @if ( item.Status == 0)
+                            {
+                                <a href="javascript:GlobalHeader.userBankSwapExamine(@item.UserID, @item.RequestID, 1);" class="t-button">Chuyển tự động</a>
+                                <a href="javascript:GlobalHeader.userBankSwapManual(@item.UserID, @item.RequestID, 1);" class="t-button">Chuyển thủ công</a>
+                                <a href="javascript:GlobalHeader.userBankSwapExamine(@item.UserID,@item.RequestID, -2);" class="t-button">Từ chối</a>
+                            }
+                        </td>
+              
+                       
+                        
+                    </tr>
+
+                }
+            }
+        </tbody>
+    </table>
+
+
+
+    <div class="t-grid-pager t-grid-bottom">
+        <div class="t-pager t-reset">
+            <a class="t-link t-state-disabled" href="javascript:GlobalHeader.getBankListRut(1);">
+                <span class="t-icon t-arrow-first">first</span>
+            </a>
+            <a class="t-link t-state-disabled" href="javascript:GlobalHeader.getBankListRut(@ViewBag.Prev);">
+                <span class="t-icon t-arrow-prev">prev</span>
+            </a>
+            <div class="t-numeric">
+
+                @for (int i = ViewBag.Start; i <= ViewBag.End; i++)
+                {
+                    if (i == ViewBag.CurrentPage)
+                    {
+                        <span class="t-state-active">@(i)</span>
+                    }
+                    else
+                    {
+                        <a href="javascript:GlobalHeader.getBankListRut(@(i));" class="t-link">@(i)</a>
+                    }
+                }
+            </div>
+            <a class="t-link" href="javascript:GlobalHeader.getBankListRut(@ViewBag.Next);">
+                <span class="t-icon t-arrow-next">next</span>
+            </a>
+            <a class="t-link" href="javascript:GlobalHeader.getBankListRut(@ViewBag.TotalPage);">
+                <span class="t-icon t-arrow-last">last</span>
+            </a>
+        </div>
+        <div class="t-status-text">Displaying items @ViewBag.StartIndex - @ViewBag.EndIndex of @ViewBag.TotalRecord</div>
+    </div>
+
+</div>

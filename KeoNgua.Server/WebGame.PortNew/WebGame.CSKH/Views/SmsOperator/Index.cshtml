@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "Cấu hình mức phí đại lý";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@using MsWebGame.CSKH.Models.SmsOperators
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+    </div>
+
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="submit" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Danh sách
+    </h2>
+            <table class="adminContent">
+                <tr>
+                    <td>
+                        @(Html.Telerik().Grid<SmsOperatorModel>()
+                    .Name("settings-grid")
+                    .DataKeys(x => { x.Add(y => y.ID); })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.ID).Hidden();
+                        columns.Bound(x => x.ServiceID).Hidden();
+                        columns.Bound(x => x.OperatorName);
+                        columns.Bound(x => x.OperatorCode);
+                        columns.Bound(x => x.Status);
+                        columns.Bound(x => x.Telecom).Title(" momo");
+
+                        columns.Command(commands =>
+                        {
+                            commands.Edit().Text(AppConstants.CONFIG.EDIT);
+                        }).Width(200);
+                    })
+                    .Editable(x => { x.Mode(GridEditMode.InLine); })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetList", "SmsOperator").Update("Update", "SmsOperator");
+                    })
+                    .ClientEvents(x => x.OnError("grid_onError").OnEdit("grid_onEdit").OnDataBinding("onDataBinding"))
+                    .EnableCustomBinding(true))
+
+                        <script type="text/javascript">
+                            function grid_onError(e) {
+                                alert(e.XMLHttpRequest.responseText);
+                                e.preventDefault();
+                            }
+
+                            function grid_onEdit(e) {
+                                $(e.form).find('#OperatorName').attr('readonly', true);
+                                $(e.form).find('#OperatorCode').attr('readonly', true);
+                                $(e.form).find('#Telecom').attr('readonly', true);
+                                
+                                $id = parseInt($(e.form).find('#Id').val());
+
+
+
+
+
+                            }
+
+                            function onDataBinding(e) {
+                                var searchModel = {
+                                    serviceId: $('#serviceId').val().trim()
+                                };
+                                e.data = searchModel;
+                            }
+
+                            $(document).ready(function () {
+                                $('#btnSearch').click(function () {
+                                    var grid = $('#settings-grid').data('tGrid');
+                                    grid.currentPage = 1; //new search. Set page size to 1
+                                    grid.ajaxRequest();
+                                    return false;
+                                });
+                            });
+                        </script>
+                    </td>
+                </tr>
+            </table>
+}
+

@@ -1,0 +1,17 @@
+﻿@using MsWebGame.CSKH.Utils
+@model  MsWebGame.CSKH.Models.XoSoModel
+@{
+    //page title
+    ViewBag.Title = AppConstants.CONFIG.ADD_NEW;
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            @AppConstants.CONFIG.ADD_NEW
+        </div>
+       
+    </div>
+    @Html.Partial("_CreateOrUpdate", Model)
+}

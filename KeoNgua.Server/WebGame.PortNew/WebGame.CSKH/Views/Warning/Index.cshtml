@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "Cảnh báo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .box.box-info {
+    border-top-color: #00c0ef;
+}
+
+.box {
+    position: relative;
+    border-radius: 3px;
+    background: #ffffff;
+    border-top: 3px solid #d2d6de;
+    margin-bottom: 20px;
+    width: 100%;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+.box-header.with-border {
+    border-bottom: 1px solid #f4f4f4;
+}
+.box-header {
+    color: #444;
+    display: block;
+    padding: 10px;
+    position: relative;
+}
+</style>
+<div class="content-wrapper" style="min-height: 868px;">
+ 
+       
+            <h1>
+                Cảnh báo 
+            </h1>
+        
+        <div class="content">
+            <div class="row">
+                <div class="col-md-12">
+                   
+                   
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box box-info " id="bestsellers-report-quantity-box">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">
+                                        <i class="fa fa-star"></i>
+                                        Cảnh báo nạp thẻ
+                                        <a class="btn btn-xs btn-info btn-flat margin-l-10" href="@Url.Action("Details","Warning",new { type = 1 })">Xem chi tiết</a>
+                                    </h3>
+                                  
+                                </div>
+            
+                                <div class="box-body">
+                                    @Html.Action("WarningShot", "Warning", new { type = 1 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box box-info " id="bestsellers-report-amount-box">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">
+                                        <i class="fa fa-star-o"></i>
+                                        Cảnh báo nạp bank
+                                        <a class="btn btn-xs btn-info btn-flat margin-l-10" href="@Url.Action("Details","Warning",new { type = 2 })">Xem chi tiết</a>
+                                    </h3>
+                                   
+                                </div>
+                      
+                                <div class="box-body">
+                                    @Html.Action("WarningShot", "Warning",new {type=2 })
+                                  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="box box-info " id="bestsellers-report-quantity-box">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">
+                                    <i class="fa fa-star"></i>
+                                    Cảnh báo gift code
+
+                                    <a class="btn btn-xs btn-info btn-flat margin-l-10" href="@Url.Action("Details","Warning",new { type = 3 })">Xem chi tiết</a>
+                                </h3>
+                               
+                            </div>
+
+                            <div class="box-body">
+                                @Html.Action("WarningShot", "Warning", new { type = 3 })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="box box-info " id="bestsellers-report-quantity-box">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">
+                                    <i class="fa fa-star"></i>
+                                    Cảnh báo momo
+
+                                    <a class="btn btn-xs btn-info btn-flat margin-l-10" href="@Url.Action("Details","Warning",new { type = 5 })">Xem chi tiết</a>
+                                </h3>
+
+                            </div>
+
+                            <div class="box-body">
+                                @Html.Action("WarningShot", "Warning", new { type = 5 })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    </div>

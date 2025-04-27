@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "Lịch sử chơi game";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@model HistoryPlay
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            Lịch sử chơi game
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Phiên</label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="spinid" type="text">
+                </td>
+            </tr>
+        <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Danh sách
+    </h2>
+    <link href="~/Content/label.css" rel="stylesheet" />
+    <style>
+        .adminContent tr:nth-child(even) {
+            background-color: #f7f7f7;
+        }
+
+        .adminContent td {
+            width: 1px;
+            white-space: nowrap;
+        }
+    </style>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<HistoryPlay>()
+                    .Name("historyPlay-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.GameTypeFormat).Title("Game");
+                        columns.Bound(x => x.AccountID).Title("AccountID").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.OrgBalanceFormat).Title("Số dư trước Bet").HtmlAttributes(new { @class = "text-right" });
+
+                        columns.Bound(x => x.BetValueFormat).Title("Cược").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.BalanceFormat).Title("Số dư sau Bet").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.PrizeValueFormat).Title("Thưởng").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.RefundValueFormat).Title("Hoàn").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.SpinID).Title("Phiên");
+
+                        columns.Bound(x => x.Description).Title("Miêu tả");
+                        columns.Bound(x => x.PlayTime).Title("Thời gian chơi").Format("{0:dd/MM/yyyy HH:mm:ss}");
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetHistoryPlayTaiXiu", "CustomerSupport");
+                    })
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#historyPlay-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+                SpinID: $('#spinid').val().trim()
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

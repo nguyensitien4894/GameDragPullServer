@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Lịch sử nạp thẻ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@using TraditionGame.Utilities.Utils
+@using MsWebGame.CSKH.Database.DTO
+@using System.Linq;
+@model List<CardRechargeProgress>
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Tiến độ nạp thẻ theo ngày
+        </div>
+    </div>
+    <table style="float: left; width: 40%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="submit" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="adminContent">
+        <tr>
+            <td>
+                <div id="hisCardRechard">
+                    <div class="t-widget t-grid" id="userCardSwap-grid">
+                        <table cellspacing="0">
+                            <thead class="t-grid-header">
+                                <tr>
+                                    <th class="t-header" scope="col"><span class="t-link">Ngày tháng </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Tổng nạp thẻ </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Tổng giá trị</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Any())
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+
+                                            <td>@item.DateRecharge</td>
+                                            <td class="text-right">@item.TotalQuantity</td>
+                                            <td class="text-right">@item.TotalRechargeValue.LongToMoneyFormat()</td>
+
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                <tfoot>
+                                    <tr>
+                                        <td><span class="t-link"><b>Thống kê</b></span></td>
+                                        <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.TotalQuantity).Sum().IntToMoneyFormat()</b> </span></td>
+                                        <td class="text-right"><span class="t-link"><b>@Model.Select(a => a.TotalRechargeValue).Sum().LongToMoneyFormat() </b></span></td>
+                                </tfoot>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+}
+
+
+

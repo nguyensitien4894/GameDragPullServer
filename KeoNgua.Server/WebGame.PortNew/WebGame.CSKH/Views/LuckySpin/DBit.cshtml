@@ -1,0 +1,111 @@
+﻿@using MsWebGame.CSKH.Utils
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Models.LuckySpin
+
+@{
+    ViewBag.Title = "Danh sách giải vòng quay lớn";
+}
+
+<h2>Danh sách giải vòng quay lớn</h2>
+
+@using (Html.BeginForm())
+{
+    @*<div class="section-header">
+        <div class="options">
+            <a href="@Url.Action("CreatePresentSpins")" class="t-button">@AppConstants.CONFIG.ADD_NEW</a>
+
+        </div>
+    </div>*@
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="submit" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<DBitModel>().Name("custom-grid")
+                    .DataKeys(x => { x.Add(y => y.PrizeID).RouteKey("PrizeID"); })
+                    .Columns(columns =>
+                    {
+
+                        columns.Bound(x => x.Name).Title("Tên giải").ReadOnly();
+                        columns.Bound(x => x.PrizeValue).Title("Giá trị").ReadOnly().HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.New).Title("Số giải người chơi mới").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.Stone).Title("Số giải hạng Đá").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.BronzeSilver).Title("Số giải hạng Đồng & Bạc").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.GoldDiamond).Title("Số giải hạng Vàng & Kim cương").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.ServiceID).Title("Service ID").HtmlAttributes(new { @class = "text-right" });
+                        columns.Command(commands => { commands.Edit().Text(AppConstants.CONFIG.EDIT); }).Width(200).Title("Hành động").HtmlAttributes(new { @class = "text-center" });
+                    })
+                    .Editable(x => { x.Mode(GridEditMode.InLine); })
+
+                    .Filterable()
+                    .Pageable(settings => settings.PageSize(100).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetDBitList", "LuckySpin")
+                            .Update("DBitUpdate", "LuckySpin");
+                    })
+                    .EnableCustomBinding(true)
+                   .ClientEvents(x => x.OnError("grid_onError").OnEdit("grid_onEdit").OnDataBinding("onDataBinding")))
+                    
+                )
+                <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#btnSearch').click(function () {
+                        var grid = $('#custom-grid').data('tGrid');
+                        console.log(grid);
+                        grid.currentPage = 1; //new search. Set page size to 1
+                        grid.ajaxRequest();
+                        return false;
+                    });
+                });
+
+                function onDataBinding(e) {
+                    var searchModel = {
+
+                        serviceId: $('#serviceId').val().trim(),
+
+
+                    };
+                    e.data = searchModel;
+                }
+                </script>
+                <script type="text/javascript">
+                    function grid_onError(e) {
+                        alert(e.XMLHttpRequest.responseText);
+                        e.preventDefault();
+                    }
+                    function grid_onEdit(e) {
+              
+                        $(e.form).find('#Name').attr('readonly', true);
+                        $(e.form).find('#ServiceID').attr('readonly', true);
+                    }
+
+                </script>
+            </td>
+        </tr>
+    </table>
+}
+
+

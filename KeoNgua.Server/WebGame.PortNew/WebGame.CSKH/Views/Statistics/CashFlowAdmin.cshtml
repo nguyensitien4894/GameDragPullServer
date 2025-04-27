@@ -1,0 +1,158 @@
+﻿@{
+    ViewBag.Title = "Thống kê luồng tiền Admin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@using TraditionGame.Utilities.Utils
+@using MsWebGame.CSKH.Database.DTO
+@model List<AdminRevenue>
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            Thống kê luồng tiền Admin
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Tài khoản admin</label>
+                </td>
+                <td class="adminData">
+                    <input id="nickname" name="nickName" value="@ViewBag.NickName" class="text-box single-line" />
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Loại đối tác</label>
+                </td>
+                <td class="adminData">
+                    <select id="partnerType" name="partnerType" class="text-box single-line">
+                        <option value="0">All</option>
+                        <option value="1">User</option>
+                        <option value="2">Đại lý</option>
+                        <option value="3">Admin</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Từ ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("fromDate").Value(DateTime.Today.AddDays(-7)).InputHtmlAttributes(new { @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Đến ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("toDate").Value(DateTime.Today).InputHtmlAttributes(new { @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                    <span class="field-validation-valid" data-valmsg-for="serviceId"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="submit" class="t-button" value="@AppConstants.CONFIG.SEARCH" onclick="return cashFlowAdmin();" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="adminContent">
+        <tr>
+            <td>
+                <div id="admin-revenue">
+                        <div class="t-widget t-grid">
+                            <table cellspacing="0">
+                                <thead class="t-grid-header">
+                                    <tr>
+                                        <th class="t-header" scope="col"><span class="t-link">STT</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Username</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Nickname</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Tổng chuyển đại lý</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Tổng chuyển user</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Tổng chuyển admin</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Tổng chuyển</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Tổng nhận đại lý</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Tổng nhận user</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Tổng nhận admin</span></th>
+                                        <th class="t-header" scope="col"><span class="t-link">Tổng nhận</span></th>
+                                        @*<th class="t-header" scope="col"><span class="t-link">Action</span></th>*@
+                                    </tr>
+                                </thead>
+                                @if (Model != null && Model.Any())
+                                {
+                                    var i = 0;
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            i++;
+                                            <tr>
+                                                <td>@i</td>
+                                                <td>@item.UserName</td>
+                                                <td>@item.DisplayName</td>
+                                                <td class="text-right">@item.TotalOutAgencyAmount.LongToMoneyFormat()</td>
+                                                <td class="text-right">@item.TotalOutUserAmount.LongToMoneyFormat()</td>
+                                                <td class="text-right">@item.TotalOutAdminAmount.LongToMoneyFormat()</td>
+                                                <td class="text-right">
+                                                    @((item.TotalOutAgencyAmount
+                                                    + item.TotalOutUserAmount
+                                                    + item.TotalOutAdminAmount).LongToMoneyFormat())
+                                                </td>
+                                                <td class="text-right">@item.TotalInAgencyAmount.LongToMoneyFormat()</td>
+                                                <td class="text-right">@item.TotalInUserAmount.LongToMoneyFormat()</td>
+                                                <td class="text-right">@item.TotalInAdminAmount.LongToMoneyFormat()</td>
+                                                <td class="text-right">
+                                                    @((item.TotalInAgencyAmount
+                                                    + item.TotalInUserAmount
+                                                    + item.TotalInAdminAmount).LongToMoneyFormat())
+                                                </td>
+                                                @*<td class="text-center">
+                                                        <a href="@Url.Action("CashFlow", "Admin", new { username = ViewBag.NickName })">Chi tiết</a>
+                                                    </td>*@
+                                            </tr>
+                                        }
+                                    </tbody>
+                                }
+                            </table>
+                        </div>
+                    </div>
+            </td>
+        </tr>
+    </table>
+    <script>
+        function cashFlowAdmin() {
+            var nickname = $('#nickname').val().trim();
+            var serviceid = $('#serviceId').val();
+            if (nickname != null && nickname != '' && serviceid < 1) {
+                GlobalHeader.dataValMsgFor('serviceId', 'Vui lòng chọn cổng!')
+                $("#serviceId").focus();
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+}

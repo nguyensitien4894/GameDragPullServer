@@ -1,0 +1,107 @@
+﻿@using MsWebGame.CSKH.Database.DTO
+@model List<UserCardSwap>
+
+<div class="t-widget t-grid" id="userCardSwap-grid">
+    <table cellspacing="0">
+        <thead class="t-grid-header">
+            <tr>
+                <th class="t-header" scope="col"><span class="t-link">Tên đăng nhập</span></th>
+                <th class="t-header" scope="col"><span class="t-link">Nickname</span></th>
+            
+                <th class="t-header" scope="col"><span class="t-link">Số serial</span></th>
+                <th class="t-header" scope="col"><span class="t-link">Giá trị thẻ</span></th>
+                <th class="t-header" scope="col"><span class="t-link">Ngày mua</span></th>
+                <th class="t-header" scope="col"><span class="t-link">Trạng thái</span></th>
+                <th class="t-header" scope="col"><span class="t-link">Action</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.UserName</td>
+                        <td>@item.DisplayName</td>
+                        
+                        <td>@item.CardSerial</td>
+                        <td class="text-right">@TraditionGame.Utilities.Utils.MoneyExtension.LongToMoneyFormat(item.CardValue)</td>
+                        <td>@item.BuyDate</td>
+                        <td>@item.StatusStr</td>
+                        <td class="t-last" style="width: 200px; text-align: center;">
+                            @if ( item.Status == 2)
+                            {
+                                <a href="javascript:GlobalHeader.userCardSwapExamine(@item.UserCardSwapID, @item.AccountID, 1);" class="t-button">Đồng ý</a>
+                                <a href="javascript:GlobalHeader.userCardSwapExamine(@item.UserCardSwapID, @item.AccountID, 0);" class="t-button">Không đồng ý</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    @*<div class="t-grid-pager t-grid-bottom">
+        <div class="t-pager t-reset">
+            <a class="t-link t-state-disabled" href="javascript:GlobalHeader.getHistoryCardExchange(1);">
+                <span class="t-icon t-arrow-first">first</span>
+            </a>
+            <a class="t-link t-state-disabled" href="javascript:GlobalHeader.getHistoryCardExchange(@ViewBag.Prev);">
+                <span class="t-icon t-arrow-prev">prev</span>
+            </a>
+            <div class="t-numeric">
+                @for (int i = 0; i < ViewBag.TotalPage; i++)
+                {
+                    if (i == ViewBag.CurrentPage - 1)
+                    {
+                        <span class="t-state-active">@(i + 1)</span>
+                    }
+                    else
+                    {
+                        <a href="javascript:GlobalHeader.getHistoryCardExchange(@(i + 1));" class="t-link">@(i + 1)</a>
+                    }
+                }
+            </div>
+            <a class="t-link" href="javascript:GlobalHeader.getHistoryCardExchange(@ViewBag.Next);">
+                <span class="t-icon t-arrow-next">next</span>
+            </a>
+            <a class="t-link" href="javascript:GlobalHeader.getHistoryCardExchange(@ViewBag.TotalPage);">
+                <span class="t-icon t-arrow-last">last</span>
+            </a>
+        </div>
+        <div class="t-status-text">Displaying items @ViewBag.Start - @ViewBag.End of @ViewBag.TotalRecord</div>
+    </div>*@
+
+
+    <div class="t-grid-pager t-grid-bottom">
+        <div class="t-pager t-reset">
+            <a class="t-link t-state-disabled" href="javascript:GlobalHeader.getHistoryCardExchange(1);">
+                <span class="t-icon t-arrow-first">first</span>
+            </a>
+            <a class="t-link t-state-disabled" href="javascript:GlobalHeader.getHistoryCardExchange(@ViewBag.Prev);">
+                <span class="t-icon t-arrow-prev">prev</span>
+            </a>
+            <div class="t-numeric">
+
+                @for (int i = ViewBag.Start; i <= ViewBag.End; i++)
+                {
+                    if (i == ViewBag.CurrentPage)
+                    {
+                        <span class="t-state-active">@(i)</span>
+                    }
+                    else
+                    {
+                        <a href="javascript:GlobalHeader.getHistoryCardExchange(@(i));" class="t-link">@(i)</a>
+                    }
+                }
+            </div>
+            <a class="t-link" href="javascript:GlobalHeader.getHistoryCardExchange(@ViewBag.Next);">
+                <span class="t-icon t-arrow-next">next</span>
+            </a>
+            <a class="t-link" href="javascript:GlobalHeader.getHistoryCardExchange(@ViewBag.TotalPage);">
+                <span class="t-icon t-arrow-last">last</span>
+            </a>
+        </div>
+        <div class="t-status-text">Displaying items @ViewBag.StartIndex - @ViewBag.EndIndex of @ViewBag.TotalRecord</div>
+    </div>
+
+</div>

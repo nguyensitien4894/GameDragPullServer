@@ -1,0 +1,102 @@
+﻿@model MsWebGame.CSKH.Models.BankSecondary.BankSecondaryModel
+@using MsWebGame.CSKH.Utils
+<div class="t-content t-state-active" style="display: block;">
+    <table class="adminContent customer-info-tab">
+        <tr>
+            <td class="adminTitle">
+                <img src="~/Content/images/ico-help.gif">
+                <label>Chọn cổng</label>
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(m => m.ServiceID, new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                <label>@Html.LabelFor(m => m.BankName)  <span style="color:red;">*</span></label>
+            </td>
+            <td class="adminData">
+                @Html.TextBoxFor(m => m.BankName, new { @class = "text-box single-line", placeholder = "Tên chủ thẻ" })
+                @Html.ValidationMessageFor(m => m.BankName)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                <label>@Html.LabelFor(m => m.BankNumber) <span style="color:red;">*</span></label>
+            </td>
+            <td class="adminData">
+                @Html.TextBoxFor(m => m.BankNumber, new { @class = "text-box single-line", placeholder = "Số thẻ" })
+                @Html.ValidationMessageFor(m => m.BankNumber)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
+                <label>@Html.LabelFor(m => m.Status)  <span style="color:red;">*</span></label>
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(m => m.Status, new List<SelectListItem>
+                {
+                    new SelectListItem() {Value="True",Text="Hoạt động" },
+                    new SelectListItem() {Value="False",Text="Tạm dừng" },
+                }, new { @class = "text-box single-line" })
+                @Html.ValidationMessageFor(m => m.Status)
+
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="adminTitle">
+                <label>@Html.LabelFor(m => m.BankOperatorsSecondaryID)  <span style="color:red;">*</span></label>
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(m => m.BankOperatorsSecondaryID, new SelectList(ViewBag.listBank, "Value", "Text"), "--Chọn ngân hàng--", new { @class = "text-box single-line" })
+                @Html.ValidationMessageFor(m => m.BankOperatorsSecondaryID)
+
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle"></td>
+            <td class="adminData">
+                <input type="submit" name="save" class="t-button" value="@AppConstants.CONFIG.SAVE" />
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#ServiceID").change(function () {
+            var id = $("#ServiceID").val();
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetPartnersAndTeleByServiceID", "BankSecondary")',
+                data: { "ServiceID": id },
+                success: function (json, textStatus) {
+                    $('#TelecomOperatorsID').find('option').remove().end()
+                    $('#PartnerId').find('option').remove().end()
+
+                    json = json || {};
+                    teles = json.listTelecom;
+                    $("#TelecomOperatorsID").append('<option value=>' + 'Chọn nhà mạng' + '</option>');
+                    for (var i = 0; i < teles.length; i++) {
+                        $("#TelecomOperatorsID").append('<option value="' + teles[i].Value + '">' + teles[i].Text + '</option>');
+                    }
+                    parners = json.listPartners;
+                    $("#PartnerId").append('<option value=>' + 'Chọn đối tác với thẻ đặc biệt' + '</option>');
+                    for (var i = 0; i < parners.length; i++) {
+                        $("#PartnerId").append('<option value="' + parners[i].Value + '">' + parners[i].Text + '</option>');
+                    }
+
+                },
+                error: function () {
+                    alert("Data Not Found");
+                }
+            });
+        });
+    });
+</script>

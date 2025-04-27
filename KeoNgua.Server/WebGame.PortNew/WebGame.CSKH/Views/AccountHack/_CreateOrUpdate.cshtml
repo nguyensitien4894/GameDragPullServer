@@ -1,0 +1,49 @@
+﻿
+@model MsWebGame.CSKH.Models.AccountHack.AccountHackModel
+@using MsWebGame.CSKH.Utils
+<div class="t-content t-state-active" style="display: block;">
+    <table class="adminContent customer-info-tab">
+        <tr>
+            <td class="adminTitle">
+                <label>@Html.LabelFor(m => m.AccountBankName)  <span style="color:red;">*</span></label>
+            </td>
+            <td class="adminData">
+                @Html.TextBoxFor(m => m.AccountBankName, new { @class = "text-box single-line", placeholder = "Chủ tài khoản" })
+                @Html.ValidationMessageFor(m => m.AccountBankName)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                <label>@Html.LabelFor(m => m.BankName)  <span style="color:red;">*</span></label>
+            </td>
+            <td class="adminData">
+                @Html.TextBoxFor(m => m.BankName, new { @class = "text-box single-line", placeholder = "Ngân hàng" })
+                @Html.ValidationMessageFor(m => m.BankName)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                <label>@Html.LabelFor(m => m.AccountBankNumber)  <span style="color:red;">*</span></label>
+            </td>
+            <td class="adminData">
+                @Html.TextBoxFor(m => m.AccountBankNumber, new { @class = "text-box single-line", placeholder = "STK Ngân hàng" })
+                @Html.ValidationMessageFor(m => m.AccountBankNumber)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                <label>@Html.LabelFor(m => m.Reason)  <span style="color:red;">*</span></label>
+            </td>
+            <td class="adminData">
+                @Html.TextBoxFor(m => m.Reason, new { @class = "text-box single-line", placeholder = "Mô tả" })
+                @Html.ValidationMessageFor(m => m.Reason)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle"></td>
+            <td class="adminData">
+                <input type="submit" onclick="return GlobalHeader.validationSetGiftcode(0);" name="save" class="t-button" value="@AppConstants.CONFIG.SAVE" />
+            </td>
+        </tr>
+    </table>
+</div>

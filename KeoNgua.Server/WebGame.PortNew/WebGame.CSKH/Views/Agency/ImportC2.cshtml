@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = " Import đại lý cấp 2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@model MsWebGame.CSKH.Models.Agencies.ListImportC2Model
+
+@using (Html.BeginForm("ImportC2", "Agency", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            Import đại lý cấp 2
+        </div>
+    </div>
+    <table style="width: 100%">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img alt="A billing email address." src="~/Content/images/ico-help.gif" title="Tên đăng nhập">
+                    @Html.LabelFor(m => m.ParrentID):
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(model => model.ParrentID, Model.listAgencyOne, "--Chọn đại lý cha--", new { @class = "form-control single-line text-box " })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img alt="A billing email address." src="~/Content/images/ico-help.gif" title="Tên đăng nhập">
+                    Upload Files
+                </td>
+                <td class="adminData">
+                    <input type="file" name="file" id="file" />
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="submit" id="btnImport" class="t-button" style="margin-top: 6px;" value="@AppConstants.CONFIG.IMPORTEXCEL">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    if (Model.listSuccess != null && Model.listSuccess.Any())
+    {
+        <p style="color:green">Danh sách đại lý import thành công. Số lượng :@Model.listSuccess.Count()</p>
+        <table class="adminContent">
+            <tr>
+                <td>
+                    @(Html.Telerik().Grid<TmpAgencyC2>()
+                        .Name("custom-grid-success")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(x => x.AccountName).Width(100);
+                            columns.Bound(x => x.DisplayName).Width(100);
+                            columns.Bound(x => x.FullName).Width(100);
+                            columns.Bound(x => x.AccountLevel).Width(100);
+                            columns.Bound(e => e.ParentID).Width(100);
+                            columns.Bound(e => e.Status).Width(100);
+                            columns.Bound(e => e.AreaName).Width(100);
+                            columns.Bound(e => e.PhoneNo).Width(100);
+                            columns.Bound(e => e.PhoneDisplay).Width(100);
+                            columns.Bound(e => e.FBLink).Width(100);
+                            columns.Bound(e => e.Result).Width(100);
+                            columns.Bound(e => e.Description).Width(100);
+                        })
+                        .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                        .BindTo(Model.listSuccess)
+                        .EnableCustomBinding(true))
+                </td>
+            </tr>
+        </table>
+    }
+
+    if (Model.ListError != null && Model.ListError.Any())
+    {
+        <p style="color:red">Danh sách đại lý import  không thành công.Số lượng :@Model.ListError.Count()</p>
+        <table class="adminContent">
+            <tr>
+                <td>
+                    @(Html.Telerik().Grid<TmpAgencyC2>()
+                        .Name("custom-grid-error")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(x => x.AccountName).Width(100);
+                            columns.Bound(x => x.DisplayName).Width(100);
+                            columns.Bound(x => x.FullName).Width(100);
+                            columns.Bound(x => x.AccountLevel).Width(100);
+                            columns.Bound(e => e.ParentID).Width(100);
+                            columns.Bound(e => e.Status).Width(100);
+                            columns.Bound(e => e.AreaName).Width(100);
+                            columns.Bound(e => e.PhoneNo).Width(100);
+                            columns.Bound(e => e.PhoneDisplay).Width(100);
+                            columns.Bound(e => e.FBLink).Width(100);
+                            columns.Bound(e => e.Result).Width(100);
+                            columns.Bound(e => e.Description).Width(100);
+                        })
+                        .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                        .BindTo(Model.ListError)
+                        .EnableCustomBinding(true))
+                </td>
+            </tr>
+        </table>
+    }
+}

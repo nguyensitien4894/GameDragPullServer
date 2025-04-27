@@ -1,0 +1,185 @@
+﻿@model  MsWebGame.CSKH.Models.Complains.ComplainModel
+
+
+<table class="pure-table pure-table-horizontal">
+    @Html.HiddenFor(m => m.ComplainID)
+    <tr>
+        <td colspan="3" style="text-align:center;color:red"><h2>Xử lý khiếu nại  </h2></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><b>Người Bán Bit</b></td>
+        <td><b>Người Mua Bit</b></td>
+    </tr>
+    <tr>
+        <td><b>Tên đăng nhập</b></td>
+        <td>@Model.CreateUserName</td>
+        <td>@Model.ReceiveUserName</td>
+    </tr>
+    <tr>
+        <td><b>Tên hiển thị</b></td>
+        <td>@Model.CreateUserDisplayName</td>
+        <td>@Model.ReceiveUserDisplayName</td>
+    </tr>
+    <tr>
+        <td><b>Số điện thoại Otp</b></td>
+        <td>@Model.CreatePhoneOtp</td>
+        <td>@Model.ReceivePhoneOtp</td>
+    </tr>
+    <tr>
+        <td><b>Số điện thoại liên hệ</b></td>
+        <td>@Model.CreatePhoneContact</td>
+        <td>@Model.ReceivePhoneContact</td>
+    </tr>
+    <tr style="border-top:1px solid black">
+        <td colspan="3" style="text-align:center;"><b>Kết quả gọi điện lần 1</b></td>
+    </tr>
+
+
+    @{
+        var process1 = Model.list.FirstOrDefault(c => c.No == 1);
+    }
+    @if (process1 == null)
+    {
+        <tr>
+            <td><b>Kết quả gọi điện lần 1</b></td>
+            <td>
+                <textarea id="CreateResult_1" cols="50" rows="6"></textarea>
+            </td>
+            <td><textarea id="ReceiveResult_1" cols="50" rows="6"></textarea></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td colspan="2"><input type="button" value="Cập nhật lần 1" onclick="GlobalHeader.ProcessRequest(1)" /></td>
+
+        </tr>
+    }
+    else
+    {
+        <tr>
+            <td><b>Kết quả gọi điện lần 1</b></td>
+            <td>
+                @Html.TextAreaFor(m => process1.CreateResult, new { cols = "50", rows = "6", @readonly = "readonly",style= "background-color: gray;" })  
+            
+            </td>
+            <td>
+                  @Html.TextAreaFor(m => process1.ReceiveResult, new { cols = "50", rows = "6", @readonly = "readonly", style = "background-color: gray;" })  
+
+            </td>
+        </tr>
+            <tr>
+                <td><b>Tài khoản xử lý</b></td>
+                <td colspan="2">
+                   @process1.AdminUserName
+                </td>
+
+            </tr>
+            <tr>
+                <td><b>Thời gian gọi điện</b></td>
+                <td colspan="2">
+                    @process1.Create
+                </td>
+
+            </tr>
+    }
+
+
+
+    @{
+        var process2 = Model.list.FirstOrDefault(c => c.No == 2);
+    }
+    <tr>
+        <td colspan="3" style="text-align:center;"><b>Kết quả gọi điện lần 2</b></td>
+    </tr>
+    @if (process2 == null)
+    {
+       
+        <tr>
+            <td><b>Kết quả gọi điện lần 2</b></td>
+            <td><textarea id="CreateResult_2" cols="50" rows="6"></textarea></td>
+            <td><textarea id="ReceiveResult_2" cols="50" rows="6"></textarea></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td colspan="2"><input type="button" value="Cập nhật lần 2" onclick="GlobalHeader.ProcessRequest(2)" /></td>
+
+        </tr>
+    }
+    else
+    {
+        <tr>
+            <td><b>Kết quả gọi điện lần 2</b></td>
+            <td>
+                @Html.TextAreaFor(m => process2.CreateResult, new { cols = "50", rows = "6", @readonly = "readonly", style = "background-color: gray;" })
+
+            </td>
+            <td>
+                @Html.TextAreaFor(m => process2.ReceiveResult, new { cols = "50", rows = "6", @readonly = "readonly", style = "background-color: gray;" })
+
+            </td>
+        </tr>
+        <tr>
+            <td><b>Tài khoản xử lý</b></td>
+            <td colspan="2">
+                @process2.AdminUserName
+            </td>
+            </tr>
+        <tr>
+            <td><b>Thời gian gọi điện</b></td>
+            <td colspan="2">
+                @process2.Create
+            </td>
+
+        </tr>
+    }
+    @{
+        var process3 = Model.list.FirstOrDefault(c => c.No == 3);
+    }
+    <tr>
+        <td colspan="3" style="text-align:center;"><b>Kết quả gọi điện lần 3</b></td>
+    </tr>
+
+    @if (process3 == null)
+    {
+        
+        <tr>
+            <td><b>Kết quả gọi điện lần 3</b></td>
+            <td><textarea id="CreateResult_3" cols="50" rows="6"></textarea></td>
+            <td><textarea id="ReceiveResult_3" cols="50" rows="6"></textarea></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td colspan="2"><input type="button" value="Cập nhật lần 3" onclick="GlobalHeader.ProcessRequest(3)" /></td>
+
+        </tr>
+       
+    }
+    else
+    {
+        <tr>
+            <td><b>Kết quả gọi điện lần 3</b></td>
+            <td>
+                @Html.TextAreaFor(m => process3.CreateResult, new { cols = "50", rows = "6", @readonly = "readonly", style = "background-color: gray;" })
+
+            </td>
+            <td>
+                @Html.TextAreaFor(m => process3.ReceiveResult, new { cols = "50", rows = "6", @readonly = "readonly", style = "background-color: gray;" })
+
+            </td>
+        </tr>
+        <tr>
+            <td><b>Tài khoản xử lý</b></td>
+            <td colspan="2">
+                @process3.AdminUserName
+            </td>
+
+        </tr>
+        <tr>
+            <td><b>Thời gian gọi điện</b></td>
+            <td colspan="2">
+                @process3.Create
+            </td>
+
+        </tr>
+    }
+</table>

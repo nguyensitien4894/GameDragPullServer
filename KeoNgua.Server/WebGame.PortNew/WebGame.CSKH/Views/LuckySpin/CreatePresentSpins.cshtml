@@ -1,0 +1,67 @@
+﻿@using MsWebGame.CSKH.Utils
+@using Telerik.Web.Mvc.UI;
+@model  MsWebGame.CSKH.Models.LuckySpin.PresentSpinsModel
+@Html.ValidationSummary(true)
+@{
+    //page title
+    ViewBag.Title = AppConstants.CONFIG.ADD_NEW;
+}
+@using (Html.BeginForm("InsertPresentSpins", "LuckySpin", FormMethod.Post))
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            @AppConstants.CONFIG.ADD_NEW @Html.ActionLink("(" + AppConstants.CONFIG.BACK + ")", "PresentSpins")
+        </div>
+        <div class="options">
+            <input type="submit" name="save" class="t-button" value="@AppConstants.CONFIG.SAVE" />
+            
+        </div>
+    </div>
+
+    <div class="t-widget t-tabstrip t-header">
+        <div class="t-content t-state-active" style="display: block;">
+            <table class="adminContent customer-info-tab">
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Chọn cổng</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.LabelFor(model => model.StartDate):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.StartDate, new { @class = "text-box single-line" })
+                        @Html.ValidationMessageFor(model => model.StartDate)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.LabelFor(model => model.EndDate):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.EndDate, new { @class = "text-box single-line" })
+                        @Html.ValidationMessageFor(model => model.EndDate)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.LabelFor(model => model.Quantity):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.Quantity, new { @class = "text-box single-line" })
+                        @Html.ValidationMessageFor(model => model.Quantity)
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+
+}

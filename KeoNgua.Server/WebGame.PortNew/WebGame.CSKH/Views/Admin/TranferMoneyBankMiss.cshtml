@@ -1,0 +1,123 @@
+﻿@{
+    ViewBag.Title = "Nạp bank miss";
+}
+
+@using TraditionGame.Utilities.Utils;
+@model MsWebGame.CSKH.Models.Param.ParsTransfer
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">Nạp bank miss</div>
+    </div>
+    <div class="t-widget t-tabstrip t-header">
+        <div class="t-content t-state-active" style="display: block;">
+            <table class="adminContent customer-info-tab">
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <span id="txttransferMsg" class="@(ViewBag.Message == "Chuyển khoản thành công" ? "txttransferMsgSuccess" : "txttransferMsg")">@ViewBag.Message</span>
+                    </td>
+                </tr>
+                <!-- <tr>
+                    <td class="adminTitle">
+                        <label>Số dư</label>
+                    </td>
+                    <td class="adminData" id="wallet">
+                        <span class="balancetransfer">@MoneyExtension.LongToMoneyFormat(Model.balance)</span>
+                    </td>
+                </tr> -->
+                <!-- <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Chọn cổng</label>
+                    </td>
+                    <td class="adminData">
+                      @Html.DropDownList("ServiceID", new SelectList(ViewBag.ServiceBox, "Value", "Text",Model.ServiceID),new { @class = "text-box single-line" })
+                    </td>
+                </tr> -->
+                <tr>
+                    <td class="adminTitle">
+                        <label>Nickname nhận <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        <input class="text-box single-line" id="receiverName" name="receiverName" value="@Model.receiverName" type="text"
+                               onblur="GlobalHeader.validateUserTransfer(1);">
+                        <span class="field-validation-valid" data-valmsg-for="receiverName"></span>
+                    </td>
+                </tr>
+
+
+                 <tr>
+                    <td class="adminTitle">
+                        <label>Loại cộng tiền</label>
+                    </td>
+                    <td class="adminData">
+                        <br><input type="radio" id="walletType" name="walletType" value="0" checked="checked">
+                        <label for="html">Nạp mã lỗi (+125% +20%)</label><br>
+                        <input type="radio" id="walletType" name="walletType" value="1">
+                        <label for="css">Sai nội dung (+125%)</label><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Số tiền nhận <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        <input class="text-box single-line" id="amount" name="amount" type="text" value="@Model.amount" onkeypress="return GlobalHeader.isNumber(event);"
+                               onkeyup="GlobalHeader.changeNumber(this)" onblur="GlobalHeader.bindDataTransferAmount();">
+                        <span class="field-validation-valid" data-valmsg-for="amount"></span><br><br>
+                        <span style="user-select: none; cursor: pointer; border:none; outline: none; border-radius: 5px; padding: 5px 15px 5px 15px; background-color: #e6e6e6" onclick="document.getElementById('amount').value = Number(document.getElementById('amount').value.replaceAll('.', '')) + 10000;GlobalHeader.changeNumber(document.getElementById('amount'))">10k</span>
+                        <span style="user-select: none; cursor: pointer;border:none; outline: none; border-radius: 5px; padding: 5px 15px 5px 15px; background-color: #e6e6e6" onclick="document.getElementById('amount').value = Number(document.getElementById('amount').value.replaceAll('.', '')) + 20000;GlobalHeader.changeNumber(document.getElementById('amount'))">20k</span>
+                        <span style="user-select: none; cursor: pointer;border:none; outline: none; border-radius: 5px; padding: 5px 15px 5px 15px; background-color: #e6e6e6" onclick="document.getElementById('amount').value = Number(document.getElementById('amount').value.replaceAll('.', '')) + 50000;GlobalHeader.changeNumber(document.getElementById('amount'))">50k</span>
+                        <span style="user-select: none; cursor: pointer;border:none; outline: none; border-radius: 5px; padding: 5px 15px 5px 15px; background-color: #e6e6e6" onclick="document.getElementById('amount').value = Number(document.getElementById('amount').value.replaceAll('.', '')) + 100000;GlobalHeader.changeNumber(document.getElementById('amount'))">100k</span>
+                        <span style="user-select: none; cursor: pointer;border:none; outline: none; border-radius: 5px; padding: 5px 15px 5px 15px; background-color: #e6e6e6" onclick="document.getElementById('amount').value = Number(document.getElementById('amount').value.replaceAll('.', '')) + 200000;GlobalHeader.changeNumber(document.getElementById('amount'))">200k</span>
+                        <span style="user-select: none; cursor: pointer;border:none; outline: none; border-radius: 5px; padding: 5px 15px 5px 15px; background-color: #e6e6e6" onclick="document.getElementById('amount').value = Number(document.getElementById('amount').value.replaceAll('.', '')) + 500000;GlobalHeader.changeNumber(document.getElementById('amount'))">500k</span>
+                        <span style="user-select: none; cursor: pointer;border:none; outline: none; border-radius: 5px; padding: 5px 15px 5px 15px; background-color: #e6e6e6" onclick="document.getElementById('amount').value = Number(document.getElementById('amount').value.replaceAll('.', '')) + 1000000;GlobalHeader.changeNumber(document.getElementById('amount'))">1000k</span>
+                        <span style="user-select: none; cursor: pointer;border:none; outline: none; border-radius: 5px; padding: 5px 15px 5px 15px; background-color: #e6e6e6" onclick="document.getElementById('amount').value = 0;GlobalHeader.changeNumber(document.getElementById('amount'))">Xóa</span>
+                    <br><br>
+                    </td>
+                </tr>
+                <br>
+                 <!-- <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <span style="color: red;">Phí chuyển @(Model.transfee * 100)%</span>
+                        <input type="hidden" id="transfee" name="transfee" value="@Model.transfee">
+                    </td>
+                </tr> -->
+                 <!--<tr>
+                    <td class="adminTitle">
+                        <label>Số tiền thực chuyển</label>
+                    </td>
+                    <td class="adminData">
+                        <input class="text-box single-line" id="orgAmount" name="orgAmount" value="@Model.orgAmount" type="text" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Nội dung</label>
+                    </td>
+                    <td class="adminData">
+                        <textarea id="note" name="note" rows="6">@Model.note</textarea>
+                        <span class="field-validation-valid" data-valmsg-for="note"></span>
+                    </td>
+                </tr> -->
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <input type="submit" onclick="return GlobalHeader.validationFormTransfer(1);" name="save" class="t-button" value="Chuyển" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txttransferMsg').html('');
+            }, 4000);
+        });
+    </script>
+}

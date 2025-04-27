@@ -1,0 +1,31 @@
+﻿@using TraditionGame.Utilities.Utils;
+@model MsWebGame.CSKH.Database.DTO.GiftcodeProgress
+
+@if (Model != null && Model.QuantityTotal > 0)
+{
+    <div class="giftcodeProgress">
+        Tổng số lượng: <span>@MoneyExtension.LongToMoneyFormat(Model.QuantityTotal)</span>
+        Còn lại: <span>@MoneyExtension.LongToMoneyFormat(Model.AvailableQuantityTotal)</span>
+        Tổng tiền: <span>@MoneyExtension.LongToMoneyFormat(Model.ValueTotal)</span>
+        Số tiền còn lại: <span>@MoneyExtension.LongToMoneyFormat(Model.AvailableVallueTotal)</span>
+    </div>
+}
+else
+{
+    <div class="giftcodeProgress">Không tìm thấy kết quả thống kê giftcode</div>
+}
+<style>
+    .giftcodeProgress {
+        margin-top: 48px;
+        font-size: 16px;
+    }
+
+        .giftcodeProgress span {
+            margin-right: 12px;
+            color: #009FFF;
+            font-weight: 550;
+        }
+</style>
+
+
+

@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "Lịch sử nạp thẻ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Database.DTO
+@using MsWebGame.CSKH.Utils
+@model IEnumerable<CardRechargeTopList>
+
+@using (Html.BeginForm("CardReport", "Card", FormMethod.Get, new { enctype = "multipart/form-data" }))
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Thống kê
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                   @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Từ ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DateTimePicker().Name("fromDate").Value(ViewBag.FromDate).InputHtmlAttributes(new { @readonly = "readonly" })
+                    <span class="field-validation-valid" data-valmsg-for="fromDate"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Đến ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DateTimePicker().Name("toDate").Value(ViewBag.ToDate).InputHtmlAttributes(new { @readonly = "readonly" })
+                    <span class="field-validation-valid" data-valmsg-for="toDate"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="submit" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <style>
+        .adminContent tr:nth-child(even) {
+            background-color: #b7e2b7;
+        }
+    </style>
+
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<CardRechargeTopList>()
+                        .Name("grid")
+                        .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                        .Columns(columns =>
+                        {
+                            columns.Bound(x => x.CreatedTime).Width(100);
+                            columns.Bound(x => x.DisplayName).Width(100);
+                            columns.Bound(x => x.ChargeCntFormat).Width(100).Title("Số lần nạp thẻ");
+                            columns.Bound(x => x.AmountChargeFormat).Title("Số tiền nạp").Width(100);
+                            columns.Bound(e => e.AmountUserChargeFormat).Title("Số b nhận").Width(100);
+                            columns.Bound(x => x.UserID).Width(100)
+                         .Template(x => Html.ActionLink("Edit", "Edit", new { id = x.UserID }))
+                         .ClientTemplate(
+                     "<a href=\"javascript: GlobalHeader.UpdateBlackList(<#= UserID #>,1)\">" + "Add Black list" + "</a>&nbsp"
+                     ).Title(" ").HtmlAttributes(new { @class = "text-center" });
+                        })
+                        .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                                         .DataBinding(dataBinding => dataBinding.Ajax().Select("CardReportList", "Card"))
+                                       .EnableCustomBinding(true))
+
+        </tr>
+    </table>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#btnSearch').click(function () {
+                        var grid = $('#grid').data('tGrid');
+                        console.log(grid);
+                        grid.currentPage = 1; //new search. Set page size to 1
+                        grid.ajaxRequest();
+                        return false;
+                    });
+                });
+
+                function onDataBinding(e) {
+                    var searchModel = {
+                        fromDate: $('#fromDate').val().trim(),
+                        serviceId: $('#serviceId').val().trim(),
+                        toDate: $('#toDate').val().trim(),
+
+                    };
+                    e.data = searchModel;
+                }
+            </script>
+}
+
+
+

@@ -1,0 +1,128 @@
+﻿@using MsWebGame.CSKH.Utils
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Models.LuckySpin
+@model ReportModel
+
+@{
+    ViewBag.Title = "Báo cáo vòng quay nhỏ";
+}
+
+<h2>Báo cáo vòng quay nhỏ</h2>
+@using (Html.BeginForm())
+{
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(m => m.StartDate):
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("StartDate")
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(m => m.EndDate):
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("EndDate")
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(m => m.Username):
+                </td>
+                <td class="adminData">
+                    @Html.TextBoxFor(m => m.Username, new { @class = "text-box single-line", @onkeypress = "GlobalHeader.inputKeypress(event.keyCode);" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(m => m.Rank):
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(m => m.Rank, new SelectList(ViewBag.PartialRanks, "Rank", "RankName"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(m => m.PrizeID):
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(m => m.PrizeID, new SelectList(ViewBag.PartialPrizes, "PrizeID", "Name"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(m => m.FreeSpinID):
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(m => m.FreeSpinID, new SelectList(ViewBag.PartialFreeSpins, "FreeSpinID", "Name"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(m => m.ServiceID, new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<ReportModel>()
+                    .Name("AccountReport-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.SpinID);
+                        columns.Bound(x => x.DateSpin).Format("{0:dd/MM/yyyy}");
+                        columns.Bound(x => x.Username);
+                        columns.Bound(x => x.RankName);
+                        columns.Bound(x => x.PrizeName).Title("Vòng quay lớn");
+                        columns.Bound(x => x.FreeSpinName).Title("Vòng quay nhỏ");
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("AccountReportSearch", "LuckySpin");
+                    })
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#AccountReport-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+                FreeSpinID: $('#@Html.IdFor(model => model.FreeSpinID)').val().trim(),
+                PrizeID: $('#@Html.IdFor(model => model.PrizeID)').val().trim(),
+                Rank: $('#@Html.IdFor(model => model.Rank)').val().trim(),
+                Username: $('#@Html.IdFor(model => model.Username)').val().trim(),
+                StartDate: $('#@Html.IdFor(model => model.StartDate)').val().trim(),
+                EndDate: $('#@Html.IdFor(model => model.EndDate)').val().trim(),
+                ServiceID: $('#@Html.IdFor(model => model.ServiceID)').val().trim()
+            };
+            e.data = searchModel;
+        }
+    </script>
+
+}

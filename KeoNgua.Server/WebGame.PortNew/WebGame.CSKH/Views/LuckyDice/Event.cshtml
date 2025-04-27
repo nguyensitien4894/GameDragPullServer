@@ -1,0 +1,68 @@
+﻿@using MsWebGame.CSKH.Utils
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Models.LuckyDice
+@model EventModel
+
+@{
+    ViewBag.Title = "Giải triệu hồi";
+}
+
+<h2>Danh sách cấu hình</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            
+        </div>
+        <div class="options">
+            <a href="@Url.Action("AddOrUpdateEvent")" class="t-button">@AppConstants.CONFIG.ADD_NEW</a>
+
+        </div>
+    </div>
+
+
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<EventModel>()
+                    .Name("custom-grid")
+                    .DataKeys(x => { x.Add(y => y.EventID).RouteKey("EventID"); })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.BetValueMin).Format("{0:#,##}").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.QuantityCordStr).HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.PrizeValueMinMaxStr).HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.QuantityAwardCordInitStr).HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.EventTimesStr);
+                        columns.Bound(x => x.EventDays);
+                        columns.Bound(x => x.EventID).Title("Hành động").ReadOnly()
+                          .Template(x => Html.ActionLink("Update", "Update", new { EventID = x.EventID }))
+                          .ClientTemplate("<a href=\"UpdateEvent?EventID=<#= EventID #>\">" + AppConstants.CONFIG.EDIT + "</a>"
+                            + "&ensp;&ensp;<a onclick=\"return GlobalHeader.ConfirmDelete();\" href=\"DeleteEvent?EventID=<#= EventID #>\">" + AppConstants.CONFIG.DELETE + "</a>").HtmlAttributes(new { @class = "text-center" });
+                    })
+                    .Editable(x => { x.Mode(GridEditMode.InLine); })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetEventList", "LuckyDice");
+                    })
+                )
+                    
+
+            </td>
+        </tr>
+    </table>
+
+    <script type="text/javascript">
+       
+        function grid_onError(e) {
+            alert(e.XMLHttpRequest.responseText);
+            e.preventDefault();
+        }
+        function grid_onEdit(e) {
+        }
+    </script>
+}
+
+

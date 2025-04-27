@@ -1,0 +1,128 @@
+﻿@{
+    ViewBag.Title = "Thống kê trúng hũ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            Thống kê trúng hũ
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn game <span style="color:red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    <select id="gameId" name="gameId" class="text-box single-line">
+                        <option value="0">Tất cả</option>
+                        @foreach (var item in ViewBag.GameBox)
+                        {
+                            <option value="@item.Value">@item.Name</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Từ ngày <span style="color:red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DateTimePicker().Name("from").Value(DateTime.Today.AddDays(-7))
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Đến ngày <span style="color:red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DateTimePicker().Name("to").Value(DateTime.Now)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Danh sách
+    </h2>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<TrackingJackpot>()
+                    .Name("statisticsJackpot-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.UserName).Title("Nickname");
+                        columns.Bound(x => x.JackpotNumFormat).Title("Số hũ").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.FromDate).Title("Từ ngày").Format("{0:dd/MM/yyyy HH:mm:ss}");
+                        columns.Bound(x => x.ToDate).Title("Đến ngày").Format("{0:dd/MM/yyyy HH:mm:ss}");
+                        columns.Bound(x => x.PeriodFormat).Title("Chu kỳ").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.TimeFrequencyFormat).Title("Tần suất").HtmlAttributes(new { @class = "text-right" });
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetStatisticsJackpot", "Statistics");
+                    })
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var from = $('#from').val().trim();
+                var to = $('#to').val().trim();
+
+                if (from == null || from == '') {
+                    $('#from').focus();
+                    return;
+                }
+                if (to == null || to == '') {
+                    $('#to').focus();
+                    return;
+                }
+
+                var grid = $('#statisticsJackpot-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+                gameId: $('#gameId').val(),
+                from: $('#from').val().trim(),
+                to: $('#to').val().trim(),
+                serviceId: $('#serviceId').val().trim()
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

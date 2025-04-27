@@ -1,0 +1,138 @@
+﻿@{
+    ViewBag.Title = "Cấu hình sự kiện";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Cấu hình sự kiện
+        </div>
+        <div class="options">
+            <a href="@Url.Action("EventAdd")" class="t-button">@AppConstants.CONFIG.ADD_NEW</a>
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn chiến dịch <span style="color:red;">*</span></label>
+                </td>
+                <td class="adminData">
+                   <select id="campaignId" name="campaignId" class="text-box single-line">
+                        <option value="0">--Chọn chiến dịch--</option>
+                        @foreach (var item in ViewBag.CampaignBox)
+                        {
+                            <option value="@item.Value">@item.Name</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn game</label>
+                </td>
+                <td class="adminData">
+                    <select id="gameId" name="gameId" class="text-box single-line">
+                        <option value="0">Tất cả</option>
+                        @foreach (var item in ViewBag.GameBox)
+                        {
+                            <option value="@item.Value">@item.Name</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn phòng</label>
+                </td>
+                <td class="adminData">
+                    <select id="roomId" name="roomId" class="text-box single-line">
+                        @foreach (var item in ViewBag.RoomBox)
+                        {
+                            <option value="@item.Value">@item.Name</option>
+                        }
+
+                        <option value="1">Phòng 1K(Block Buster)</option>
+                        <option value="2">Phòng 2K(Block Buster)</option>
+                        <option value="3">Phòng 5K(Block Buster)</option>
+                        <option value="4">Phòng 10K(Block Buster)</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Danh sách
+    </h2>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<GameEvent>()
+                    .Name("event-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.CampaignName).Title("Chiến dịch");
+                        columns.Bound(x => x.GameIDFormat).Title("Game");
+                        columns.Bound(x => x.RoomIDFormat).Title("Phòng");
+                        columns.Bound(x => x.CurrentJackpotValueFormat).Title("Hũ hiện tại").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.JackpotEventInitFormat).Title("Giá trị hũ sự kiện").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.JackpotEventQuota).Title("Số lượng hũ sự kiện").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.JackpotStepJump).Title("Bước nhảy").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.EventDayFormat).Title("Ngày sự kiện");
+                        columns.Bound(x => x.EventTime).Title("Thời gian sự kiện");
+                        columns.Bound(x => x.EffectDate).Title("Ngày hiệu lực").Format("{0:dd/MM/yyyy}");
+                        columns.Bound(x => x.ExpiredDate).Title("Ngày hết hạn").Format("{0:dd/MM/yyyy}");
+                        columns.Bound(x => x.StatusFormat).Title("Trạng thái");
+                        columns.Bound(x => x.Description).Title("Miêu tả");
+                        columns.Bound(x => x.ID)
+                        .Width(80)
+                        .Template(x => Html.ActionLink("EventEdit", "EventEdit", new { id = x.ID }))
+                        .ClientTemplate("<a href=\"EventEdit?campaignId=<#= CampaignID #>&gameId=<#= GameID #>&roomId=<#= RoomID #>\">" + AppConstants.CONFIG.EDIT + "</a>")
+                        .Title("Action").HtmlAttributes(new { @class = "text-center" });
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetListEvent", "Setting");
+                    })
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#event-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+                campaignId: $('#campaignId').val(),
+                gameId: $('#gameId').val(),
+                roomId: $('#roomId').val()
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Danh sách mail hệ thống";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Models.SystemMails
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Danh sách mail hệ thống
+        </div>
+        <div class="options">
+            <a href="@Url.Action("Create")" class="t-button">@AppConstants.CONFIG.ADD_NEW</a>
+        </div>
+
+    </div>
+
+    <h2>
+        Danh sách
+    </h2>
+
+
+  
+
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<SystemMailModel>()
+                    .Name("settings-grid")
+                    .DataKeys(x => { x.Add(y => y.ID); })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.Title);
+
+                        columns.Bound(x => x.Content);
+                        columns.Bound(x => x.CreateTime);
+                        columns.Bound(x => x.StatusStr);
+                        columns.Bound(x => x.ID)
+                        .Width(100)
+                        .Template(x => Html.ActionLink("Edit", "SystemMail", new { id = x.ID }))
+                        .ClientTemplate("<a href=\"Edit/<#= ID #>\">" + AppConstants.CONFIG.EDIT + "</a>")
+                        .Title("");
+                    })
+
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetList", "SystemMail");
+                    })
+                    .ClientEvents(x => x.OnError("grid_onError").OnEdit("grid_onEdit").OnDataBinding("onDataBinding"))
+                    .EnableCustomBinding(true))
+
+                <script type="text/javascript">
+                    function grid_onError(e) {
+                        alert(e.XMLHttpRequest.responseText);
+                        e.preventDefault();
+                    }
+
+                    function grid_onEdit(e) {
+
+                    }
+
+                    function onDataBinding(e) {
+                        var searchModel = {
+                            
+                        }
+                        e.data = searchModel
+                    }
+
+                    $(document).ready(function () {
+                        $('#btnSearch').click(function () {
+                            var grid = $('#settings-grid').data('tGrid');
+                            grid.currentPage = 1; //new search. Set page size to 1
+                            grid.ajaxRequest();
+                            return false;
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
+}
+
+
+

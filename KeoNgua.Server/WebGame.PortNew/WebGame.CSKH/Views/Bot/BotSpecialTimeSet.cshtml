@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "Quản trị BOT";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Models.Bot
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@model TimeSetModel
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            Tra cứu thời gian BOT đặc biệt(cân kèo) của TÀI-XỈU
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    Tài khoản BOT:
+                </td>
+                <td class="adminData">
+                    @Html.TextBoxFor(m => m.BotName, new { @class = "text-box single-line", @onkeypress = "GlobalHeader.inputKeypress(event.keyCode);" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    Thời gian bắt đầu:
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().TimePicker().Name("StartTime").Format("HH:mm")
+                </td>
+            </tr>
+
+            <tr>
+                <td class="adminTitle">
+                   Thời gian kết thúc:
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().TimePicker().Name("FinishTime").Format("HH:mm")
+                </td>
+            </tr>
+           
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Danh sách
+    </h2>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<BotModel>()
+                    .Name("timeset-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.BotName);
+                        columns.Bound(x => x.StartTime).ClientTemplate("<#= StartTime.Hours #> : <#= StartTime.Minutes  #>").Title("Thời gian bắt đầu");
+                        columns.Bound(x => x.FinishTime).ClientTemplate("<#= FinishTime.Hours #> : <#= FinishTime.Minutes  #>").Title("Thời gian kết thúc");
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetBotSpecialTimeSetList", "Bot");
+                    })
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#timeset-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+                BotName: $('#@Html.IdFor(model => model.BotName)').val().trim(),
+                StartTime: $('#@Html.IdFor(model => model.StartTime)').val().trim(),
+                FinishTime: $('#@Html.IdFor(model => model.FinishTime)').val().trim()
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "Tiến trình VP";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">Tiến trình VP</div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>Danh sách</h2>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<VpProgress>()
+                    .Name("vpprogress-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.period).Title("Thời gian");
+                        columns.Bound(x => x.totalFormat).Title("Tổng Vp").HtmlAttributes(new { @class = "text-right" });
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetVpProgress", "CustomerSupport");
+                    })
+                    .EnableCustomBinding(true))
+
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $('#btnSearch').click(function () {
+                            var grid = $('#vpprogress-grid').data('tGrid');
+                            grid.currentPage = 1; //new search. Set page size to 1
+                            grid.ajaxRequest();
+                            return false;
+                        });
+                    });
+
+                    function onDataBinding(e) {
+                        var searchModel = {
+                            serviceId: $('#serviceId').val().trim()
+                        };
+                        e.data = searchModel;
+                    }
+                </script>
+            </td>
+        </tr>
+    </table>
+}

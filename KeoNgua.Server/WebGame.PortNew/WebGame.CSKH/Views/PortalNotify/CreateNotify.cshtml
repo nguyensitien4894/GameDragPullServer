@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Thêm mới notify";
+}
+
+@using MsWebGame.CSKH.Utils
+@model MsWebGame.CSKH.Database.DTO.PortalNotify
+@using Telerik.Web.Mvc.UI
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            @AppConstants.CONFIG.ADD_NEW
+        </div>
+        <div class="options">
+            <a href="@Url.Action("Index")" class="t-button">Quay lại</a>
+        </div>
+    </div>
+    <div class="t-widget t-tabstrip t-header">
+        <div class="t-content t-state-active" style="display: block;">
+            <table class="adminContent customer-info-tab">
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Chọn cổng</label>
+                    </td>
+                    <td class="adminData">
+                      @Html.DropDownList("ServiceID", new SelectList(ViewBag.ServiceBox, "Value", "Text",Model.ServiceID), new { @class = "text-box single-line" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Nội dung notify</label>
+                    </td>
+                    <td class="adminData">
+                        <textarea name="Content" style="width: 400px;" rows="6" placeholder="Nội dung notify" required></textarea>
+                        <span class="field-validation-valid" data-valmsg-for="Content"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <input type="submit" name="save" class="t-button" value="@AppConstants.CONFIG.SAVE" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}

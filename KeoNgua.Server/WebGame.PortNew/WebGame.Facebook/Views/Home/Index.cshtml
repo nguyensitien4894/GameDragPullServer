@@ -1,0 +1,254 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+@{
+    Layout = null;
+}
+<head>
+    <meta charset="UTF-8">
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+    <script src="~/Scripts/jquery.loading.min.js"></script>
+
+
+    <style type="text/css">
+        body {
+            font-family: "popup";
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+            background: #642B73; /* fallback for old browsers */
+            background: -webkit-linear-gradient(to top, #C6426E, #642B73); /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to top, #C6426E, #642B73); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        }
+
+        #main-success {
+            margin-top: 10px;
+        }
+
+            #main-success h4 {
+                margin-bottom: 10px;
+                text-transform: uppercase;
+            }
+        /* Style the form - display items horizontally */
+        .form-inline {
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
+        }
+
+            /* Add some margins for each label */
+            .form-inline label {
+                margin: 5px 10px 5px 0;
+            }
+
+            /* Style the input fields */
+            .form-inline input {
+                vertical-align: middle;
+                margin: 5px 10px 5px 0;
+                padding: 10px;
+                background-color: #fff;
+                border: 1px solid #ddd;
+            }
+
+            .form-inline select {
+                vertical-align: middle;
+                margin: 5px 10px 5px 0;
+                padding: 10px;
+                background-color: #fff;
+                border: 1px solid #ddd;
+            }
+            /* Style the submit button */
+            .form-inline button {
+                padding: 10px 20px;
+                background-color: dodgerblue;
+                border: 1px solid #ddd;
+                color: white;
+            }
+
+        .btnDangNhap {
+            padding: 10px 20px;
+            background-color: dodgerblue;
+            border: 1px solid #ddd;
+            color: white;
+        }
+
+        .form-inline button:hover {
+            background-color: royalblue;
+        }
+
+        /* Add responsiveness - display the form controls vertically instead of horizontally on screens that are less than 800px wide */
+    </style>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            $("#frmOtp").hide();
+            $("#frmThongBao").show();
+            var inputRegist = { LoginType: 2, AccessToken: '@ViewBag.Token', DeviceId: 'web', DeviceType: 1, ReferUrl: '@ViewBag.UrlRegister' };
+
+            $.ajax({
+                type: "POST",
+                url: "@ViewBag.PortalURl",
+                data: JSON.stringify(inputRegist),
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.ResponseCode == 1) {
+                        location.href = '@ViewBag.Redirect' + "?access_token=" + data.Token;
+                    } else {
+                        if (data.ResponseCode == -3) {
+                            $("#frmOtp").show();
+                            $("#frmThongBao").hide();
+                        }
+                        if (data.ResponseCode == -10009) {
+                            alert(data.Message);
+                        }
+
+                    }
+                },
+                fail: function (fail) {
+                    console.log("Loi");
+                }
+            });
+        });
+    </script>
+
+
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+
+            $("#btnGetOtp").click(function () {
+                $("#spnMsg").html('');
+                $Type = $("#OtpType").val();
+                var inputRegist = { LoginType: 2, AccessToken: '@ViewBag.Token', DeviceId: 'web', DeviceType: 1, Type: $Type };
+
+                $.ajax({
+                    type: "POST",
+                    url: "@ViewBag.OtpLoginUrl",
+                    data: JSON.stringify(inputRegist),
+                    contentType: "application/json; charset=utf-8",
+                    crossDomain: true,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.ResponseCode == 1) {
+                            $("#spnMsg").html("Mã Otp đã gửi về số điện thoại của bạn ");
+                            $("#spnMsg").css('color', 'blue');
+                        } else {
+                            $("#spnMsg").css('color', 'red');
+                            $("#spnMsg").html(data.Message);
+
+                        }
+                    },
+                    fail: function (fail) {
+                        console.log("Loi");
+                    }
+                });
+
+
+            });
+
+        });
+
+
+
+    </script>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+
+            $("#btnSendOtp").click(function () {
+                $("#spnMsg").html('');
+                var Otp = $("#Otp").val();
+                if (Otp.length <= 0) {
+                    alert("Mã Otp không thể trống");
+                    return;
+                }
+                var inputRegist = { LoginType: 2, AccessToken: '@ViewBag.Token', DeviceId: 'web', DeviceType: 1, Otp: Otp };
+
+                $.ajax({
+                    type: "POST",
+                    url: "@ViewBag.PortalURl",
+                    data: JSON.stringify(inputRegist),
+                    contentType: "application/json; charset=utf-8",
+                    crossDomain: true,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.ResponseCode == 1) {
+                            location.href = '@ViewBag.Redirect' + "?access_token=" + data.Token;
+                        } else {
+                            $("#spnMsg").css('color', 'red');
+                            $("#spnMsg").html(data.Message);
+                        }
+                    },
+                    fail: function (fail) {
+                        console.log("Loi");
+                    }
+                });
+
+
+            });
+
+
+        });
+
+
+
+    </script>
+</head>
+<body style="text-align: center;" class="d-flex justify-content-center">
+    <div id="main-success">
+        <div id="frmThongBao">
+            <h4 class="text-uppercase">Quá trình đăng nhập đang xử lý !</h4>
+            <p>
+                <b>
+                    Vui lòng chờ trong  giây lát  để chuyển
+                    về trang chủ game
+                </b>
+            </p>
+        </div>
+
+
+
+        <form id="frmOtp">
+            <h4 class="text-uppercase">Tài khoản yêu cầu bảo mật Otp !</h4>
+            <div class="form-inline">
+                <input type="text" id="Otp" placeholder="Mã Otp" name="Otp">
+
+                <select id="OtpType">
+                    <option value="1">SMS</option>
+                    <option value="10">App Safe</option>
+
+                </select>
+
+                <button type="button" id="btnGetOtp">Lấy Otp</button>
+            </div>
+            <b>
+                <p id="spnMsg"> </p>
+            </b>
+
+
+            <button type="button" id="btnSendOtp" class="btnDangNhap">Gửi Otp</button>
+        </form>
+
+    </div>
+
+
+
+</body>
+
+
+
+
+</html>

@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "Lịch sử đổi thẻ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+        Lịch sử đổi thẻ
+    </div>
+</div>
+<table style="width: 100%;">
+    <tbody>
+        <tr>
+            <td class="adminTitle">
+                <img src="~/Content/images/ico-help.gif">
+                <label>Chọn cổng</label>
+            </td>
+            <td class="adminData">
+               @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"),"--Chọn cổng--", new { @class = "text-box single-line" })
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                <img src="~/Content/images/ico-help.gif">
+                <label>Tên đăng nhập</label>
+            </td>
+            <td class="adminData">
+                <input class="text-box single-line" id="userName" type="text">
+                <span class="field-validation-valid" data-valmsg-for="userName"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                <img src="~/Content/images/ico-help.gif">
+                <label>NickName</label>
+            </td>
+            <td class="adminData">
+                <input class="text-box single-line" id="nickName" type="text" value="@ViewBag.NickName">
+                <span class="field-validation-valid" data-valmsg-for="nickName"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                <img src="~/Content/images/ico-help.gif">
+                <label>Mã thẻ</label>
+            </td>
+            <td class="adminData">
+                <input class="text-box single-line" id="cardNumber" type="text">
+                <span class="field-validation-valid" data-valmsg-for="cardNumber"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                <img src="~/Content/images/ico-help.gif">
+                <label>Số serial</label>
+            </td>
+            <td class="adminData">
+                <input class="text-box single-line" id="cardSerial" type="text">
+                <span class="field-validation-valid" data-valmsg-for="cardSerial"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                <img src="~/Content/images/ico-help.gif">
+                <label>Giá trị thẻ</label>
+            </td>
+            <td class="adminData">
+                <input class="text-box single-line" id="cardValue" type="text">
+                <span class="field-validation-valid" data-valmsg-for="cardValue"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                <img src="~/Content/images/ico-help.gif">
+                <label>Ngày mua</label>
+            </td>
+            <td class="adminData">
+                @Html.Telerik().DatePicker().Name("buyDate")
+                <span class="field-validation-valid" data-valmsg-for="buyDate"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                <img src="~/Content/images/ico-help.gif">
+                <label>Trạng thái</label>
+            </td>
+            <td class="adminData">
+                <select id="status" class="text-box single-line">
+                    @foreach (var item in ViewBag.TelecomStatusBox)
+                    {
+                        <option value="@item.Value">@item.Name</option>
+                    }
+                </select>
+                <span class="field-validation-valid" data-valmsg-for="status"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                &nbsp;
+            </td>
+            <td>
+                <input type="button" onclick="GlobalHeader.getHistoryCardExchange(1)" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="adminContent">
+    <tbody>
+        <tr>
+            <td>
+                <div id="hisCardExchange">
+                    @Html.Action("GetCardExChangeList", "Card")
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+

@@ -1,0 +1,331 @@
+﻿@{
+    ViewBag.Title = "Lịch sử nạp thẻ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@using MsWebGame.CSKH.Models.Cards
+@model UserCardRechardListModel
+@functions{
+    private bool IsDisplayFunction(string UserRoles)
+    {
+        string RoleCode = Session["RoleCode"].ToString();
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Lịch sử nạp thẻ
+        </div>
+    </div>
+    <div style="float: left; width: 50%;">
+        <table style="width: 100%;">
+            <tbody>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Chọn cổng</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"),"--Chọn cổng--", new { @class = "text-box single-line" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Mã thẻ</label>
+                    </td>
+                    <td class="adminData">
+                        <input class="text-box single-line" id="cardNumber" type="text">
+                        <span class="field-validation-valid" data-valmsg-for="cardNumber"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Serial thẻ</label>
+                    </td>
+                    <td class="adminData">
+                        <input class="text-box single-line" id="cardSerial" type="text">
+                        <span class="field-validation-valid" data-valmsg-for="cardSerial"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Giá trị thẻ</label>
+                    </td>
+                    <td class="adminData">
+                        
+                        @Html.DropDownListFor(m => m.cardValue, Model.listValue, "Chọn giá trị", new { @class = "text-box single-line " })
+                        <span class="field-validation-valid" data-valmsg-for="cardValue"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Nickname nạp</label>
+                    </td>
+                    <td class="adminData">
+                        <input class="text-box single-line" id="nickName" type="text" value="@ViewBag.NickName" >
+                        <span class="field-validation-valid" data-valmsg-for="nickName"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Chọn nhà mạng</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.DropDownListFor(m => m.TelOperatorID, Model.listTelecom, "Chọn nhà mạng", new { @class = "text-box single-line " })
+                        @*<select class="text-box single-line " id="telOperatorId">
+                            <option value="0">Chọn nhà mạng</option>
+                            <option value="1">Viettel</option>
+                            <option value="2">Vinaphone</option>
+                            <option value="3">Mobiphone</option>
+                            <option value="4">Vietnam Mobile</option>
+                        </select>
+                        <span class="field-validation-valid" data-valmsg-for="telOperatorId"></span>*@
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Trạng thái</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.DropDownListFor(m=>m.Status,Model.listStatus,"Chọn Trạng thái",new {@class="text-box single-line " })
+                        
+                        <span class="field-validation-valid" data-valmsg-for="Status"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Đối tác</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.DropDownListFor(m => m.PartnerID, Model.listPartner, "Chọn đối tác", new { @class = "text-box single-line " })
+
+                        <span class="field-validation-valid" data-valmsg-for="Status"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Sai mệnh giá</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.DropDownListFor(m => m.smg, Model.listSMG, "Tất cả", new { @class = "text-box single-line " })
+
+                        <span class="field-validation-valid" data-valmsg-for="Status"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Mã -99</label>
+                    </td>
+                    <td class="adminData">  
+                        <input id="PartnerErrorCode" type="checkbox" name="PartnerErrorCode" value="-99" > 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Từ ngày</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.Telerik().DateTimePicker().Name("fromDate")
+                        <span class="field-validation-valid" data-valmsg-for="fromDate"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Đến ngày</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.Telerik().DateTimePicker().Name("toDate")
+                        <span class="field-validation-valid" data-valmsg-for="toDate"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        &nbsp;
+                    </td>
+                    <td>
+                        <input type="button" onclick="GlobalHeader.getHistoryCardRechard(1)" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        if (IsDisplayFunction("ADMIN,CALLCENTER"))
+        {
+        <div style="float: right; width: 50%;">
+            <table>
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="color:red"><b >Chỉ hoàn tiền sai mệnh giá cho trạng thái (Nạp thất bại-Đang chờ xử lý)_Sau khi lên trang quản trị đối tác tra cứu</b></td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <img src="~/Content/images/ico-help.gif">
+                            <label>Mã Request</label>
+                        </td>
+                        <td class="adminData">
+                            <input type="text" id="Check_RequestID" class="text-box single-line" />
+                            <input type="button" id="btnCheck" class="t-button" value="Kiểm tra" onclick="javascript:GlobalHeader.GetCardRechardById();">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <img src="~/Content/images/ico-help.gif">
+                            <label>Tên hiển thị</label>
+                        </td>
+                        <td class="adminData">
+                            <input type="text" id="Check_NickName" class="text-box single-line"  readonly disabled/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <img src="~/Content/images/ico-help.gif">
+                            <label>Nhà mạng</label>
+                        </td>
+                        <td class="adminData">
+                            <input type="text" id="Check_Tele" class="text-box single-line"  readonly disabled/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <img src="~/Content/images/ico-help.gif">
+                            <label>Mã thẻ</label>
+                        </td>
+                        <td class="adminData">
+                            <input type="text" id="Check_CardNumber" class="text-box single-line" readonly disabled/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <img src="~/Content/images/ico-help.gif">
+                            <label>Serial</label>
+                        </td>
+                        <td class="adminData">
+                            <input type="text" id="Check_Serial" class="text-box single-line" readonly disabled />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <img src="~/Content/images/ico-help.gif">
+                            <label>Trạng thái</label>
+                        </td>
+                        <td class="adminData">
+                            <input type="text" id="Check_Status" class="text-box single-line" readonly disabled />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <img src="~/Content/images/ico-help.gif">
+                            <label>Giá trị yêu cầu</label>
+                        </td>
+                        <td class="adminData">
+                            <input type="text" id="Check_Value" class="text-box single-line" readonly disabled />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <img src="~/Content/images/ico-help.gif">
+                            <label>Giá trị hoàn trả</label>
+                        </td>
+                        <td class="adminData">
+                            
+                            @Html.DropDownListFor(m => m.Check_Refund, Model.listValue, "Chọn giá trị hoàn trả", new { @class = "text-box single-line " })
+                            @*<input type="number" id="Check_Refund" class="text-box single-line" />*@
+                        </td>
+                    </tr>
+                  
+                    <tr>
+                        <td class="adminTitle"></td>
+                        <td class="adminData">
+                            <input type="button"  id="GiftcodeProgress" class="t-button" value="Hoàn trả sai mệnh giá" onclick="javascript:GlobalHeader.RefundMoneyInValidCard();">
+                            <input type="button" id="GiftcodeProgress" class="t-button" value="Cập nhật thẻ không hỗ trợ(10K VMS-VNP)" onclick="javascript: GlobalHeader.NotDoAnyThing();">
+                            
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="bindGiftcodeProgress">
+            </div>
+        </div>
+        }
+
+
+        <table class="adminContent">
+            <tr>
+                <td>
+                    <div id="hisCardRechard">
+                        @Html.Action("GetCardRechardList", "Card")
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+
+        <script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#serviceId").change(function () {
+            var id = $("#serviceId").val();
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetPartnersAndTeleByServiceID", "Card")',
+                data: { "ServiceID": id },
+                success: function (json, textStatus) {
+                    $('#TelOperatorID').find('option').remove().end()
+                    $('#PartnerID').find('option').remove().end()
+
+                    json = json || {};
+                    teles = json.listTelecom;
+                    $("#TelOperatorID").append('<option value=>' + 'Chọn nhà mạng' + '</option>');
+                    for (var i = 0; i < teles.length; i++) {
+                        $("#TelOperatorID").append('<option value="' + teles[i].Value + '">' + teles[i].Text + '</option>');
+                    }
+                    parners = json.listPartners;
+                    $("#PartnerID").append('<option value=>' + 'Chọn đối tác ' + '</option>');
+                    for (var i = 0; i < parners.length; i++) {
+                        $("#PartnerID").append('<option value="' + parners[i].Value + '">' + parners[i].Text + '</option>');
+                    }
+
+                },
+                error: function () {
+                    alert("Data Not Found");
+                }
+            });
+        });
+    });
+        </script>
+
+}
+
+
+

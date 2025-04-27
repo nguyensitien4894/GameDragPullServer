@@ -1,0 +1,270 @@
+﻿@using MsWebGame.CSKH.Utils
+@model  MsWebGame.CSKH.Models.XoSoModel
+@using Telerik.Web.Mvc.UI
+@functions{
+    private bool IsDisplayMenu(string UserRoles)
+    {
+        string RoleCode = Session["RoleCode"] != null ? Session["RoleCode"].ToString() : string.Empty;
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    private bool IsDisplayMenuByUserName(string UserRoles)
+    {
+        string RoleCode = Session["UserName"] != null ? Session["UserName"].ToString() : string.Empty;
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+<div class="t-widget t-tabstrip t-header">
+    <div class="t-content t-state-active" style="display: block;">
+        <div style="float:left;width:50%;border:solid 1px medium">
+            <table class="adminContent customer-info-tab">
+          
+                <tr>
+                    <td class="adminTitle">
+                        <label>Ngày tháng</label>
+                    </td>
+                    <td class="adminData" colspan="3">
+                        @Html.Telerik().DatePickerFor(m => m.KetQuaDate).ClientEvents(x => x.OnChange("dateTimeOnChange"))
+
+
+                  
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Giải đặc biệt</label>
+                    </td>
+                    <td class="adminData">
+                        &nbsp;
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiDB, new { @class = "text-box single-line", @maxlength= ViewBag.Length1, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiDB)
+                    </td>
+                    <td class="adminData">
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Giải nhất</label>
+                    </td>
+                    <td class="adminData">
+                        &nbsp;
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiNhat, new { @class = "text-box single-line", maxlength = ViewBag.Length1, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiNhat)
+                    </td>
+                    <td class="adminData">
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Giải nhì</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiNhiMot, new { @class = "text-box single-line", maxlength = ViewBag.Length1, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiNhiMot)
+                    </td>
+                    <td class="adminData">
+                        &nbsp;
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiNhiHai, new { @class = "text-box single-line", maxlength = ViewBag.Length1, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiNhiHai)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Giải ba</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiBaMot, new { @class = "text-box single-line", maxlength = ViewBag.Length1, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiBaMot)
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiBaHai, new { @class = "text-box single-line", maxlength = ViewBag.Length1, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiBaHai)
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiBaBa, new { @class = "text-box single-line", maxlength = ViewBag.Length1, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiBaBa)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiBaBon, new { @class = "text-box single-line", maxlength = ViewBag.Length1, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiBaBon)
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiBaNam, new { @class = "text-box single-line", maxlength = ViewBag.Length1, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiBaNam)
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiBaSau, new { @class = "text-box single-line", maxlength = ViewBag.Length1, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiBaSau)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="adminTitle">
+                        <label>Giải tư</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiBonMot, new { @class = "text-box single-line", maxlength = ViewBag.Length2, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiBonMot)
+                    </td>
+                    <td class="adminData">
+                          &nbsp;
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiBonHai, new { @class = "text-box single-line", maxlength = ViewBag.Length2, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiBonHai)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiBonBa, new { @class = "text-box single-line", maxlength = ViewBag.Length2, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiBonBa)
+                    </td>
+                    <td class="adminData">
+                        &nbsp;
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiBonBon, new { @class = "text-box single-line", maxlength = ViewBag.Length2, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiBonBon)
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="adminTitle">
+                        <label>Giải năm</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiNamMot, new { @class = "text-box single-line", maxlength = ViewBag.Length2, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiNamMot)
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiNamHai, new { @class = "text-box single-line", maxlength = ViewBag.Length2, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiNamHai)
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiNamBa, new { @class = "text-box single-line", maxlength = ViewBag.Length2, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiNamBa)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiNamBon, new { @class = "text-box single-line", maxlength = ViewBag.Length2, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiNamBon)
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiNamNam, new { @class = "text-box single-line", maxlength = ViewBag.Length2, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiNamNam)
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiNamSau, new { @class = "text-box single-line", maxlength = ViewBag.Length2, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiNamSau)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Giải sáu</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiSauMot, new { @class = "text-box single-line",maxlength = ViewBag.Length3, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiSauMot)
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiSauHai, new { @class = "text-box single-line", maxlength = ViewBag.Length3, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiSauHai)
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiSauBa, new { @class = "text-box single-line", maxlength = ViewBag.Length3, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiSauBa)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Giải bảy</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiBayMot, new { @class = "text-box single-line", maxlength = ViewBag.Length4, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiBayMot)
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiBayHai, new { @class = "text-box single-line", maxlength = ViewBag.Length4, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiBayHai)
+                    </td>
+                    <td class="adminData">
+                        @Html.TextBoxFor(model => model.GiaiBayBa, new { @class = "text-box single-line", maxlength = ViewBag.Length4, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiBayBa)
+                       
+                    </td>
+                    <td class="adminData">
+                        
+                        @Html.TextBoxFor(model => model.GiaiBayBon, new { @class = "text-box single-line", maxlength = ViewBag.Length4, onkeypress = "return GlobalHeader.IsNumberKey(event)" })
+                        @Html.ValidationMessageFor(model => model.GiaiBayBon)
+                    </td>
+                </tr>
+                <tr>
+                   
+                    <td class="adminData" colspan="5" style="text-align:center">
+                        <input type="submit" name="save" class="t-button" value="@AppConstants.CONFIG.SAVE" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <div style="clear:both"></div>
+
+
+
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    function dateTimeOnChange(sender, e) {
+        $date = $("#KetQuaDate").val();
+        GlobalHeader.GetXoSoResult($date);
+    }
+</script>
+

@@ -1,0 +1,158 @@
+﻿@{
+    ViewBag.Title = "Danh mục thẻ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@using MsWebGame.CSKH.Database.DTO
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Danh mục thẻ
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Mã thẻ</label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="cardNumber" type="text">
+                    <span class="field-validation-valid" data-valmsg-for="cardNumber"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Serial thẻ</label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="cardSerial" type="text">
+                    <span class="field-validation-valid" data-valmsg-for="cardSerial"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn giá trị thẻ</label>
+                </td>
+                <td class="adminData">
+                    <select class="text-box single-line " id="cardValue">
+                        <option value="">Chọn thẻ</option>
+                        <option value="20000">Thẻ 20K</option>
+                        <option value="50000">Thẻ 50K</option>
+                        <option value="100000">Thẻ 100K</option>
+                        <option value="200000">Thẻ 200K</option>
+                        <option value="300000">Thẻ 300K</option>
+                        <option value="500000">Thẻ 500K</option>
+                        <option value="1000000">Thẻ 1000K</option>
+                    </select>
+                    <span class="field-validation-valid" data-valmsg-for="cardValue"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn nhà mạng</label>
+                </td>
+                <td class="adminData">
+                    <select class="text-box single-line " id="telOperatorId">
+                        <option value="0">Chọn nhà mạng</option>
+                        <option value="1">Viettel</option>
+                        <option value="2">Vinaphone</option>
+                        <option value="3">Mobiphone</option>
+                        <option value="4">Vietnam Mobile</option>
+                    </select>
+                    <span class="field-validation-valid" data-valmsg-for="telOperatorId"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn trạng thái</label>
+                </td>
+                <td class="adminData">
+                    <select class="text-box single-line " id="status">
+                        <option value="-1">Chọn trạng thái</option>
+                        <option value="1">Thành công</option>
+                        <option value="0">Thất bại</option>
+                    </select>
+                    <span class="field-validation-valid" data-valmsg-for="status"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<CardBankInfo>()
+                    .Name("cardCatalog-grid")
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.CardNumber).Title("Mã thẻ");
+                        columns.Bound(x => x.CardSerial).Title("Serial thẻ");
+                        columns.Bound(x => x.CardValueFormat).Title("Giá trị thẻ");
+                        columns.Bound(x => x.OperatorName).Title("Nhà mạng");
+                        columns.Bound(x => x.ExperiedDate).Title("Thời gian hết hạn");
+                        columns.Bound(x => x.IsUsed).Title("Sử dụng").ClientTemplate("<#= IsUsed ? 'Đã dùng' : 'Chưa dùng' #>");
+                        columns.Bound(x => x.Status).Title("Trạng thái").ClientTemplate("<#= Status ? 'Hoạt động' : 'Tạm dừng' #>");
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding => { dataBinding.Ajax().Select("GetListCardCatalog", "Card"); })
+                    .ClientEvents(x => x.OnError("grid_onError").OnDataBinding("onDataBinding"))
+                    .EnableCustomBinding(true))
+
+                <script type="text/javascript">
+                    function grid_onError(e) {
+                        alert(e.XMLHttpRequest.responseText);
+                        e.preventDefault();
+                    }
+
+                    function onDataBinding(e) {
+                        var searchModel = {
+                            cardNumber: $('#cardNumber').val().trim(),
+                            cardSerial: $('#cardSerial').val().trim(),
+                            cardValue: $('#cardValue').val().trim(),
+                            telOperatorId: $('#telOperatorId').val(),
+                            status: $('#status').val()
+                        }
+                        e.data = searchModel
+                    }
+
+                    $(document).ready(function () {
+                        $('#btnSearch').click(function () {
+                            var cardNumber = $('#cardNumber').val().trim();
+                            var cardSerial = $('#cardSerial').val().trim();
+                            var cardValue = $('#cardValue').val().trim();
+                            var telOperatorId = $('#telOperatorId').val();
+                            var status = $('#status').val();
+                            //if (cardNumber == '' && cardSerial == '' && cardValue == '' && telOperatorId == 0 && status == -1) {
+                            //    GlobalHeader.dataValMsgFor('cardNumber', 'Vui lòng chọn 1 điều kiện bất kỳ để tìm kiếm!');
+                            //    return;
+                            //}
+
+                            var grid = $('#cardCatalog-grid').data('tGrid');
+                            grid.currentPage = 1;
+                            grid.ajaxRequest();
+                            return false;
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
+}

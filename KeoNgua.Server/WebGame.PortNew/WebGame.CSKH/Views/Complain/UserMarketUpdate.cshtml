@@ -1,0 +1,39 @@
+﻿@using MsWebGame.CSKH.Utils
+@model  MsWebGame.CSKH.Database.DTO.Complain
+@{
+    ViewBag.Title = AppConstants.CONFIG.EDIT;
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            @AppConstants.CONFIG.EDIT
+        </div>
+        <div class="options">
+            <a href="@Url.Action("ComplainManager")" class="t-button">Quay lại</a>
+        </div>
+    </div>
+    @Html.HiddenFor(m => m.TransID)
+    @Html.HiddenFor(m => m.UserID)
+    <div class="t-widget t-tabstrip t-header">
+        <div class="t-content t-state-active" style="display: block;">
+            <table class="adminContent customer-info-tab">
+                <tr>
+                    <td class="adminTitle">
+                        @Html.LabelFor(model => model.RequestStatus):
+                    </td>
+                    <td class="adminData">
+                        @Html.DropDownListFor(m => m.RequestStatus, new SelectList(ViewBag.PartialRequestStatus, "Value", "Name"), new { @class = "text-box single-line" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <input type="submit" name="save" class="t-button" value="@AppConstants.CONFIG.SAVE" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}

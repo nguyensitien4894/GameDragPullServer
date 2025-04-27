@@ -1,0 +1,238 @@
+﻿@{
+    ViewBag.Title = "Lịch sử giao dịch";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@model MsWebGame.CSKH.Models.Param.ParsTransactionHistory
+@using (Html.BeginForm())
+{
+
+    <div class="section-header">
+        <div class="title">
+            Lịch sử giao dịch
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+
+                    @Html.DropDownList("ServiceID", new SelectList(ViewBag.ServiceBox, "Value", "Text", 1), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn loại tìm kiếm </label>
+                </td>
+                <td class="adminData">
+                    <select id="ObjectType" name="ObjectType" class="text-box single-line">
+                        <option value="1">Tên hiển thị</option>
+                        <option value="2">Số điện thoại</option>
+                        <option value="3">User name</option>
+                        <option value="4">UserID</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Giá trị tìm kiếm</label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="ObjectValue" name="ObjectValue" type="text" onkeypress="GlobalHeader.inputKeypress(event.keyCode);">
+                    <span class="field-validation-valid" data-valmsg-for="value"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn loại giao dịch</label>
+                </td>
+                <td class="adminData">
+                    <select id="SearchType" class="text-box single-line">
+                        <option value="0">--Chọn loại giao dịch--</option>
+                        @foreach (var item in ViewBag.GameBox)
+                        {
+                            <option value="@item.Value">@item.Name</option>
+                        }
+                    </select>
+                    <span class="field-validation-valid" data-valmsg-for="serviceId"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Loại đối tượng </label>
+                </td>
+                <td class="adminData">
+                    <select id="PartnerType" name="PartnerType" class="text-box single-line">
+                        <option value="0">--Tất cả--</option>
+                        <option value="1">Người dùng</option>
+                        <option value="2">Đại lý</option>
+                        <option value="23">Admin</option>
+
+                    </select>
+                    <span class="field-validation-valid" data-valmsg-for="serviceId"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Tên đối tác</label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="PartnerName" name="PartnerName" type="text" onkeypress="GlobalHeader.inputKeypress(event.keyCode);">
+                    <span class="field-validation-valid" data-valmsg-for="sessionId"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Loại giao dịch </label>
+                </td>
+                <td class="adminData">
+                    <select id="TransType" name="TransType" class="text-box single-line">
+                        <option value="0">--Tất cả--</option>
+                        <option value="1">Chuyển</option>
+                        <option value="2">Nhận</option>
+
+
+                    </select>
+                    <span class="field-validation-valid" data-valmsg-for="TransType"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Mã giao dịch</label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="TransCode" name="TransCode" type="text" onkeypress="GlobalHeader.inputKeypress(event.keyCode);">
+                    <span class="field-validation-valid" data-valmsg-for="sessionId"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Từ ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("StartDate").Value(DateTime.Today.AddDays(-7)).InputHtmlAttributes(new { @readonly = "readonly" })
+                    <span class="field-validation-valid" data-valmsg-for="startDate"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Đến ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("EndDate").Value(DateTime.Now.AddDays(1)).InputHtmlAttributes(new { @readonly = "readonly" })
+                    <span class="field-validation-valid" data-valmsg-for="endDate"></span>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Danh sách
+    </h2>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<TransactionHistory>()
+                .Name("transaction-grid")
+                .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                .Columns(columns =>
+                {
+                columns.Bound(x => x.TransCode).Title("Mã giao dịch");
+                columns.Bound(x => x.DisplayName).Title("Tên hiển thị");
+
+                columns.Bound(x => x.PartnerName).Title("Đối tác").HtmlAttributes( new { @class = "discontinued" });
+    columns.Bound(x => x.OrgBalanceFormat).Title("Số dư ban đầu").HtmlAttributes(new { @class = "text-right" });
+    columns.Bound(x => x.AmountFormat).Title("Phát sinh").HtmlAttributes(new { @class = "text-right" });
+    columns.Bound(x => x.AmountFeeFormat).Title("Phí").HtmlAttributes(new { @class = "text-right" });
+    columns.Bound(x => x.RemainBalanceFormat).Title("Số dư còn lại ").HtmlAttributes(new { @class = "text-right" });
+    columns.Bound(x => x.TransDate).Title("Thời gian").Format("{0:dd/MM/yyyy HH:mm:ss}"); ;
+    columns.Bound(x => x.Description).Title("Mô tả").Width(200);
+})
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+    dataBinding.Ajax().Select("GetTransactionHistory", "CustomerSupport");
+})
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+    <style>
+        .k-grid {
+            width: 500px;
+        }
+
+        .discontinued {
+            font-weight: bold;
+            color: #f00;
+        }
+
+        .critical {
+            background-color: #fdd;
+        }
+
+        .warning {
+            background-color: #fda;
+        }
+
+        .ok {
+            background-color: #ced;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#transaction-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+
+                ObjectType: $('#ObjectType').val().trim(),
+                ObjectValue: $('#ObjectValue').val().trim(),
+                SearchType: $('#SearchType').val().trim(),
+                PartnerType: $('#PartnerType').val().trim(),
+                TransCode: $('#TransCode').val().trim(),
+                ServiceID: $('#ServiceID').val().trim(),
+                StartDate: $('#StartDate').val().trim(),
+                PartnerName: $('#PartnerName').val().trim(),
+                TransType: $('#TransType').val().trim(),
+
+                EndDate: $('#EndDate').val().trim()
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

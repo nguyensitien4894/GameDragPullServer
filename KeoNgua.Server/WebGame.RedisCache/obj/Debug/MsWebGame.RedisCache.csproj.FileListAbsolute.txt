@@ -1,0 +1,2 @@
+D:\Project\Private\ServerGameBocClup\WebGame.RedisCache\obj\Debug\MsWebGame.RedisCache.csproj.AssemblyReference.cache
+D:\Project\Private\ServerGameBocClup\WebGame.RedisCache\obj\Debug\MsWebGame.RedisCache.csproj.CoreCompileInputs.cache

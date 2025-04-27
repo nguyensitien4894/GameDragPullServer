@@ -1,0 +1,105 @@
+﻿@{
+    ViewBag.Title = "Tình hình nạp thẻ User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            Tình hình nạp thẻ User
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                   @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>NickName</label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="nick-name" type="text" required>
+                    <span class="field-validation-valid" data-valmsg-for="nick-name"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Từ ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("from-date").Value(DateTime.Today.AddDays(-7)).InputHtmlAttributes(new { @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Đến ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("to-date").Value(DateTime.Today).InputHtmlAttributes(new { @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<UserRechargeProgress>()
+                    .Name("user-recharge-progress-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(e => e.DisplayName).Title("Nickname nạp");
+                        columns.Bound(e => e.TotalQuantity).Title("Số lượng").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.TotalValue).Title("Tổng giá trị").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.RechargeDate).Title("Ngày nạp").Format("{0:dd/MM/yyyy HH:mm}");
+                    })
+                    .DataBinding(dataBinding => dataBinding.Ajax().Select("GetUserRechargeProgress", "Card"))
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#user-recharge-progress-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+                NickName: $('#nick-name').val().trim(),
+                serviceId: $('#serviceId').val().trim(),
+                FromDate: $('#from-date').val().trim(),
+                ToDate: $('#to-date').val().trim(),
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

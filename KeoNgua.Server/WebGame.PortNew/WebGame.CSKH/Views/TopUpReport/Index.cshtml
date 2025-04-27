@@ -1,0 +1,167 @@
+﻿
+@{
+    ViewBag.Title = "Thống Kê Nạp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@functions{
+    private bool IsDisplayFunction(string UserRoles)
+    {
+        string RoleCode = Session["RoleCode"].ToString();
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    private bool IsDisplayMenuByUserName(string UserRoles)
+    {
+        string RoleCode = Session["UserName"] != null ? Session["UserName"].ToString() : string.Empty;
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+@using (Html.BeginForm())
+{
+    
+    <div class="t-widget t-grid" id="userCardSwap-grid">
+        <div class="section-header">
+            <div class="title">
+                <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+                Thống kê nạp
+            </div>
+        </div>
+        <div style="float: left; width: 50%;">
+            <table style="width: 100%;">
+                <tbody>
+
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Từ ngày</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.Telerik().DateTimePicker().Name("FromRequestDate").Value(ViewBag.FromDate).InputHtmlAttributes(new { @readonly = "readonly" })
+                        <span class="field-validation-valid" data-valmsg-for="fromDate"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Đến ngày</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.Telerik().DateTimePicker().Name("ToRequestDate").Value(ViewBag.ToDate).InputHtmlAttributes(new { @readonly = "readonly" })
+                        <span class="field-validation-valid" data-valmsg-for="toDate"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        &nbsp;
+                    </td>
+                    <td>
+                        <input type="submit" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <table width="100%">
+            <thead class="t-grid-header">
+            <tr>
+                <th class="t-header" scope="col"><span class="t-link">Nhà mạng</span></th>
+                <th class="t-header" scope="col"><span class="t-link">Tổng Giao Dịch</span></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr style="background-color: #ccd3d0">
+
+                    @if (ViewBag.Viettel > 0)
+                    {
+                    <tr>
+                        <td class="adminTitle">Viettel</td>
+                        <td class="adminTitle">@ViewBag.Viettel.ToString("#,###")</td>
+                    </tr>
+                }
+                    @if (ViewBag.VinaPhone > 0)
+                    {
+                        <tr>
+                            <td class="adminTitle">VinaPhone</td>
+                            <td class="adminTitle">@ViewBag.VinaPhone.ToString("#,###")</td>
+                        </tr>
+
+
+                    }
+                    @if (ViewBag.MobiPhone > 0)
+                    {
+
+                        <tr>
+                            <td class="adminTitle">MobiPhone</td>
+                            <td class="adminTitle">@ViewBag.MobiPhone.ToString("#,###")</td>
+                        </tr>
+
+                    }
+                    @if (ViewBag.Momo > 0)
+                    {
+
+                        <tr>
+                            <td class="adminTitle">Momo</td>
+                            <td class="adminTitle">@ViewBag.Momo.ToString("#,###")</td>
+                        </tr>
+
+                    }
+                    @if (ViewBag.ViettelPay > 0)
+                    {
+
+                        <tr>
+                            <td class="adminTitle">ViettelPay</td>
+                            <td class="adminTitle">@ViewBag.ViettelPay.ToString("#,###")</td>
+                        </tr>
+
+                    }
+                    </tr>
+                    @if (ViewBag.Total > 0)
+                    {
+                        <tr style="background-color: antiquewhite">
+                            <td><b>Thống kê</b></td>
+                            <td class="adminTitle"><lable style="color: red">@ViewBag.Total.ToString("#,###")</lable></td>
+
+                        </tr>
+                    }
+
+                </tbody>
+        </table>
+    </div>
+       
+
+
+
+            }
+
+

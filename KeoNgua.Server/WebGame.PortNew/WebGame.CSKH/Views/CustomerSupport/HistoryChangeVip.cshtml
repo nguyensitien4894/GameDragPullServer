@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "Lịch sử thay đổi thứ hạng VIP";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            Lịch sử thay đổi thứ hạng VIP
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Nickname <span style="color:red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="nickname" type="text" value="@ViewBag.NickName"
+                            onkeypress="GlobalHeader.inputKeypress(event.keyCode);">
+                    <span class="field-validation-valid" data-valmsg-for="nickname"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Danh sách
+    </h2>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<UserPrivilegeHistory>()
+                    .Name("historyChangeVip-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.UserName).Title("Tên tài khoản");
+                        columns.Bound(x => x.RankIDFormat).Title("Hạng");
+                        columns.Bound(x => x.VPFormat).Title("Điểm VP");
+                        columns.Bound(x => x.EffectDate).Title("Ngày thay đổi hạng").Format("{0:dd/MM/yyyy HH:mm:ss}");
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetHistoryChangeVip", "CustomerSupport");
+                    })
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var nickName = $('#nickname').val().trim();
+                if (nickName == null || nickName == '') {
+                    GlobalHeader.dataValMsgFor('nickname', 'Vui lòng nhập nickname!');
+                    $('#nickname').focus();
+                    return;
+                }
+
+                var grid = $('#historyChangeVip-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+                nickName: $('#nickname').val().trim(),
+                serviceId: $('#serviceId').val().trim()
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

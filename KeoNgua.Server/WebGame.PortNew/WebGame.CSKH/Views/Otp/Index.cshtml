@@ -1,0 +1,142 @@
+﻿@{
+    ViewBag.Title = "Danh sách mail hệ thống";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Models.SMSOTPS
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@model SmsOtpListModel
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Danh sách Otp
+        </div>
+        
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img alt="A billing email address." src="~/Content/images/ico-help.gif">
+                    @Html.LabelFor(m => m.Msisdn)
+                </td>
+                <td class="adminData">
+                    @Html.TextBoxFor(m => m.Msisdn, new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img alt="A billing email address." src="~/Content/images/ico-help.gif">
+                    @Html.LabelFor(m => m.NickName)
+                </td>
+                <td class="adminData">
+                    @Html.TextBoxFor(m => m.NickName, new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img alt="A billing email address." src="~/Content/images/ico-help.gif">
+                    @Html.LabelFor(m => m.FromDate)
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("FromDate").Value(Model.FromDate)
+              
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img alt="A billing email address." src="~/Content/images/ico-help.gif">
+                    @Html.LabelFor(m => m.ToDate)
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("ToDate").Value(Model.ToDate)
+                   
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>
+        Danh sách
+    </h2>
+
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<SmsOtpModel>()
+                    .Name("settings-grid")
+                    .DataKeys(x => { x.Add(y => y.RequestId); })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.DisplayName);
+                        columns.Bound(x => x.OtyType);
+                        columns.Bound(x => x.CreateDate);
+                        columns.Bound(x => x.Active);
+                        columns.Bound(x => x.Status);
+                        
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("List", "Otp");
+                    })
+                    .ClientEvents(x => x.OnError("grid_onError").OnEdit("grid_onEdit").OnDataBinding("onDataBinding"))
+                    .EnableCustomBinding(true))
+
+                <script type="text/javascript">
+                    function grid_onError(e) {
+                        alert(e.XMLHttpRequest.responseText);
+                        e.preventDefault();
+                    }
+
+                    function grid_onEdit(e) {
+
+                    }
+
+                    function onDataBinding(e) {
+                        var searchModel = {
+                            NickName: $('#@Html.IdFor(model => model.NickName)').val().trim(),
+                            Msisdn: $('#@Html.IdFor(model => model.Msisdn)').val().trim(),
+                            ToDate: $('#@Html.IdFor(model => model.ToDate)').val().trim(),
+                            FromDate: $('#@Html.IdFor(model => model.FromDate)').val().trim(),
+                            ServiceID: $('#serviceId').val().trim()
+                        }
+                        e.data = searchModel
+                    }
+
+                    $(document).ready(function () {
+                        $('#btnSearch').click(function () {
+                            var grid = $('#settings-grid').data('tGrid');
+                            grid.currentPage = 1; //new search. Set page size to 1
+                            grid.ajaxRequest();
+                            return false;
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
+}
+
+
+

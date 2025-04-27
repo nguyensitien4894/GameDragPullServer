@@ -1,0 +1,246 @@
+﻿@{
+    ViewBag.Title = "Thống kê số lượng download";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@using TraditionGame.Utilities
+@model List<NruDeviceStatistics>
+@using TraditionGame.Utilities.Utils;
+@functions{
+    private bool IsDisplayMenu(string UserRoles)
+    {
+        string RoleCode = Session["RoleCode"] != null ? Session["RoleCode"].ToString() : string.Empty;
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    private bool IsDisplayMenuByUserName(string UserRoles)
+    {
+        string RoleCode = Session["UserName"] != null ? Session["UserName"].ToString() : string.Empty;
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+<style>
+    .adminContent tr:nth-child(even) {
+        background-color: #b7e2b7;
+    }
+</style>
+
+    <div class="section-header">
+        <div class="title">
+            Thống kê NRU theo thiết bị
+        </div>
+    </div>
+    @using (Html.BeginForm("NRUStatistic", "Statistics", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+    <table style="width: 100%;">
+        <tbody>
+            @if (!IsDisplayMenu("MARKETING_BB,MARKETING"))
+            {
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Chọn cổng</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td class="adminTitle">
+                        &nbsp;
+                        <input type="hidden" value="@ViewBag.MKTServiceID" name="serviceId" id="serviceId" />
+                    </td>
+                    <td></td>
+                </tr>
+            }
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Từ ngày <span style="color:red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("from").Value(DateTime.Today.AddDays(-7))
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Đến ngày <span style="color:red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("to").Value(DateTime.Now)
+                </td>
+            </tr>
+         
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="submit" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    }
+
+<div id="chartContainer" class="chartContainer"></div>
+<script type="text/javascript">
+        var result = @Html.Raw(ViewBag.Data);
+        var dataTotalCardRecharge =[];
+        var dataTotalCardSwap =[];
+        var dataTotalGameProfit =[];
+        var dataTotaPuPlay =[];
+        var dataPuCardRecharge =[];
+        var dataPuBuyAgency=[];
+        var dataPuGiftCode=[];
+        
+        for(var i = 0; i < result.length; i++){
+            dataTotalCardRecharge.push({ x: new Date(result[i].CheckDate), y: result[i].NruWeb });
+            dataTotalCardSwap.push({ x: new Date(result[i].CheckDate), y: result[i].NruAndroid });
+            dataTotalGameProfit.push({ x: new Date(result[i].CheckDate), y: result[i].NruIos });
+            dataTotaPuPlay.push({ x: new Date(result[i].CheckDate), y: result[i].PuPlay });
+            dataPuCardRecharge.push({ x: new Date(result[i].CheckDate), y: result[i].PuCardRecharge });
+            dataPuBuyAgency.push({ x: new Date(result[i].CheckDate), y: result[i].PuBuyAgency });
+            dataPuGiftCode.push({ x: new Date(result[i].CheckDate), y: result[i].PuGiftCode });
+        }
+
+        $(function () {
+            var chart = new CanvasJS.Chart("chartContainer", {
+                height: 400,
+                title: { text: "Tổng quan", fontFamily: "Calibri" },
+                subtitles: [
+                    {text: "Nhấp vào chú giải để ẩn/hiện ẩn chuỗi dữ liệu",fontFamily: "Calibri" }
+                ],
+                animationEnabled: true,
+                axisY: { titleFontFamily: "arial", titleFontSize: 12, includeZero: false },
+                toolTip: { shared: true },
+                data: [
+                    { type: "spline", name: "Web",         showInLegend: true, visible: true, dataPoints: dataTotalCardRecharge },
+                    { type: "spline", name: "Android",         showInLegend: true, visible: true, dataPoints: dataTotalCardSwap },
+                    { type: "spline", name: "Ios",       showInLegend: true, visible: true, dataPoints: dataTotalGameProfit },
+                    { type: "spline", name: "User đặt cược",       showInLegend: true, visible: true, dataPoints: dataTotaPuPlay },
+                    { type: "spline", name: "User nạp thẻ ",       showInLegend: true, visible: true, dataPoints: dataPuCardRecharge},
+                    { type: "spline", name: "User Mua đại lý ",       showInLegend: true, visible: true, dataPoints: dataPuBuyAgency},
+                      { type: "spline", name: "User nạp giftcode  ",       showInLegend: true, visible: true, dataPoints: dataPuGiftCode},
+                ],
+                legend: {
+                    cursor: "pointer",
+                    itemclick: function (e) {
+                        if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                            e.dataSeries.visible = false;
+                        }
+                        else {
+                            e.dataSeries.visible = true;
+                        }
+                        chart.render();
+                    }
+                }
+            });
+
+            chart.render();
+        });
+</script>
+
+
+    <h2>
+        Danh sách 
+    </h2>
+    <table class="adminContent">
+        <tr>
+            <td>
+                <div id="cash-flow-overview">
+                    <div class="t-widget t-grid" id="userCardSwap-grid">
+                        <table cellspacing="0">
+                            <thead class="t-grid-header">
+                                <tr>
+                                    <th class="t-header" scope="col" rowspan="2"><span class="t-link">Ngày tháng </span></th>
+                                    <th class="t-header" scope="col" colspan="4"><span class="t-link">NRU </span></th>
+                                    <th class="t-header" scope="col" colspan="4"><span class="t-link">PU </span></th>
+                                   
+
+                                </tr>
+                                <tr>
+                                    
+                                    <th class="t-header" scope="col"><span class="t-link"> Web </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Android </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">IOS </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Tổng số  </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">User đặt cược </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">User nạp thẻ </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">User Mua đại lý </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">User nạp giftcode </span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Any())
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.CheckDate</td>
+                                            <td class="text-right">@item.NruWeb.Value</td>
+                                            <td class="text-right">@item.NruAndroid.Value</td>
+                                            <td class="text-right">@item.NruIos.Value</td>
+                                            <td class="text-right">@(item.NruWeb.Value+ item.NruAndroid.Value+item.NruIos.Value)</td>
+                                            <td class="text-right">@item.PuPlay.LongToMoneyFormat()</td>
+                                            <td class="text-right">@item.PuCardRecharge.LongToMoneyFormat()</td>
+                                            <td class="text-right">@item.PuBuyAgency.LongToMoneyFormat()</td>
+                                            <td class="text-right">@item.PuGiftCode.LongToMoneyFormat()</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                            <tfoot>
+                                @if (Model != null && Model.Any())
+                                {
+                                    <tr>
+                                        <td colspan="1"><span class="t-link"><b>Thống kê</b></span></td>
+                                        <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.NruWeb).Sum().LongToMoneyFormat()</b> </span></td>
+                                        <td class="text-right"><span class="t-link"><b>@Model.Select(a => a.NruAndroid).Sum().LongToMoneyFormat() </b></span></td>
+                                        <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.NruIos).Sum().LongToMoneyFormat()</b> </span></td>
+                                        <td class="text-right"><span class="t-link ">@((Model.Select(a => a.NruIos).Sum() + Model.Select(a => a.NruAndroid).Sum() + Model.Select(a => a.NruWeb).Sum()).LongToMoneyFormat())</span></td>
+                                        <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.PuPlay).Sum().LongToMoneyFormat()</b> </span></td>
+                                        <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.PuCardRecharge).Sum().LongToMoneyFormat()</b> </span></td>
+                                        <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.PuBuyAgency).Sum().LongToMoneyFormat()</b> </span></td>
+                                        <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.PuGiftCode).Sum().LongToMoneyFormat()</b> </span></td>
+                                    </tr>
+                                }
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>

@@ -1,0 +1,220 @@
+﻿@using MsWebGame.CSKH.Utils
+@using Telerik.Web.Mvc.UI
+@model List<Dictionary<string,string>>
+@{
+    ViewBag.Title = "Thông kê đổi nạp";
+}
+<!-- Main content -->
+<section class="content">
+         <div class="box box-solid bg-teal-gradient">
+             <div class="box-header">
+                 <i class="fa fa-th"></i>
+
+                 <!-- <h3 class="box-title"><strong>Thông kê theo ngày @ViewBag.StartDate  -  @ViewBag.EndDate</strong></h3><BR> -->
+
+                 <div class="box-tools pull-right">
+                     <button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i
+                                 class="fa fa-minus"></i>
+                     </button>
+                     <button type="button" class="btn bg-teal btn-sm" data-widget="remove"><i
+                                 class="fa fa-times"></i>
+                     </button>
+                 </div>
+             </div>
+             <div class="box-body border-radius-none" style="background:#000000">
+                 <div class="chart" id="line-chart" style="height: 250px;"></div>
+             </div>
+         </div>
+</section>
+@using (Html.BeginForm())
+{
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Từ ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("fromDate").Value(DateTime.Today.AddDays(-1)).InputHtmlAttributes(new { @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Đến ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("toDate").Value(DateTime.Today).InputHtmlAttributes(new { @readonly = "readonly" })
+                </td>
+            </tr>
+
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="submit" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+<table class="table table-bordered">
+    <tr>
+        <td></td>
+        <td>in</td>
+        <td>in sau trừ phế</td>
+        <td>Tổng in sau phế</td>
+        <td>out</td>
+        <td>out sau trừ phế</td>
+        <td>Tổng out sau phế</td>
+        <td>back đại lý</td>
+        <td>Lợi Nhuận </td>
+    </tr>
+    <tr>
+        <td>thẻ Đt</td>
+        <td id="InCard"></td>
+        <td id="InCardAfterFee"></td>
+        <td id="TotalInAfterFee"></td>
+        <td></td>
+        <td></td>
+        <td id="TotalOutAfterFee"></td>
+        <td id="BackAgency"></td>
+        <td id="Profit"></td>
+    </tr>
+    <tr>
+        <td>momo</td>
+        <td id="InMomo"></td>
+        <td id="InMomoAfterFee"></td>
+        <td></td>
+        <td id="OutMomo"></td>
+        <td id="OutMomoAfterFee"></td>
+        <td></td>
+        <td></td>
+        <td> </td>
+    </tr>
+    <tr>
+        <td>Bank</td>
+        <td id="InBank"></td>
+        <td id="InBankAfterFee"></td>
+        <td></td>
+        <td id="OutBank"></td>
+        <td id="OutBankAfterFee"></td>
+        <td></td>
+        <td></td>
+        <td> </td>
+    </tr>
+    <tr>
+        <td>Bank 1s</td>
+        <td id="InBank1s"></td>
+        <td id="InBank1sAfterFee"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td> </td>
+    </tr>
+    <tr>
+        <td>đại lý</td>
+        <td id="InAgency"></td>
+        <td id="InAgencyAfterFee"></td>
+        <td></td>
+        <td id="OutAgency"></td>
+        <td id="OutAgencyAfterFee"></td>
+        <td></td>
+        <td></td>
+        <td> </td>
+    </tr>
+
+</table>
+}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.4.2/morris.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.4.2/morris.min.css">
+<script>
+$(document).ready(function(){
+    $.get("/Analytics/GetService?fromDate="+ $('#fromDate').val() +"&toDate=" + $('#toDate').val(), function(data, status){
+      data = JSON.parse(data)[0];
+      console.log(data);
+      FeeAgency = 0.8;
+      FeeCard = 0.8;
+      FeeIn = 0.97;
+      FeeOut = 1.02;
+
+      FeeBackAgency = 0.03;
+
+      BuyUserTotalAFee = Math.round(data.BuyUserTotal * FeeAgency);
+      SellUserTotalAFee = Math.round(data.SellUserTotal * FeeAgency);
+      InBank1STotalAFee = Math.round(data.InBank1STotal * 1);
+      InBankTotalAFee = Math.round(data.InBankTotal * FeeIn);
+      InCardTotalAFee = Math.round(data.InCardTotal * FeeCard);
+      InMomoTotalAFee = Math.round(data.InMomoTotal * FeeIn);
+      OutBankTotalAFee = Math.round(data.OutBankTotal * FeeOut);
+      OutMomoTotalAFee = Math.round(data.OutMomoTotal * FeeOut);
+
+      TotalInAFee = Math.round(SellUserTotalAFee + InBank1STotalAFee + InBankTotalAFee + InMomoTotalAFee + InCardTotalAFee);
+      TotalOutAFee = Math.round(OutBankTotalAFee + OutMomoTotalAFee + BuyUserTotalAFee);
+      BackAgency = Math.round((SellUserTotalAFee + BuyUserTotalAFee) * FeeBackAgency);
+      Profit = Math.round(TotalInAFee - TotalOutAFee - BackAgency);
+
+
+      $('#OutAgency').html(data.BuyUserTotal.toLocaleString());
+      $('#InAgency').html(data.SellUserTotal.toLocaleString());
+      $('#InBank1s').html(data.InBank1STotal.toLocaleString());
+      $('#InBank').html(data.InBankTotal.toLocaleString());
+      $('#InCard').html(data.InCardTotal.toLocaleString());
+      $('#InMomo').html(data.InMomoTotal.toLocaleString());
+      $('#OutBank').html(data.OutBankTotal.toLocaleString());
+      $('#OutMomo').html(data.OutMomoTotal.toLocaleString());
+
+      $('#OutAgencyAfterFee').html(BuyUserTotalAFee.toLocaleString());
+      $('#InAgencyAfterFee').html(SellUserTotalAFee.toLocaleString());
+      $('#InBank1sAfterFee').html(InBank1STotalAFee.toLocaleString());
+      $('#InBankAfterFee').html(InBankTotalAFee.toLocaleString());
+      $('#InCardAfterFee').html(InCardTotalAFee.toLocaleString());
+      $('#InMomoAfterFee').html(InMomoTotalAFee.toLocaleString());
+      $('#OutBankAfterFee').html(OutBankTotalAFee.toLocaleString());
+      $('#OutMomoAfterFee').html(OutMomoTotalAFee.toLocaleString());
+
+      $('#TotalInAfterFee').html(TotalInAFee.toLocaleString());
+      $('#TotalOutAfterFee').html(TotalOutAFee.toLocaleString());
+      $('#BackAgency').html(BackAgency.toLocaleString());
+      $('#Profit').html(Profit.toLocaleString());
+
+      
+    });
+});
+
+// BuyUserTotal: 238410000
+// InBank1STotal: 341035947
+// InBankTotal: 129691826
+// InCardTotal: 54690000
+// InMomoTotal: 135546640
+// OutBankTotal: 417877111
+// OutMomoTotal: 52683000
+// SellUserTotal: 236951943
+</script>
+<script>
+var line = new Morris.Line({
+            element: 'line-chart',
+            resize: true,
+            data:   @Html.Raw(new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(Model)),
+            xkey: 'date',
+            ykeys: ['totalCharginCard', 'totalCharginMomo','totalCharginBank','totalOutBank','totalOutMomo'],
+            labels: ['Tổng nạp Card', 'Tổng nạp Momo','Tổng nạp Bank','Tổng đổi Bank', 'Tổng đổi Momo'],
+            lineColors: ['#00c0ef', '#00a65a','#337ab7','#dd4b39', '#blue','blue','#000000'],
+            lineWidth: 1,
+            hideHover: 'auto',
+            gridTextColor: '#fff',
+            gridStrokeWidth: 0.4,
+            pointSize: 5,
+            pointStrokeColors: ['#efefef'],
+            gridLineColor: '#efefef',
+            gridTextFamily: 'Open Sans',
+            gridTextSize: 10
+
+        });      
+</script>

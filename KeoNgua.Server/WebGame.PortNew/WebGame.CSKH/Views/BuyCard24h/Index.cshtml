@@ -1,0 +1,138 @@
+﻿@{
+    ViewBag.Title = "Mua thẻ 24h";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Database.DTO
+@using MsWebGame.CSKH.Utils
+@model ResultImportCardList
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Mua thẻ 24h
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <span id="txttransferMsg" class="@(ViewBag.Message.IndexOf("Thành công") != -1 ? "txttransferMsgSuccess" : "txttransferMsg")">@ViewBag.Message</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Mã giao dịch</label>
+                </td>
+                <td class="adminData">
+                    <input id="trace" name="trace" value="@Model.ParsBuyCard.trace" class="text-box single-line" readonly />
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Nhà mạng</label>
+                </td>
+                <td class="adminData">
+                    <select class="text-box single-line" id="telco" name="telco" required>
+                        <option>--Chọn nhà mạng--</option>
+                        <option value="VTT" @(Model.ParsBuyCard.telco == "VTT" ? "selected" : string.Empty)>Viettel</option>
+                        <option value="VNP" @(Model.ParsBuyCard.telco == "VNP" ? "selected" : string.Empty)>Vinaphone</option>
+                        <option value="VMS" @(Model.ParsBuyCard.telco == "VMS" ? "selected" : string.Empty)>Mobifone</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Mệnh giá</label>
+                </td>
+                <td class="adminData">
+                    <select class="text-box single-line" id="amount" name="amount" required>
+                        <option>--Chọn mệnh giá--</option>
+                        <option value="10000" @(Model.ParsBuyCard.amount == 10000 ? "selected" : string.Empty)>10K</option>
+                        <option value="20000" @(Model.ParsBuyCard.amount == 20000 ? "selected" : string.Empty)>20K</option>
+                        <option value="30000" @(Model.ParsBuyCard.amount == 30000 ? "selected" : string.Empty)>30K</option>
+                        <option value="50000" @(Model.ParsBuyCard.amount == 50000 ? "selected" : string.Empty)>50K</option>
+                        <option value="100000" @(Model.ParsBuyCard.amount == 100000 ? "selected" : string.Empty)>100K</option>
+                        <option value="200000" @(Model.ParsBuyCard.amount == 200000 ? "selected" : string.Empty)>200K</option>
+                        <option value="300000" @(Model.ParsBuyCard.amount == 300000 ? "selected" : string.Empty)>300K</option>
+                        <option value="500000" @(Model.ParsBuyCard.amount == 500000 ? "selected" : string.Empty)>500K</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Số lượng</label>
+                </td>
+                <td class="adminData">
+                    <input type="number" id="quantity" name="quantity" value="@Model.ParsBuyCard.quantity" class="text-box single-line" required />
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="submit" class="t-button" value="@AppConstants.CONFIG.CONFIRM">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    if (Model.LstSuccess != null && Model.LstSuccess.Any())
+    {
+        <p style="color:green">Danh sách card import thành công. Số lượng :@Model.LstSuccess.Count()</p>
+        <table class="adminContent">
+            <tr>
+                <td>
+                    @(Html.Telerik().Grid<ImportCardInfo>()
+                        .Name("importcard-success")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(x => x.CardValue).Width(100).Title("Mệnh giá");
+                            columns.Bound(x => x.CardNumber).Width(100).Title("Mã thẻ");
+                            columns.Bound(e => e.CardSerial).Width(100).Title("Số serial");
+                            columns.Bound(e => e.ExperiedDate).Width(100).Title("Ngày hết hạn");
+                            columns.Bound(e => e.TelOperatorID).Width(100).Title("Nhà mạng");
+                            columns.Bound(e => e.Status).Width(100).Title("Trạng thái");
+                            columns.Bound(e => e.ImportDate).Width(100).Title("Ngày import");
+                            columns.Bound(e => e.Description).Width(100).Title("Miêu tả");
+                        })
+                        .BindTo(Model.LstSuccess)
+                        .EnableCustomBinding(true))
+                </td>
+            </tr>
+        </table>
+    }
+
+    if (Model.LstError != null && Model.LstError.Any())
+    {
+        <p style="color:red">Danh sách card import không thành công. Số lượng :@Model.LstError.Count()</p>
+        <table class="adminContent">
+            <tr>
+                <td>
+                    @(Html.Telerik().Grid<ImportCardInfo>()
+                        .Name("importcard-error")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(x => x.CardValue).Width(100).Title("Mệnh giá");
+                            columns.Bound(x => x.CardNumber).Width(100).Title("Mã thẻ");
+                            columns.Bound(e => e.CardSerial).Width(100).Title("Số serial");
+                            columns.Bound(e => e.ExperiedDate).Width(100).Title("Ngày hết hạn");
+                            columns.Bound(e => e.TelOperatorID).Width(100).Title("Nhà mạng");
+                            columns.Bound(e => e.Status).Width(100).Title("Trạng thái");
+                            columns.Bound(e => e.ImportDate).Width(100).Title("Ngày import");
+                            columns.Bound(e => e.Description).Width(100).Title("Miêu tả").HtmlAttributes(new { @class = "text-danger" });
+                        })
+                        .BindTo(Model.LstError)
+                        .EnableCustomBinding(true))
+                </td>
+            </tr>
+        </table>
+    }
+}

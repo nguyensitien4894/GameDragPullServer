@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "Bank hack";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Models.AccountHack
+@using MsWebGame.CSKH.Models.Cards
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@model MsWebGame.CSKH.Models.AccountHack.AccountHackModel
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Danh sách thẻ
+        </div>
+        <div class="options">
+            <a href="@Url.Action("Create")" class="t-button">@AppConstants.CONFIG.ADD_NEW</a>
+        </div>
+    </div>
+    <h2>
+        Danh sách
+    </h2>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img alt="A billing email address." src="~/Content/images/ico-help.gif">
+                    @Html.LabelFor(m => m.AccountBankName)
+                </td>
+                <td class="adminData">
+                    @Html.TextBoxFor(m => m.AccountBankName, new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<AccountHackModel>()
+                    .Name("settings-grid")
+                    .DataKeys(x => { x.Add(y => y.ID); })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.AccountBankName);
+                        columns.Bound(x => x.BankName);
+                        columns.Bound(x => x.AccountBankNumber);
+                        columns.Bound(x => x.Reason);
+                        columns.Bound(x => x.ID)
+                        .Width(100).HtmlAttributes(new { @class = "text-center" })
+                        .Template(x => Html.ActionLink("Edit", "Edit", new { id = x.ID }))
+                            .ClientTemplate("<a href=\"Edit/<#= ID #>\">" + AppConstants.CONFIG.EDIT + "</a>" + "&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp" + "<a onclick=\"return GlobalHeader.ConfirmDelete();\" href=\"Delete/<#= ID #>\">" + AppConstants.CONFIG.DELETE + "</a>")
+                            .Title(" ");
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding => { dataBinding.Ajax().Select("GetList", "AccountHack"); })
+                    .ClientEvents(x => x.OnError("grid_onError").OnEdit("grid_onEdit").OnDataBinding("onDataBinding"))
+                    .EnableCustomBinding(true))
+
+                <script type="text/javascript">
+                    function grid_onError(e) {
+                        alert(e.XMLHttpRequest.responseText);
+                        e.preventDefault();
+                    }
+
+                    function grid_onEdit(e) {
+
+                    }
+
+                    function onDataBinding(e) {
+                        var searchModel = {
+                            AccountBankName: $('#@Html.IdFor(model => model.AccountBankName)').val().trim()
+                        }
+                        e.data = searchModel
+                    }
+
+                    $(document).ready(function () {
+                        $('#btnSearch').click(function () {
+                            var grid = $('#settings-grid').data('tGrid');
+                            grid.currentPage = 1; //new search. Set page size to 1
+                            grid.ajaxRequest();
+                            return false;
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
+}

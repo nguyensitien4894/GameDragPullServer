@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "Cấu hình mức phí đại lý";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Models.CardPartnerss
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+    </div>
+
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="submit" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+            <h2>
+                Danh sách
+            </h2>
+            <table class="adminContent">
+                <tr>
+                    <td>
+                        @(Html.Telerik().Grid<CardPartnersModel>()
+                    .Name("settings-grid")
+                    .DataKeys(x => { x.Add(y => y.Id); })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.Id).Hidden();
+                        columns.Bound(x => x.ServiceID).Hidden();
+                        columns.Bound(x => x.PartnerName);
+                        columns.Bound(x => x.VTT).Title("Thẻ viettel");
+                        columns.Bound(x => x.VMS).Title("Thẻ mobile phone");
+                        columns.Bound(x => x.VNP).Title("Thẻ vina phone"); ;
+                        columns.Bound(x => x.ZING).Title("Thẻ zing");
+                        columns.Bound(x => x.VCOIN).Title("Thẻ vcoin");
+                        columns.Command(commands =>
+                        {
+                            commands.Edit().Text(AppConstants.CONFIG.EDIT);
+                        }).Width(200);
+                    })
+                    .Editable(x => { x.Mode(GridEditMode.InLine); })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetList", "CardPartner").Update("Update", "CardPartner");
+                    })
+                    .ClientEvents(x => x.OnError("grid_onError").OnEdit("grid_onEdit").OnDataBinding("onDataBinding"))
+                    .EnableCustomBinding(true))
+
+                        <script type="text/javascript">
+                            function grid_onError(e) {
+                                alert(e.XMLHttpRequest.responseText);
+                                e.preventDefault();
+                            }
+
+                            function grid_onEdit(e) {
+                                $(e.form).find('#PartnerName').attr('readonly', true);
+                               
+                                $id = parseInt($(e.form).find('#Id').val());
+                                
+                                var $NotZingVcoinArrayP1 = [1, 2, 3, 4,6,7,8,9];
+                                if ($NotZingVcoinArrayP1.includes($id)) {
+                                   
+                                    $(e.form).find('#ZING').attr('readonly', true).css({'background-color' : '#DFD8D1'});
+                                    $(e.form).find('#VCOIN').attr('readonly', true).css({ 'background-color': '#DFD8D1' });
+                                }
+                                var $NotVMSP1 = [5,11];
+                                if ($NotVMSP1.includes($id)) {
+                                    $(e.form).find('#VMS').attr('readonly', true).css({ 'background-color': '#DFD8D1' });
+                                }
+                                
+                                
+
+                            }
+
+                            function onDataBinding(e) {
+                                var searchModel = {
+                                    serviceId: $('#serviceId').val().trim()
+                                };
+                                e.data = searchModel;
+                            }
+
+                            $(document).ready(function () {
+                                $('#btnSearch').click(function () {
+                                    var grid = $('#settings-grid').data('tGrid');
+                                    grid.currentPage = 1; //new search. Set page size to 1
+                                    grid.ajaxRequest();
+                                    return false;
+                                });
+                            });
+                        </script>
+                    </td>
+                </tr>
+            </table>
+}
+

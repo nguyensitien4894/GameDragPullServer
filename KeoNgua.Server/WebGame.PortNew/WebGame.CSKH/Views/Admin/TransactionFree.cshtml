@@ -1,0 +1,163 @@
+﻿@{
+    ViewBag.Title = "Lịch sử nạp thẻ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Models.Transactions
+@using MsWebGame.CSKH.Utils;
+@using MsWebGame.CSKH.Database.DTO;
+@model TransactionFreeModel
+<style>
+    .adminContent tr:nth-child(even) {
+        background-color: #f7f7f7;
+    }
+
+    .adminContent td {
+        width: 1px;
+        white-space: nowrap;
+    }
+</style>
+@using (Html.BeginForm("CardReport", "Card", FormMethod.Get, new { enctype = "multipart/form-data" }))
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Thu hồi giao dịch  người dùng-người dùng
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(m=>m.ServiceID, new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Nick Name</label>
+                </td>
+                <td class="adminData">
+                   @Html.TextBoxFor(m=>m.NickName, new { @class = "text-box single-line" })
+                    <span class="field-validation-valid" data-valmsg-for="fromDate"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Đối tác</label>
+                </td>
+                <td class="adminData">
+                    @Html.TextBoxFor(m => m.PartnerName, new { @class = "text-box single-line" })
+                    <span class="field-validation-valid" data-valmsg-for="fromDate"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Từ ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DateTimePickerFor(m=>m.fromDate).Name("fromDate").InputHtmlAttributes(new { @readonly = "readonly" })
+                    <span class="field-validation-valid" data-valmsg-for="fromDate"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Đến ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DateTimePickerFor(m=>m.toDate).Name("toDate").InputHtmlAttributes(new { @readonly = "readonly" })
+                    <span class="field-validation-valid" data-valmsg-for="toDate"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="submit" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+            <style>
+                .adminContent tr:nth-child(even) {
+                    background-color: #b7e2b7;
+                }
+            </style>
+
+            <table class="adminContent">
+                <tr>
+                    <td>
+                        @(Html.Telerik().Grid<TransactionRefund>()
+                        .Name("grid")
+                        .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                        .Columns(columns =>
+                        {
+                            columns.Bound(x => x.TransID).Width(100);
+                            columns.Bound(x => x.TransCode).Width(100).Title("Mã giao dịch");
+                            columns.Bound(x => x.TransDate).Title("Ngày tháng").Width(100);
+
+                            columns.Bound(e => e.AmountFormat).Title("Tiền giao dịch").Width(100);
+                            columns.Bound(x => x.CreateDisplayName).Title("Người tạo").Width(100);
+                            columns.Bound(x => x.RemainBalanceCreateUserFormat).Title("Số dư người tạo").Width(100);
+                            columns.Bound(x => x.ReceiverDisplayName).Title("Người nhận").Width(100);
+                            columns.Bound(x => x.RemainBalanceReceiveUserFormat).Title("Số dư người nhận").Width(100);
+                            columns.Bound(e => e.Note).Title("Mô tả");
+                            columns.Bound(x => x.TransID).Width(100)
+                        .Template(x => Html.ActionLink("TransactionFreeExecute", "Admin", new { TransID = x.TransID }))
+
+                         .ClientTemplate("<# if (Status!=6) { #>" +
+                  "<a onclick=\"return GlobalHeader.TransRefund('<#= TransID #>\')\" href=\"#\">" + "Thu hồi" + "</a>"+
+                     "<# }else{ #>" +
+                      "Đã thu hồi"+
+                     "<# } #>"
+                ).Title(" ").HtmlAttributes(new { @class = "text-center" });
+
+
+
+
+                        })
+                        .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                                         .DataBinding(dataBinding => dataBinding.Ajax().Select("TransactionFree", "Admin"))
+                                       .EnableCustomBinding(true))
+
+                </tr>
+            </table>
+            <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#grid').data('tGrid');
+                console.log(grid);
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+                fromDate: $('#fromDate').val().trim(),
+                toDate: $('#toDate').val().trim(),
+                nickName: $('#NickName').val().trim(),
+                partnerName: $('#PartnerName').val().trim(),
+                ServiceID: $('#ServiceID').val().trim(),
+                
+                   
+
+            };
+            e.data = searchModel;
+
+        }
+            </script>
+}
+
+
+

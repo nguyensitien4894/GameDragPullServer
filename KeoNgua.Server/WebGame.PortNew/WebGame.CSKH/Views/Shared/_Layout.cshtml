@@ -1,0 +1,203 @@
+﻿@using Telerik.Web.Mvc.UI;
+@functions{
+    private bool IsDisplayMenu(string UserRoles)
+    {
+        string RoleCode = Session["RoleCode"] != null ? Session["RoleCode"].ToString() : string.Empty;
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    private bool IsDisplayMenuByUserName(string UserRoles)
+    {
+        string RoleCode = Session["UserName"] != null ? Session["UserName"].ToString() : string.Empty;
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    <link href="~/Content/jquery-ui-themes/smoothness/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/2013.2.611/telerik.vista.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/styles.css?v=@(DateTime.Now.Ticks.ToString())" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-1.7.1.min.js"></script>
+    @*<script src="~/Scripts/jquery-3.4.0.min.js"></script>*@
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.10.0.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/canvasjs.min.js"></script>
+    <script src="~/Scripts/admin.common.js"></script>
+    <script src="~/Scripts/Common/admin.js?v=@(DateTime.Now.Ticks.ToString())"></script>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/caret/1.0.0/jquery.caret.min.js"></script>
+    
+</head>
+<body>
+    <div id="ajaxBusy">
+        <span>&nbsp;</span>
+    </div>
+    <div class="master-wrapper-page">
+        <div class="master-wrapper-content">
+            @if (IsSectionDefined("header"))
+            {
+                @RenderSection("header")
+            }
+            else
+            {
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $("#restart-application").click(function (e) {
+                            showThrobber('Restarting the application...');
+                        });
+                    });
+                </script>
+                <div class="header">
+                    <div class="logo"></div>
+                    <div class="languageselector"></div>
+                    <div class="login-info">
+                        Logged in as: Quản trị viên <a href="@Url.Action("Logout","Account")">Đăng xuất</a>
+                       
+                       
+                    </div>
+                    <div class="version">
+                        <a href="@Url.Action("ChangePassword","Admin")">Thay đổi mất khẩu</a>
+                        @if (IsDisplayMenu("ADMIN,MARKETING"))
+                        {
+                            <div style="font-size:large;font-weight:bold;color:red">
+
+                                @Html.Action("Balances", "User")
+                            </div>
+
+                        }
+                    </div>
+                    
+
+                </div>
+            }
+            @if (IsSectionDefined("headermenu"))
+            {
+                @RenderSection("headermenu")
+            }
+            else
+            {
+                <div class="header-menu">
+                    @if (!IsDisplayMenu("ADMIN"))
+                    {
+                        @Html.Partial("MenuCSKH")
+                    }
+                    else
+                    {
+                        @Html.Partial("_MenuAdmin2")
+                    }
+
+                </div>
+            }
+            @if (IsSectionDefined("statusbar"))
+            {
+                @RenderSection("statusbar")
+            }
+            else
+            {
+                <div class="status-bar">
+                    Monday, July 16, 2018 10:16 AM
+                </div>
+               
+                
+            }
+            <div class="content">
+                @Html.Partial("Notifications")
+                <div class="cph">
+                    @RenderBody()
+                </div>
+            </div>
+            <div class="throbber">
+                <div class="curtain"></div>
+                <div class="curtain-content">
+                    <div>
+                        <h1 class="throbber-header">Wait...</h1>
+                        <p><img src="@Url.Content("~/Content/images/throbber-synchronizing.gif")" alt="" /></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--These need to be at the end of the page to ensure that all the controls requiring scripts have been rendered-->
+    @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.min.css")
+                                                                      .Add("telerik.vista.min.css")
+                                                                      .Add("telerik.rtl.min.css")
+              //uncomment the lines below in order to combine and compress CSS files
+              //but in this case you'll have to add asset.axd file handler by Telerik to web.config file
+              //.Combined(true)
+              //.Compress(true)
+              ))
+    @(Html.Telerik().ScriptRegistrar().jQuery(false).jQueryValidation(false)    )
+    <style type="text/css">
+        .t-grid-header .t-header {
+            padding: 1em .6em;
+            text-align: center;
+        }
+
+        .t-grid td {
+            padding: .7em .6em;
+        }
+
+        .field-validation-valid {
+            display: none;
+        }
+
+        input.input-validation-error {
+            border: 1px solid #e80c4d;
+        }
+
+        .validation-summary-errors {
+            color: #e80c4d;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .validation-summary-valid {
+            display: none;
+        }
+
+        .col-md-9 {
+            width: 75%;
+        }
+
+        .input-validation-error {
+            border-color: #f00;
+            background-color: #ffc0cb;
+        }
+    </style>
+</body>
+
+</html>

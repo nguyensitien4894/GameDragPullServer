@@ -1,0 +1,149 @@
+﻿@{
+    ViewBag.Title = "Tra cứu giao dịch đại lý";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            Tra cứu giao dịch đại lý
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <label>NickName đại lý</label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="nick-name" type="text" required>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <label>Loại đối tác</label>
+                </td>
+                <td class="adminData">
+                    <select id="UserType" class="text-box single-line">
+                       
+                        <option value="0">Tất cả</option>
+                        <option value="1">User</option>
+                        <option value="2">Đại lý</option>
+                        <option value="3">
+                           Admin
+                        </option></select>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="adminTitle">
+                    <label>NickName đối tác</label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="partner-name" type="text">
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <label>Loại giao dịch</label>
+                </td>
+                <td class="adminData">
+                    <select id="trantype" class="text-box single-line">
+                        <option value="0">Tất cả</option>
+                        <option value="1">Chuyển</option>
+                        <option value="2">Nhận</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <label>Từ ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("from-date").Value(DateTime.Today.AddDays(-7)).InputHtmlAttributes(new { @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <label>Đến ngày</label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("to-date").Value(DateTime.Today).InputHtmlAttributes(new { @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <label>Chọn cổng</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text") ,new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<AgencyTransaction>()
+                    .Name("agc-transaction-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(e => e.WalletTypeName).Title("Loại ví").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.TranId).Title("Giao dịch").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.CreateDisplayName).Title("NickName chuyển");
+                        columns.Bound(e => e.ReceiverDisplayName).Title("NickName nhận");
+                        columns.Bound(x => x.OrgBalanceFormat).Title("Số tiền ban đầu").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.AmountFormat).Title("Số tiền giao dịch").HtmlAttributes(new { @class = "text-right"});
+
+                        columns.Bound(x => x.BalanceFormat).Title("Số tiền còn lại").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.CreateDate).Title("Ngày tạo");
+                        columns.Bound(e => e.Description).Title("Miêu tả");
+                        columns.Bound(e => e.TranStatusFormat).Title("Trạng thái");
+                    })
+                     .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding => dataBinding.Ajax().Select("GetTransaction", "Agency"))
+                    .EnableCustomBinding(true))
+
+            </td>
+        </tr>
+    </table>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var grid = $('#agc-transaction-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+
+        function onDataBinding(e) {
+            var searchModel = {
+                NickName: $('#nick-name').val().trim(),
+                UserType: $("#UserType").val().trim(),
+                PartnerName: $('#partner-name').val().trim(),
+                Type: $('#trantype').val().trim(),
+                Status: -1,
+                FromDate: $('#from-date').val().trim(),
+                ToDate: $('#to-date').val().trim(),
+                ServiceID: $('#serviceId').val().trim()
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

@@ -1,0 +1,133 @@
+﻿@{
+    ViewBag.Title = "Chuyển user thành đại lý";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@model MsWebGame.CSKH.Models.Param.ParsTransfigureAgency
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Chuyển user thành đại lý
+        </div>
+    </div>
+    <div class="t-widget t-tabstrip t-header">
+        <div class="t-content t-state-active" style="display: block;">
+            <table class="adminContent customer-info-tab">
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <span id="txttransferMsg" class="@(ViewBag.Message.IndexOf("thành công") != -1 ? "txttransferMsgSuccess" : "txttransferMsg")">@ViewBag.Message</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Nickname</label>
+                    </td>
+                    <td class="adminData">
+                        <input id="nickname" name="nickName" class="text-box single-line" value="@Model.nickName" onblur="GlobalHeader.validateNickName(1);" required />
+                        <span class="field-validation-valid" data-valmsg-for="nickName"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Họ tên đầy đủ</label>
+                    </td>
+                    <td class="adminData">
+                        <input id="fullName" name="fullName" class="text-box single-line" value="@Model.fullName" required />
+                        <span class="field-validation-valid" data-valmsg-for="fullName"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Khu vực</label>
+                    </td>
+                    <td class="adminData">
+                        <input id="areaName" name="areaName" class="text-box single-line" value="@Model.areaName" required />
+                        <span class="field-validation-valid" data-valmsg-for="areaName"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>SDT hiển thị</label>
+                    </td>
+                    <td class="adminData">
+                        <input id="phoneDisplay" name="phoneDisplay" class="text-box single-line" value="@Model.phoneDisplay" required />
+                        <span class="field-validation-valid" data-valmsg-for="phoneDisplay"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Facebook</label>
+                    </td>
+                    <td class="adminData">
+                        <input id="fbLink" name="fbLink" class="text-box single-line" value="@Model.fbLink" />
+                        <span class="field-validation-valid" data-valmsg-for="fbLink"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Tele Link</label>
+                    </td>
+                    <td class="adminData">
+                        <input id="teleLink" name="teleLink" class="text-box single-line" value="@Model.teleLink" />
+                        <span class="field-validation-valid" data-valmsg-for="teleLink"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Zalo Link</label>
+                    </td>
+                    <td class="adminData">
+                        <input id="zaloLink" name="zaloLink" class="text-box single-line" value="@Model.zaloLink" />
+                        <span class="field-validation-valid" data-valmsg-for="zaloLink"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Ví trí</label>
+                    </td>
+                    <td class="adminData">
+                        <input id="orderNum" name="orderNum" class="text-box single-line" value="@Model.orderNum" onkeypress="return GlobalHeader.isNumber(event);" required />
+                        <span class="field-validation-valid" data-valmsg-for="orderNum"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Chọn cổng</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text", Model.serviceId.ToString()), new { @class = "text-box single-line" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <input type="submit" class="t-button" value="@AppConstants.CONFIG.CONFIRM">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#txttransferMsg').html('');
+            }, 4000);
+        });
+    </script>
+}

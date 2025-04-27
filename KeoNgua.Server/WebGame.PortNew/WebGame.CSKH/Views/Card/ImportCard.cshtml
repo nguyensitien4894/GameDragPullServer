@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "Import thẻ cào";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@model ResultImportCardList
+
+@using (Html.BeginForm("ImportCard", "Card", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="section-header">
+        <div class="title">
+            Import thẻ cào
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    Upload Files
+                </td>
+                <td class="adminData">
+                    <input type="file" name="file" id="file" />
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="submit" id="btnImport" class="t-button" style="margin-top: 6px;" value="Nhập kho">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    if (Model.LstSuccess != null && Model.LstSuccess.Any())
+    {
+        <p style="color:green">Danh sách card import thành công. Số lượng :@Model.LstSuccess.Count()</p>
+        <table class="adminContent">
+            <tr>
+                <td>
+                    @(Html.Telerik().Grid<ImportCardInfo>()
+                        .Name("importcard-success")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(x => x.CardValue).Width(100).Title("Mệnh giá");
+                            columns.Bound(x => x.CardNumber).Width(100).Title("Mã thẻ");
+                            columns.Bound(e => e.CardSerial).Width(100).Title("Số serial");
+                            columns.Bound(e => e.ExperiedDate).Width(100).Title("Ngày hết hạn");
+                            columns.Bound(e => e.TelOperatorID).Width(100).Title("Nhà mạng");
+                            columns.Bound(e => e.Status).Width(100).Title("Trạng thái");
+                            columns.Bound(e => e.ImportDate).Width(100).Title("Ngày import");
+                            columns.Bound(e => e.Description).Width(100).Title("Miêu tả");
+                        })
+                        .BindTo(Model.LstSuccess)
+                        .EnableCustomBinding(true))
+                </td>
+            </tr>
+        </table>
+    }
+
+    if (Model.LstError != null && Model.LstError.Any())
+    {
+        <p style="color:red">Danh sách card import không thành công. Số lượng :@Model.LstError.Count()</p>
+        <table class="adminContent">
+            <tr>
+                <td>
+                    @(Html.Telerik().Grid<ImportCardInfo>()
+                        .Name("importcard-error")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(x => x.CardValue).Width(100).Title("Mệnh giá");
+                            columns.Bound(x => x.CardNumber).Width(100).Title("Mã thẻ");
+                            columns.Bound(e => e.CardSerial).Width(100).Title("Số serial");
+                            columns.Bound(e => e.ExperiedDate).Width(100).Title("Ngày hết hạn");
+                            columns.Bound(e => e.TelOperatorID).Width(100).Title("Nhà mạng");
+                            columns.Bound(e => e.Status).Width(100).Title("Trạng thái");
+                            columns.Bound(e => e.ImportDate).Width(100).Title("Ngày import");
+                            columns.Bound(e => e.Description).Width(100).Title("Miêu tả").HtmlAttributes(new { @class = "text-danger" });
+                        })
+                        .BindTo(Model.LstError)
+                        .EnableCustomBinding(true))
+                </td>
+            </tr>
+        </table>
+    }
+}

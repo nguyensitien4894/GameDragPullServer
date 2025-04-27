@@ -1,0 +1,105 @@
+﻿@using MsWebGame.CSKH.Models.Warnings
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@{
+   
+    Layout = null;
+}
+@{ 
+    string name = ViewBag.GridName;
+
+}
+<table class="adminContent">
+    <tr>
+        <td>
+            @(Html.Telerik().Grid<WarningModel>()
+                    .Name( "campaign-grid-"+ name)
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"+ name))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.ServiceName).Title("Tên cổng");
+                        columns.Bound(x => x.DisplayName).Title("Tên người dùng");
+                        columns.Bound(x => x.TotalAmountFormat).Title("Số tiền giao dịch");
+
+                    })
+                    .Pageable(settings => settings.PageSize(10).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetList", "Warning");
+                    })
+                    .EnableCustomBinding(true))
+        </td>
+    </tr>
+</table>
+@if (ViewBag.WarmType == 1)
+{
+    <script type="text/javascript">
+
+    function onDataBindingcard(e) {
+                var searchModel = {
+            WarningType: @ViewBag.WarmType,
+            VPLimit: @ViewBag.VPLimit,
+            LimitAmount:  @ViewBag.LimitAmount,
+            QuotaDay:@ViewBag.QuotaDay,
+
+
+        };
+            e.data = searchModel;
+        }
+       
+    </script>
+}
+@if (ViewBag.WarmType == 2)
+{
+    <script type="text/javascript">
+
+  
+        function onDataBindingbank(e) {
+            var searchModel = {
+            WarningType: @ViewBag.WarmType,
+            VPLimit: @ViewBag.VPLimit,
+            LimitAmount:  @ViewBag.LimitAmount,
+            QuotaDay:@ViewBag.QuotaDay,
+
+
+        };
+        e.data = searchModel;
+    }
+    
+    </script>
+}
+@if (ViewBag.WarmType == 3)
+{
+    <script type="text/javascript">
+
+    function onDataBindinggiftcode(e) {
+        var searchModel = {
+                WarningType: @ViewBag.WarmType,
+                VPLimit: @ViewBag.VPLimit,
+                LimitAmount:  @ViewBag.LimitAmount,
+                QuotaDay:@ViewBag.QuotaDay,
+
+
+            };
+    e.data = searchModel;
+        }
+    </script>
+}
+@if (ViewBag.WarmType == 5)
+{
+    <script type="text/javascript">
+
+    function onDataBindingmomo(e) {
+        var searchModel = {
+                WarningType: @ViewBag.WarmType,
+                VPLimit: @ViewBag.VPLimit,
+                LimitAmount:  @ViewBag.LimitAmount,
+                QuotaDay:@ViewBag.QuotaDay,
+
+
+            };
+    e.data = searchModel;
+        }
+    </script>
+}
+

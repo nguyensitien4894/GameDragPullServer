@@ -1,0 +1,63 @@
+﻿
+@model  MsWebGame.CSKH.Models.Accounts.AdminModel
+@using Telerik.Web.Mvc.UI;
+@Html.ValidationSummary(true)
+
+<div class="t-widget t-tabstrip t-header">
+    <div class="t-content t-state-active" style="display: block;">
+        <table class="adminContent customer-info-tab">
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model => model.UserName):
+                </td>
+                <td class="adminData">
+                 @if (Model.AdminID > 0)
+                 {
+                     @Html.DisplayFor(m=>m.UserName)
+                 }
+                 else
+                 {
+                    @Html.EditorFor(model => model.UserName, new { @class = "text-box single-line" })
+                    @Html.ValidationMessageFor(model => model.UserName)
+                 }
+                   
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model => model.Password):
+                </td>
+                <td class="adminData">
+                    @Html.PasswordFor(model => model.Password, new { @class = "text-box single-line" })
+                    @Html.ValidationMessageFor(model => model.Password)
+                    @if (Model.AdminID > 0)
+                    {
+                        <p class="warning">Nếu không muốn cập nhật mật khẩu thì để trống</p>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model => model.Email):
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model => model.Email, new { @class = "text-box single-line" })
+                    @Html.ValidationMessageFor(model => model.Email)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model => model.PhoneContact):
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model => model.PhoneContact, new { @class = "text-box single-line" })
+                    @Html.ValidationMessageFor(model => model.PhoneContact)
+                </td>
+
+            </tr>
+            
+        </table>
+    </div>
+    
+</div>
+

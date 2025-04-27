@@ -1,0 +1,220 @@
+﻿@{
+    ViewBag.Title = "Lịch sử nạp thẻ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Telerik.Web.Mvc.UI
+@using TraditionGame.Utilities.Utils
+@using MsWebGame.CSKH.Database.DTO
+@using System.Linq;
+@using MsWebGame.CSKH.Utils
+@model IEnumerable<CashflowOverview>
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-configuration.png")" alt="" />
+            Thống kê
+        </div>
+    </div>
+
+    <div>
+        @using (Html.BeginForm("GetCashflowOverview", "Report", FormMethod.Get, new { enctype = "multipart/form-data" }))
+        {
+            <table style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <td class="adminTitle">
+                            <img src="~/Content/images/ico-help.gif">
+                            <label>Chọn cổng</label>
+                        </td>
+                        <td class="adminData">
+                            @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"),"--Tất cả các cổng--", new { @class = "text-box single-line", @onchange = @"form.submit();" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <img src="~/Content/images/ico-help.gif">
+                            <label>Từ ngày</label>
+                        </td>
+                        <td class="adminData">
+                            @Html.Telerik().DateTimePicker().Name("fromDate").Value(ViewBag.FirstDay).InputHtmlAttributes(new { @readonly = "readonly" })
+                            <span class="field-validation-valid" data-valmsg-for="fromDate"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <img src="~/Content/images/ico-help.gif">
+                            <label>Đến ngày</label>
+                        </td>
+                        <td class="adminData">
+                            @Html.Telerik().DateTimePicker().Name("toDate").Value(DateTime.Now).InputHtmlAttributes(new { @readonly = "readonly" })
+                            <span class="field-validation-valid" data-valmsg-for="toDate"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            &nbsp;
+                        </td>
+                        <td>
+                            <input type="submit" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+    </div>
+
+    <style>
+        .adminContent tr:nth-child(even) {
+            background-color: #b7e2b7;
+        }
+    </style>
+    <div id="chartContainer" class="chartContainer"></div>
+    <script type="text/javascript">
+        var result = @Html.Raw(ViewBag.Data);
+        var dataTotalCardRecharge =[];
+        var dataTotalCardSwap =[];
+        var dataTotalGameProfit =[];
+        var dataTotalAgencySell =[];
+        var dataTotalAgencyBuy =[];
+        var dataTotalAgencyReward =[];
+        var dataTotalEvent =[];
+        var dataTotalGiftcode =[];
+        var dataTotalVP =[];
+        var dataTotalVipReward =[];
+        var dataTotalVqmm =[];
+        for(var i = 0; i < result.length; i++){
+            dataTotalCardRecharge.push({ x: new Date(result[i].CheckDate), y: result[i].TotalCardRechargeValue });
+            dataTotalCardSwap.push({ x: new Date(result[i].CheckDate), y: result[i].TotalCardSwapValue });
+            dataTotalGameProfit.push({ x: new Date(result[i].CheckDate), y: result[i].TotalGameProfit });
+            dataTotalAgencySell.push({ x: new Date(result[i].CheckDate), y: result[i].TotalAgencySellValue });
+            dataTotalAgencyBuy.push({ x: new Date(result[i].CheckDate), y: result[i].TotalAgencyBuyValue });
+            dataTotalAgencyReward.push({ x: new Date(result[i].CheckDate), y: result[i].TotalAgencyReward });
+            dataTotalEvent.push({ x: new Date(result[i].CheckDate), y: result[i].TotalEventValue });
+            dataTotalGiftcode.push({ x: new Date(result[i].CheckDate), y: result[i].TotalGiftcodeValue });
+            dataTotalVP.push({ x: new Date(result[i].CheckDate), y: result[i].TotalVP });
+            dataTotalVipReward.push({ x: new Date(result[i].CheckDate), y: result[i].TotalVipReward });
+            dataTotalVqmm.push({ x: new Date(result[i].CheckDate), y: result[i].TotalVqmmValue });
+        }
+
+        $(function () {
+            var chart = new CanvasJS.Chart("chartContainer", {
+                height: 400,
+                title: { text: "Tổng quan", fontFamily: "Calibri" },
+                subtitles: [
+                    {text: "Nhấp vào chú giải để ẩn/hiện ẩn chuỗi dữ liệu",fontFamily: "Calibri" }
+                ],
+                animationEnabled: true,
+                axisY: { titleFontFamily: "arial", titleFontSize: 12, includeZero: false },
+                toolTip: { shared: true },
+                data: [
+                    { type: "spline", name: "Tổng nạp thẻ",         showInLegend: true, visible: true, dataPoints: dataTotalCardRecharge },
+                    { type: "spline", name: "Tổng đổi thẻ",         showInLegend: true, visible: false, dataPoints: dataTotalCardSwap },
+                    { type: "spline", name: "Tổng lợi nhuận",       showInLegend: true, visible: true, dataPoints: dataTotalGameProfit },
+                    { type: "spline", name: "Tổng đại lý bán",      showInLegend: true, visible: true, dataPoints: dataTotalAgencySell },
+                    { type: "spline", name: "Tổng đại lý mua",      showInLegend: true, visible: true, dataPoints: dataTotalAgencyBuy },
+                    { type: "spline", name: "Tổng thưởng đại lý",   showInLegend: true, visible: false, dataPoints: dataTotalAgencyReward },
+                    { type: "spline", name: "Tổng giá trị event",   showInLegend: true, visible: false, dataPoints: dataTotalEvent },
+                    { type: "spline", name: "Tổng gift code",       showInLegend: true, visible: false, dataPoints: dataTotalGiftcode },
+                    { type: "spline", name: "Tổng VP",              showInLegend: true, visible: false, dataPoints: dataTotalVP },
+                    { type: "spline", name: "Tổng đổi VIP",         showInLegend: true, visible: false, dataPoints: dataTotalVipReward },
+                    { type: "spline", name: "Tổng phí VQMM",        showInLegend: true, visible: false, dataPoints: dataTotalVqmm }
+                ],
+                legend: {
+                    cursor: "pointer",
+                    itemclick: function (e) {
+                        if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                            e.dataSeries.visible = false;
+                        }
+                        else {
+                            e.dataSeries.visible = true;
+                        }
+                        chart.render();
+                    }
+                }
+            });
+
+            chart.render();
+        });
+    </script>
+    <table class="adminContent">
+        <tr>
+            <td>
+                <div id="cash-flow-overview">
+                    <div class="t-widget t-grid" id="userCardSwap-grid">
+                        <table cellspacing="0">
+                            <thead class="t-grid-header">
+                                <tr>
+                                    <th class="t-header" scope="col"><span class="t-link">Ngày tháng </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Tổng nạp thẻ </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Tổng đổi thẻ </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Tổng lợi nhuận game </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Tổng đại lý bán </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Tổng đại lý mua </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Tổng phí đại lý </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Tổng thưởng đại lý </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Tổng giá trị event </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Tổng gift code </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Tổng VP </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Tổng phí người dùng </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Tổng đổi VIP </span></th>
+                                    <th class="t-header" scope="col"><span class="t-link">Tổng phí VQMM </span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Any())
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.CheckDate</td>
+                                            <td class="text-right">@item.TotalCardRechargeValue.LongToMoneyFormat()</td>
+                                            <td class="text-right">@item.TotalCardSwapValue.LongToMoneyFormat()</td>
+                                            <td class="text-right">@item.TotalGameProfit.LongToMoneyFormat()</td>
+                                            <td class="text-right">@item.TotalAgencySellValue.LongToMoneyFormat()</td>
+                                            <td class="text-right">@item.TotalAgencyBuyValue.LongToMoneyFormat()</td>
+                                            <td class="text-right">@item.TotalAgencyFee.LongToMoneyFormat()</td>
+                                            <td class="text-right">@item.TotalAgencyReward.LongToMoneyFormat()</td>
+                                            <td class="text-right">@item.TotalEventValue.LongToMoneyFormat()</td>
+                                            <td class="text-right">@item.TotalGiftcodeValue.LongToMoneyFormat()</td>
+                                            <td class="text-right">@item.TotalVP.LongToMoneyFormat()</td>
+                                            <td class="text-right">@item.TotalUserFee.LongToMoneyFormat()</td>
+                                            <td class="text-right">@item.TotalVipReward.LongToMoneyFormat()</td>
+                                            <td class="text-right">@item.TotalVqmmValue.LongToMoneyFormat()</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                            <tfoot>
+                                @if (Model != null && Model.Any())
+                                {
+                                    <tr>
+                                        <td colspan="1"><span class="t-link"><b>Thống kê</b></span></td>
+                                        <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.TotalCardRechargeValue).Sum().LongToMoneyFormat()</b> </span></td>
+                                        <td class="text-right"><span class="t-link"><b>@Model.Select(a => a.TotalCardSwapValue).Sum().LongToMoneyFormat() </b></span></td>
+                                        <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.TotalGameProfit).Sum().LongToMoneyFormat()</b> </span></td>
+                                        <td class="text-right"><span class="t-link"><b>@Model.Select(a => a.TotalAgencySellValue).Sum().LongToMoneyFormat() </b></span></td>
+                                        <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.TotalAgencyBuyValue).Sum().LongToMoneyFormat()</b> </span></td>
+                                        <td class="text-right"><span class="t-link"><b>@Model.Select(a => a.TotalAgencyFee).Sum().LongToMoneyFormat() </b></span></td>
+                                        <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.TotalAgencyReward).Sum().LongToMoneyFormat()</b> </span></td>
+                                        <td class="text-right"><span class="t-link"><b>@Model.Select(a => a.TotalEventValue).Sum().LongToMoneyFormat() </b></span></td>
+                                        <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.TotalGiftcodeValue).Sum().LongToMoneyFormat()</b> </span></td>
+                                        <td class="text-right"><span class="t-link"><b>@Model.Select(a => a.TotalVP).Sum().LongToMoneyFormat() </b></span></td>
+                                        <td class="text-right"><span class="t-link "><b>@Model.Select(a => a.TotalUserFee).Sum().LongToMoneyFormat()</b> </span></td>
+                                        <td class="text-right"><span class="t-link"><b>@Model.Select(a => a.TotalVipReward).Sum().LongToMoneyFormat() </b></span></td>
+                                        <td class="text-right"><span class="t-link"><b>@Model.Select(a => a.TotalVqmmValue).Sum().LongToMoneyFormat() </b></span></td>
+                                    </tr>
+                                }
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+}
+
+
+

@@ -1,0 +1,93 @@
+﻿@using MsWebGame.CSKH.Utils
+@using Telerik.Web.Mvc.UI
+
+@model  MsWebGame.CSKH.Database.DTO.GameCampaign
+@{
+    ViewBag.Title = "Cấu hình chiến dịch";
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            @AppConstants.CONFIG.EDIT
+        </div>
+        <div class="options">
+            <a href="@Url.Action("Campaign")" class="t-button">Quay lại</a>
+        </div>
+    </div>
+    if (Model != null && Model.CampaignID > 0)
+    {
+        @Html.HiddenFor(m => m.CampaignID)
+        @Html.HiddenFor(m => m.CampaignCode)
+        <div class="t-widget t-tabstrip t-header">
+            <div class="t-content t-state-active" style="display: block;">
+                <table class="adminContent customer-info-tab">
+                    <tr>
+                        <td class="adminTitle">
+                            <img src="~/Content/images/ico-help.gif">
+                            <label>Chọn cổng</label>
+                        </td>
+                        <td class="adminData">
+                            @Html.DropDownListFor(m=>m.ServiceID, new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Tên chiến dịch <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <input class="text-box single-line" value="@Model.CampaignName" id="campaignName" name="CampaignName" type="text">
+                            <span class="field-validation-valid" data-valmsg-for="campaignName"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Ngày hiệu lực <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            @Html.Telerik().DatePicker().Name("EffectDate").Value(@Model.EffectDate)
+                            <span class="field-validation-valid" data-valmsg-for="effectDate"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Ngày hết hạn <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            @Html.Telerik().DatePicker().Name("ExpiredDate").Value(@Model.ExpiredDate)
+                            <span class="field-validation-valid" data-valmsg-for="expiredDate"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Trạng thái <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <select id="status" name="Status" class="text-box single-line">
+                                <option value="true" @(Model.Status ? "selected" : string.Empty)>Hiệu lực</option>
+                                <option value="false" @(Model.Status ? string.Empty : "selected")>Hết hiệu lực</option>
+                            </select>
+                            <span class="field-validation-valid" data-valmsg-for="status"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Miêu tả <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            <input class="text-box single-line" value="@Model.Description" id="description" name="Description" type="text">
+                            <span class="field-validation-valid" data-valmsg-for="description"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle"></td>
+                        <td class="adminData">
+                            <input type="submit" onclick="return GlobalHeader.validationCampaign(1);" name="save" class="t-button" value="@AppConstants.CONFIG.SAVE" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    }
+}

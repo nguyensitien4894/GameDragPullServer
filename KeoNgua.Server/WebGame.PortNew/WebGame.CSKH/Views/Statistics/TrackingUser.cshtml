@@ -1,0 +1,258 @@
+﻿@{
+    ViewBag.Title = "Thống kê số  lượng người dùng  đăng kí";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@model  UserTrackingPage
+@functions{
+    private bool IsDisplayMenu(string UserRoles)
+    {
+        string RoleCode = Session["RoleCode"] != null ? Session["RoleCode"].ToString() : string.Empty;
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    private bool IsDisplayMenuByUserName(string UserRoles)
+    {
+        string RoleCode = Session["UserName"] != null ? Session["UserName"].ToString() : string.Empty;
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            Thống kê đăng kí
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <tbody>
+            @if (!IsDisplayMenu("MARKETING_BB,MARKETING"))
+            {
+                <tr>
+                    <td class="adminTitle">
+                        <img src="~/Content/images/ico-help.gif">
+                        <label>Chọn cổng</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.DropDownList("serviceId", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td class="adminTitle">
+                        &nbsp;
+                        <input type="hidden" value="@ViewBag.MKTServiceID" name="serviceId" id="serviceId" />
+                    </td>
+                    <td></td>
+                </tr>
+            }
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Từ ngày <span style="color:red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("from").Value(DateTime.Today.AddDays(-7))
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Đến ngày <span style="color:red;">*</span></label>
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().DatePicker().Name("to").Value(DateTime.Now)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Chọn loại đăng kí</label>
+                </td>
+                <td class="adminData">
+
+                    <select class="text-box single-line " id="LoginType">
+                        <option value="0">Chọn loại đăng kí</option>
+                        <option value="1">Đăng kí thường</option>
+                        <option value="2">Đăng kí facebook</option>
+
+                    </select>
+                    <span class="field-validation-valid" data-valmsg-for="telOperatorId"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Landing <span style="color:red;"></span></label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="UrlPath" name="UrlPath" type="text">
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>UtmMedium <span style="color:red;"></span></label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="UtmMedium" name="UtmMedium" type="text">
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>UtmSource <span style="color:red;"></span></label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="UtmSource" name="UtmSource" type="text">
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>UtmCampaign <span style="color:red;"></span></label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="UtmCampaign" name="UtmCampaign" type="text">
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>UtmContent <span style="color:red;"></span></label>
+                </td>
+                <td class="adminData">
+                    <input class="text-box single-line" id="UtmContent" name="UtmContent" type="text">
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle"></td>
+                <td class="adminData">
+                    <input type="button" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>
+        Danh sách
+    </h2>
+
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<UserTrackingPage>()
+                    .Name("statisticsJackpot-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.UrlPath).Title("Landing");
+                        
+                        columns.Bound(x => x.UtmMedium).Title("UtmMedium");
+                        columns.Bound(x => x.UtmSource).Title("UtmSource");
+                        columns.Bound(x => x.UtmCampaign).Title("UtmCampaign");
+                        
+                        
+                        columns.Bound(x => x.UtmContent).Title("UtmContent");
+                        columns.Bound(x => x.LoginTypeStr).Title("Kiểu đăng kí");
+
+                        columns.Bound(x => x.CountRegister).Title("Số lượng").HtmlAttributes(new { @class = "text-right" }).Aggregate(c=>c.Sum()).ClientFooterTemplate("<div style='color:red;font-size:16px;font-weight:bold'><#=computeRange()#></div>").FooterHtmlAttributes(new { @class = "text-right" });
+                    })
+                    .Pageable(settings => settings.PageSize(AppConstants.CONFIG.GRID_SIZE).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetTrackingUser", "Statistics");
+                      
+                    })
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                var from = $('#from').val().trim();
+                var to = $('#to').val().trim();
+                var urlPage = $('#UrlPath').val().trim();
+                if (from == null || from == '') {
+                    $('#from').focus();
+                    return;
+                }
+                if (to == null || to == '') {
+                    $('#to').focus();
+                    return;
+                }
+
+                var grid = $('#statisticsJackpot-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                return false;
+            });
+        });
+        function computeRange() {
+            var bal = 0;
+            var balFB = 0;
+            var grid = $('#statisticsJackpot-grid').data('tGrid').dataSource;
+            var data = grid.data();
+           
+            for (var idx = 0; idx < data.length; idx++) {
+                item = data[idx];
+                if (item.CountRegister && item.LoginType==1) {
+                    bal += item.CountRegister;
+                }
+                if (item.CountRegister && item.LoginType == 2) {
+                    balFB += item.CountRegister;
+                }
+            }
+            
+            return "Tổng ĐK thường: " + bal + "|Tổng ĐK Facebook: " + balFB;
+        }
+        function onDataBinding(e) {
+            var searchModel = {
+
+                from: $('#from').val().trim(),
+                to: $('#to').val().trim(),
+                UrlPath: $('#UrlPath').val().trim(),
+                UtmMedium: $('#UtmMedium').val().trim(),
+                UtmSource: $('#UtmSource').val().trim(),
+                UtmCampaign: $('#UtmCampaign').val().trim(),
+                UtmContent: $('#UtmContent').val().trim(),
+                serviceId: $('#serviceId').val().trim(),
+                LoginType: $('#LoginType').val().trim(),
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

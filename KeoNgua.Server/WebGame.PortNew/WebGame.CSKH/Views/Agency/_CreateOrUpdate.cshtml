@@ -1,0 +1,349 @@
+﻿@using MsWebGame.CSKH.Utils
+@model  MsWebGame.CSKH.Models.Agencies.AgencyModel
+@using Telerik.Web.Mvc.UI
+@functions{
+    private bool IsDisplayMenu(string UserRoles)
+    {
+        string RoleCode = Session["RoleCode"] != null ? Session["RoleCode"].ToString() : string.Empty;
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    private bool IsDisplayMenuByUserName(string UserRoles)
+    {
+        string RoleCode = Session["UserName"] != null ? Session["UserName"].ToString() : string.Empty;
+        if (UserRoles != "*")
+        {
+            var arrRoles = UserRoles.Split(',');
+            var curRoles = RoleCode.Split(',');
+            var listCommon = arrRoles.Intersect(curRoles).ToList();
+            if (listCommon != null && listCommon.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+<div class="t-widget t-tabstrip t-header">
+    <div class="t-content t-state-active" style="display: block;">
+        <div style="float:left;width:50%">
+            <table class="adminContent customer-info-tab">
+                <tr>
+                    <td class="adminTitle">
+                        <label>Tên tài khoản</label>
+                    </td>
+                    <td class="adminData @(Model.AccountId > 0 ? "agencyedit" : string.Empty)">
+                        @if (Model.AccountId > 0)
+                        {
+                            @Html.DisplayFor(m => m.AccountName, new { @class = "text-box single-line" })
+                        }
+                        else
+                        {
+                            @Html.EditorFor(model => model.AccountName, new { @class = "text-box single-line" })
+                            @Html.ValidationMessageFor(model => model.AccountName)
+                        }
+                    </td>
+                </tr>
+                @if (Model.AccountId == 0)
+                {
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Mật khẩu <span style="color:red;">*</span></label>
+                        </td>
+                        <td class="adminData">
+                            @Html.PasswordFor(model => model.Password, new { @class = "text-box single-line" })
+                            @Html.ValidationMessageFor(model => model.Password)
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td class="adminTitle">
+                        <label>Tên giao dịch</label>
+                    </td>
+                    <td class="adminData @(Model.AccountId > 0 ? "agencyedit" : string.Empty)">
+                        @if (Model.AccountId > 0)
+                        {
+                            @Html.DisplayFor(m => m.DisplayName, new { @class = "text-box single-line" })
+                        }
+                        else
+                        {
+                            @Html.EditorFor(model => model.DisplayName, new { @class = "text-box single-line" })
+                            @Html.ValidationMessageFor(model => model.DisplayName)
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Tên đầy đủ</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.FullName, new { @class = "text-box single-line" })
+                        @Html.ValidationMessageFor(model => model.FullName)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Số điện thoại</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.PhoneOTP, new { @class = "text-box single-line" })
+                        @Html.ValidationMessageFor(model => model.PhoneOTP)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Số điện thoại hiển thị</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.PhoneDisplay, new { @class = "text-box single-line" })
+                        @Html.ValidationMessageFor(model => model.PhoneDisplay)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Facebook</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.FBLink)
+                        @Html.ValidationMessageFor(model => model.FBLink)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Telegram Link</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.TelegramLink)
+                        @Html.ValidationMessageFor(model => model.TelegramLink)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Zalo Link</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.ZaloLink)
+                        @Html.ValidationMessageFor(model => model.ZaloLink)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Đại lý tuyến trên(nếu có)</label>,
+                    </td>
+                    <td class="adminData">
+                        <select id="parentId" name="ParentID" class="text-box single-line">
+                            <option value="">Đại lý tuyến trên</option>
+                            @if (Model != null && Model.AccountId > 0 && Model.AccountLevel >= 2)
+                            {
+                                foreach (var item in ViewBag.AgencyOne)
+                                {
+                                    <option value="@item.Value" @(Model.ParentID.Value == long.Parse(item.Value) ? "selected" : string.Empty)>@item.Text</option>
+                                }
+                            }
+                            else if (Model != null && Model.AccountId == 0 && Model.ParentID.HasValue)
+                            {
+                                foreach (var item in ViewBag.AgencyOne)
+                                {
+                                    <option value="@item.Value" @(Model.ParentID.Value == long.Parse(item.Value) ? "selected" : string.Empty)>@item.Text</option>
+                                }
+                            }
+                            else if (Model != null && Model.AccountId == 0)
+                            {
+                                foreach (var item in ViewBag.AgencyOne)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            }
+                        </select>
+                        @Html.ValidationMessageFor(model => model.ParentID)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Khu vực</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AreaName)
+                        @Html.ValidationMessageFor(model => model.AreaName)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Vị trí hiển thị</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.OrderNum)
+                        @Html.ValidationMessageFor(model => model.OrderNum)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Trạng thái</label>
+                    </td>
+                    <td class="adminData">
+                        <select name="Status" class="text-box single-line">
+                            @if (Model != null && Model.AccountId > 0)
+                            {
+                                foreach (var item in ViewBag.AgencyStatus)
+                                {
+                                    <option value="@item.Value" @(Model.Status.Value == Int32.Parse(item.Value) ? "selected" : string.Empty)>@item.Text</option>
+                                }
+                            }
+                            else
+                            {
+                                foreach (var item in ViewBag.AgencyStatus)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            }
+                        </select>
+                        @Html.ValidationMessageFor(model => model.Status)
+                    </td>
+                </tr>
+                @if (Model.AccountId == 0)
+                {
+                    <tr>
+                        <td class="adminTitle">
+                            <label>Chọn cổng</label>
+                        </td>
+                        <td class="adminData">
+                            @Html.Telerik().DropDownList().Name("ServiceID").BindTo(ViewBag.ServiceBox).Value(Model.ServiceID.ToString())
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <input type="submit" name="save" class="t-button" value="@AppConstants.CONFIG.SAVE" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+@if (Model.AccountId > 0)
+{
+    if (IsDisplayMenuByUserName("admin,adminref,admin_test"))
+    {
+        <div style="float:right;width:50%">
+            <table class="adminContent customer-info-tab">
+                <tr>
+                    <td class="adminTitle">
+                        <label>Tên tài khoản</label>
+                    </td>
+                    <td class="adminData @(Model.AccountId > 0 ? "agencyedit" : string.Empty)">
+                        @if (Model.AccountId > 0)
+                        {
+                            @Html.DisplayFor(m => m.AccountName, new { @class = "text-box single-line" })
+                        }
+                        else
+                        {
+                            @Html.EditorFor(model => model.AccountName, new { @class = "text-box single-line" })
+                            @Html.ValidationMessageFor(model => model.AccountName)
+                        }
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="adminTitle">
+                        <label>Tên giao dịch</label>
+                    </td>
+                    <td class="adminData @(Model.AccountId > 0 ? "agencyedit" : string.Empty)">
+                        @if (Model.AccountId > 0)
+                        {
+                            @Html.DisplayFor(m => m.DisplayName, new { @class = "text-box single-line" })
+                        }
+                        else
+                        {
+                            @Html.EditorFor(model => model.DisplayName, new { @class = "text-box single-line" })
+                            @Html.ValidationMessageFor(model => model.DisplayName)
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Tên đầy đủ</label>
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.FullName, new { @class = "text-box single-line", @readonly= "readonly" })
+                        @Html.ValidationMessageFor(model => model.FullName)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="adminTitle">
+                        <label>Loại ví </label>
+                    </td>
+                    <td class="adminData">
+                        Ví chính    <input type="radio" value="1" name="walletType"  checked  onchange="GlobalHeader.AgencyChagneWalletType()"/>
+                        Ví GiftCode    <input type="radio" value="3" name="walletType"   onchange="GlobalHeader.AgencyChagneWalletType()" />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Số tiền trong ví  </label>
+                    </td>
+                    <td class="adminData">
+                        <input type="text" value="@Model.WalletFormat" class="text-box single-line" id="CurrentWallet" readonly />
+                        <input type="hidden" value="@Model.GiftcodeWallettFormat" id="GiftcodeWalletAmount"/>
+                        <input type="hidden" value="@Model.WalletFormat" id="WalletAmount" />
+                        <input type="hidden" value="@Model.ServiceID" id="SIDTH" />
+                        <input type="hidden" value="@Model.AccountId" id="AgID"/>
+                        <input type="hidden" value="@Model.Wallet" id="WalletF" />
+                        <input type="hidden" value="@Model.GiftcodeWallet" id="GiftcodeWalletF" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="adminTitle">
+                        <label>Số tiền muốn thu hồi  <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        <input type="text" value="" id="AmountRefund" name="AmountRefund" class="text-box single-line"  onkeypress="return GlobalHeader.isNumber(event);"
+                               onkeyup="GlobalHeader.changeNumber(this)" onblur="GlobalHeader.bindDataTransferAmount();"/>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Ghi chú  <span style="color:red;">*</span> </label>
+                    </td>
+                    <td class="adminData">
+                        <textarea type="text" value="" id="NoteRefund" name="NoteRefund" class="text-box single-line"  rows="6" cols="20"></textarea>
+
+                    </td>
+                </tr>
+              
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <button   class="btn-primary" type="button" onclick="GlobalHeader.AgencyWalletWithDraw();" >Thu hồi</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+}
+        <div style="clear:both"></div>
+
+
+
+
+    </div>
+</div>

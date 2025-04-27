@@ -1,0 +1,170 @@
+﻿@using Telerik.Web.Mvc.UI
+
+@using MsWebGame.CSKH.Utils
+@{
+    ViewBag.Title = "Cấu hình sự kiện";
+}
+
+@model MsWebGame.CSKH.Database.DTO.GameEvent
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            @AppConstants.CONFIG.ADD_NEW
+        </div>
+        <div class="options">
+            <a href="@Url.Action("Event")" class="t-button">Quay lại</a>
+        </div>
+    </div>
+    <div class="t-widget t-tabstrip t-header">
+        <div class="t-content t-state-active" style="display: block;">
+            <table class="adminContent customer-info-tab">
+                <tr>
+                    <td class="adminTitle">
+                        <label>Chọn chiến dịch <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        <select id="campaignId" name="campaignId" class="text-box single-line">
+                            @foreach (var item in ViewBag.CampaignBox)
+                            {
+                                <option value="@item.Value">@item.Name</option>
+                            }
+                        </select>
+                        <span class="field-validation-valid" data-valmsg-for="campaignId"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Chọn game <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        <select id="gameId" name="gameId" class="text-box single-line">
+                            @foreach (var item in ViewBag.GameBox)
+                            {
+                                <option value="@item.Value">@item.Name</option>
+                            }
+                        </select>
+                        <span class="field-validation-valid" data-valmsg-for="gameId"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Chọn phòng <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        <select id="roomId" name="roomId" class="text-box single-line">
+                            @foreach (var item in ViewBag.RoomBox)
+                            {
+                                <option value="@item.Value">@item.Name</option>
+                            }
+
+                            <option value="1">Phòng 1K(Block Buster)</option>
+                            <option value="2">Phòng 2K(Block Buster)</option>
+                            <option value="3">Phòng 5K(Block Buster)</option>
+                            <option value="4">Phòng 10K(Block Buster)</option>
+                        </select>
+                        <span class="field-validation-valid" data-valmsg-for="roomId"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Giá trị hũ sự kiện <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        <input class="text-box single-line" id="jackpotEventInit" name="jackpotEventInit" type="text" onchange="GlobalHeader.changeNumber(this);"
+                               onkeypress="return GlobalHeader.isNumber(event);">
+                        <span class="field-validation-valid" data-valmsg-for="jackpotEventInit"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Số lượng hũ sự kiện <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        <input class="text-box single-line" id="jackpotEventQuota" name="jackpotEventQuota" type="text" onchange="GlobalHeader.changeNumber(this);"
+                               onkeypress="return GlobalHeader.isNumber(event);">
+                        <span class="field-validation-valid" data-valmsg-for="jackpotEventQuota"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Bước nhảy <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        <input class="text-box single-line" id="jackpotStepJump" name="jackpotStepJump" type="text" onchange="GlobalHeader.changeNumber(this);"
+                               onkeypress="return GlobalHeader.isNumber(event);">
+                        <span class="field-validation-valid" data-valmsg-for="jackpotStepJump"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Ngày sự kiện <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        @foreach (var item in ViewBag.WeekDayBox)
+                        {
+                            <input type="checkbox" id="@("eventDay" + item.Value)" name="@("eventDay" + item.Value)" value="@item.Value" /> @item.Name
+                        }
+                        <span class="field-validation-valid" data-valmsg-for="eventDay"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Thời gian sự kiện <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        <input class="text-box single-line" id="eventTime" name="eventTime" type="text" placeholder="Thời gian trong ngày, VD: 10-12,14-16">
+                        <span class="field-validation-valid" data-valmsg-for="eventTime"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Ngày hiệu lực <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        @Html.Telerik().DateTimePicker().Name("effectDate").Value(DateTime.Today).InputHtmlAttributes(new { @readonly = "readonly" })
+                        <span class="field-validation-valid" data-valmsg-for="effectDate"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Ngày hết hạn <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        @Html.Telerik().DateTimePicker().Name("expiredDate").Value(DateTime.Today).InputHtmlAttributes(new { @readonly = "readonly" })
+                        <span class="field-validation-valid" data-valmsg-for="expiredDate"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Trạng thái <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        <select id="status" name="status" class="text-box single-line">
+                            <option value="true">Hiệu lực</option>
+                            <option value="false">Hết hiệu lực</option>
+                        </select>
+                        <span class="field-validation-valid" data-valmsg-for="status"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        <label>Miêu tả <span style="color:red;">*</span></label>
+                    </td>
+                    <td class="adminData">
+                        <input class="text-box single-line" id="description" name="description" type="text">
+                        <span class="field-validation-valid" data-valmsg-for="description"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle"></td>
+                    <td class="adminData">
+                        <input type="submit" onclick="return GlobalHeader.validationSetEvent(0);" name="save" class="t-button" value="@AppConstants.CONFIG.SAVE" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}

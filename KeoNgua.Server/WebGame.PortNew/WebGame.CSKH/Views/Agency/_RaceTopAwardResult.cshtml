@@ -1,0 +1,93 @@
+﻿@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+        Kết quả  Danh sách chốt
+    </div>
+</div>
+
+
+<table>
+    <tbody>
+
+        <tr>
+            <td class="adminTitle">
+                <label>Chọn cổng</label>
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("serviceIdResult", new SelectList(ViewBag.ServiceBox, "Value", "Text"), new { @class = "text-box single-line" })
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                <label style="margin-right: 10px;">Kỳ chốt</label>
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("raceDateResult", new SelectList(ViewBag.RaceDateBox, "Value", "Text", ""), "--Chọn kì chốt--", new { @class = "text-box single-line" })
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                &nbsp;
+            </td>
+            <td>
+                <input type="submit" id="btnSearchResult" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="adminContent">
+    <tr>
+        <td>
+
+            @(Html.Telerik().Grid<AgencyRaceTopAward>()
+                    .Name("agc-result-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBindingRessult"))
+                   
+                     .DataKeys(x => { x.Add(y => y.AccountID); })
+                    .Columns(columns =>
+                    {
+
+                        columns.Bound(e => e.AccountID).Hidden();
+                        columns.Bound(e => e.PrizeID).Title("Hạng").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.DisplayName).Title("NickName");
+                        columns.Bound(e => e.TotalTransfer).Title("Tổng luồng giao dịch");
+                        columns.Bound(e => e.TotalVP).Title("Tổng VIP").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(x => x.BonusRate).Title("Hệ số").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.PrizeValue).Title("Tiền thưởng").HtmlAttributes(new { @class = "text-right" });
+                        columns.Bound(e => e.RaceDate).Title("Ngày chốt").HtmlAttributes(new { @class = "text-right" });
+                       
+                       
+
+
+                    })
+                    .DataBinding(dataBinding => dataBinding.Ajax().Select("GetResultRaceTop", "Agency"))
+                    .Selectable()
+                    .EnableCustomBinding(true))
+        </td>
+    </tr>
+</table>
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+        
+        function onDataBindingRessult(e) {
+            var searchModel = {
+
+                raceDate: $('#raceDateResult').val().trim(),
+              
+                ServiceID: $('#serviceId').val().trim()
+            };
+            e.data = searchModel;
+        }
+</script>

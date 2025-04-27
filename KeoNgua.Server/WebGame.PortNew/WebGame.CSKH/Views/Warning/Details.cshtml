@@ -1,0 +1,130 @@
+﻿
+@{
+    ViewBag.Title = "Quản lý đại lý";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using MsWebGame.CSKH.Database.DTO
+@using Telerik.Web.Mvc.UI
+@using MsWebGame.CSKH.Utils
+@using MsWebGame.CSKH.Models.Warnings
+@model WarningRequestModel
+
+@using (Html.BeginForm("Index", "Agency", FormMethod.Get))
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Content/images/ico-promotions.png")" alt="" />
+            Danh sách cảnh báo
+        </div>
+        <div class="options">
+            <a href="@Url.Action("Index")" class="t-button">@AppConstants.CONFIG.BACK</a>
+        </div>
+    </div>
+
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Loại cảnh báo </label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(m => m.WarningType, Model.LstType, new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Hạn mức thấp nhất CB</label>
+                </td>
+                <td class="adminData">
+
+                    @Html.DropDownListFor(m => m.LimitAmount, Model.LstLimitAmount, new { @class = "text-box single-line" })
+                    <span class="field-validation-valid" data-valmsg-for="accountName"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>VP Cảnh báo</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(m => m.VPLimit, Model.LstVP, new { @class = "text-box single-line" })
+                    <span class="field-validation-valid" data-valmsg-for="phoneNo"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="adminTitle">
+                    <img src="~/Content/images/ico-help.gif">
+                    <label>Số ngày tính</label>
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(m => m.QuotaDay, Model.LstQuata, new { @class = "text-box single-line" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="adminTitle">
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="submit" id="btnSearch" class="t-button" value="@AppConstants.CONFIG.SEARCH" style="margin-bottom: 6px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+        <table class="adminContent">
+            <tr>
+                <td>
+                    @(Html.Telerik().Grid<WarningModel>()
+                    .Name("campaign-grid")
+                    .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.ServiceName).Title("Tên cổng");
+                        columns.Bound(x => x.DisplayName).Title("Tên người dùng");
+                        columns.Bound(x => x.TotalAmountFormat).Title("Số tiền giao dịch");
+
+                    })
+                    .Pageable(settings => settings.PageSize(20).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("GetList", "Warning");
+                    })
+                    .EnableCustomBinding(true))
+                </td>
+            </tr>
+        </table>
+
+        <script type="text/javascript">
+
+            function onDataBinding(e) {
+                var searchModel = {
+                    WarningType: $('#WarningType').val().trim(),
+                    VPLimit: $('#VPLimit').val().trim(),
+                    LimitAmount: $('#LimitAmount').val().trim(),
+                    QuotaDay: $('#QuotaDay').val().trim(),
+
+
+                };
+                e.data = searchModel;
+            }
+
+
+
+            $(document).ready(function () {
+                $('#btnSearch').click(function () {
+                    var grid = $('#campaign-grid').data('tGrid');
+                    grid.currentPage = 1; //new search. Set page size to 1
+                    grid.ajaxRequest();
+                    return false;
+                });
+            });
+
+        </script>
+
+
+
+}
