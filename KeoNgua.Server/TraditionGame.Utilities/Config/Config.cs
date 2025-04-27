@@ -43,8 +43,8 @@ namespace TraditionGame.Utilities
         private readonly string _xpokerConn;
         private readonly string _xpokerLogConn;
 
-        private readonly string _kingstarConn;
-        private readonly string _kingstarLogConn;
+        private readonly string _HorseHunterConn;
+        private readonly string _HorseHunterLogConn;
 
         private readonly string _vqmmConn;
         private readonly string _vqmmLogConn;
@@ -109,8 +109,8 @@ namespace TraditionGame.Utilities
             _xpokerConn = GetConnStr("XpokerConn", encrypted);
             _xpokerLogConn = GetConnStr("XpokerLogConn", encrypted);
 
-            _kingstarConn = GetConnStr("KingstarConn", encrypted);
-            _kingstarLogConn = GetConnStr("KingstarLogConn", encrypted);
+            _HorseHunterConn = GetConnStr("HorseHunterConn", encrypted);
+            _HorseHunterLogConn = GetConnStr("HorseHunterLogConn", encrypted);
 
             _vqmmConn = GetConnStr("VqmmConn", encrypted);
             _vqmmLogConn = GetConnStr("VqmmLogConn", encrypted);
@@ -164,8 +164,8 @@ namespace TraditionGame.Utilities
         public static string XpokerConn { get { return _instance._xpokerConn; } }
         public static string XpokerLogConn { get { return _instance._xpokerLogConn; } }
 
-        public static string KingstarConn { get { return _instance._kingstarConn; } }
-        public static string KingstarLogConn { get { return _instance._kingstarLogConn; } }
+        public static string HorseHunterConn { get { return _instance._HorseHunterConn; } }
+        public static string HorseHunterLogConn { get { return _instance._HorseHunterLogConn; } }
 
         public static string VqmmConn { get { return _instance._vqmmConn; } }
         public static string VqmmLogConn { get { return _instance._vqmmLogConn; } }

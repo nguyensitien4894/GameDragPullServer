@@ -57,7 +57,7 @@ namespace MsWebGame.CSKH.Controllers
             }
             else if (data.GameId == 7)
             {
-                GameName = "KingStar";
+                GameName = "HorseHunter";
             }
 
             else if (data.GameId == 14)
@@ -163,7 +163,7 @@ namespace MsWebGame.CSKH.Controllers
             }
             else if (data.GameId == 7)
             {
-                GameName = "KingStar";
+                GameName = "HorseHunter";
             }
 
             else if (data.GameId == 14)
@@ -440,7 +440,7 @@ namespace MsWebGame.CSKH.Controllers
                     keyName = "RoomFunds" + model.Roomid;
                     break;
                 case 7:
-                    gameKey = "KingStar";
+                    gameKey = "HorseHunter";
                     keyName = "RoomFunds" + model.Roomid;
                     break;
                 case 11:
@@ -545,7 +545,7 @@ namespace MsWebGame.CSKH.Controllers
                     keyName = "RoomFunds" + model.Roomid;
                     break;
                 case 7:
-                    gameKey = "KingStar";
+                    gameKey = "HorseHunter";
                     keyName = "RoomFunds" + model.Roomid;
                     break;
                 case 11:
@@ -777,7 +777,7 @@ namespace MsWebGame.CSKH.Controllers
 
         GameFunds GetCandy(int romId)
         {
-            string keyHu = CachingHandler.Instance.GeneralRedisKey("KingStar", "RoomFunds" + romId);
+            string keyHu = CachingHandler.Instance.GeneralRedisKey("HorseHunter", "RoomFunds" + romId);
             RedisCacheProvider _cachePvd = new RedisCacheProvider();
             MsWebGame.CSKH.Models.Redis.Tayduky.RoomFunds room = _cachePvd.Get<MsWebGame.CSKH.Models.Redis.Tayduky.RoomFunds>(keyHu);
             GameFunds roms = new GameFunds();

@@ -269,7 +269,7 @@ namespace MsWebGame.Portal.Controllers
             List<RoomFunds> listCandy = new List<RoomFunds>();
             for (int i = 0; i < 4; i++)
             {
-                string keyHu = CachingHandler.GeneralRedisKey("KingStar", "RoomFunds" + (i + 1).ToString());
+                string keyHu = CachingHandler.GeneralRedisKey("HorseHunter", "RoomFunds" + (i + 1).ToString());
                 RedisCacheProvider _cachePvd = new RedisCacheProvider();
                 RoomFunds room = _cachePvd.Get<RoomFunds>(keyHu);
                 if (room == null)
