@@ -168,7 +168,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\MsWebGame.RedisCache\MsWebGame.RedisCache.csproj">
+    <ProjectReference Include="D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\WebGame.RedisCache\MsWebGame.RedisCache.csproj">
       <Project>{AAF9C3AA-17A6-44BD-AFF0-A42D1F00A8A1}</Project>
       <Name>MsWebGame.RedisCache</Name>
     </ProjectReference>

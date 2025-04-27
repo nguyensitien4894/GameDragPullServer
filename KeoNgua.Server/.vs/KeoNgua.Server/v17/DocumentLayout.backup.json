@@ -3,16 +3,28 @@
   "WorkspaceRootPath": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|d:\\project\\private\\gamekeonguaserver\\keongua.server\\keongua.server\\controllers\\keonguacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\keongua.server\\handlers\\keonguahandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|solutionrelative:keongua.server\\handlers\\keonguahandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\keongua.server\\dataaccess\\daoimpl\\keonguadaoimpl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|solutionrelative:keongua.server\\dataaccess\\daoimpl\\keonguadaoimpl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\keongua.server\\controllers\\keonguacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|solutionrelative:keongua.server\\controllers\\keonguacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A195B17-8F33-4B4A-ABA2-1414DDBBA4BC}|WebGame.RedisCache\\MsWebGame.RedisCache.csproj|d:\\project\\private\\gamekeonguaserver\\keongua.server\\webgame.rediscache\\cache\\rediscacheprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A195B17-8F33-4B4A-ABA2-1414DDBBA4BC}|WebGame.RedisCache\\MsWebGame.RedisCache.csproj|solutionrelative:webgame.rediscache\\cache\\rediscacheprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\libman.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:KeoNgua.Server\\libman.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\keongua.server\\dataaccess\\daoimpl\\keonguadaoimpl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4890C9F6-7D32-4A0E-99C8-479E488B410B}|KeoNgua.Server\\KeoNgua.Server.csproj|solutionrelative:keongua.server\\dataaccess\\daoimpl\\keonguadaoimpl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{6A195B17-8F33-4B4A-ABA2-1414DDBBA4BC}|WebGame.RedisCache\\MsWebGame.RedisCache.csproj|D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\WebGame.RedisCache\\Cache\\RedisStore.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A195B17-8F33-4B4A-ABA2-1414DDBBA4BC}|WebGame.RedisCache\\MsWebGame.RedisCache.csproj|solutionrelative:WebGame.RedisCache\\Cache\\RedisStore.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,11 +34,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "libman.json",
               "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\libman.json",
               "RelativeDocumentMoniker": "KeoNgua.Server\\libman.json",
@@ -39,20 +51,45 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
+              "Title": "RedisCacheProvider.cs",
+              "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\WebGame.RedisCache\\Cache\\RedisCacheProvider.cs",
+              "RelativeDocumentMoniker": "WebGame.RedisCache\\Cache\\RedisCacheProvider.cs",
+              "ToolTip": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\WebGame.RedisCache\\Cache\\RedisCacheProvider.cs",
+              "RelativeToolTip": "WebGame.RedisCache\\Cache\\RedisCacheProvider.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T10:03:29.929Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "KeoNguaController.cs",
               "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\Controllers\\KeoNguaController.cs",
               "RelativeDocumentMoniker": "KeoNgua.Server\\Controllers\\KeoNguaController.cs",
               "ToolTip": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\Controllers\\KeoNguaController.cs",
               "RelativeToolTip": "KeoNgua.Server\\Controllers\\KeoNguaController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-27T09:22:26.797Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
+              "Title": "RedisStore.cs",
+              "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\WebGame.RedisCache\\Cache\\RedisStore.cs",
+              "RelativeDocumentMoniker": "WebGame.RedisCache\\Cache\\RedisStore.cs",
+              "ToolTip": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\WebGame.RedisCache\\Cache\\RedisStore.cs",
+              "RelativeToolTip": "WebGame.RedisCache\\Cache\\RedisStore.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T10:10:35.168Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "KeoNguaDaoImpl.cs",
               "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\DataAccess\\DaoImpl\\KeoNguaDaoImpl.cs",
               "RelativeDocumentMoniker": "KeoNgua.Server\\DataAccess\\DaoImpl\\KeoNguaDaoImpl.cs",
@@ -60,7 +97,21 @@
               "RelativeToolTip": "KeoNgua.Server\\DataAccess\\DaoImpl\\KeoNguaDaoImpl.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T09:22:29Z"
+              "WhenOpened": "2025-04-27T09:22:29Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "KeoNguaHandler.cs",
+              "DocumentMoniker": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\Handlers\\KeoNguaHandler.cs",
+              "RelativeDocumentMoniker": "KeoNgua.Server\\Handlers\\KeoNguaHandler.cs",
+              "ToolTip": "D:\\Project\\Private\\GameKeoNguaServer\\KeoNgua.Server\\KeoNgua.Server\\Handlers\\KeoNguaHandler.cs",
+              "RelativeToolTip": "KeoNgua.Server\\Handlers\\KeoNguaHandler.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAAwAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T09:50:46.151Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",

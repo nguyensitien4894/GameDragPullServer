@@ -515,12 +515,12 @@
     <None Include="Properties\PublishProfiles\portal.pubxml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\TraditionGame.Utilities\TraditionGame.Utilities.csproj">
+    <ProjectReference Include="D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\TraditionGame.Utilities\TraditionGame.Utilities.csproj">
       <Project>{e3359588-c7d5-465b-b89e-1bc7ff1a9633}</Project>
       <Name>TraditionGame.Utilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\WebGame.RedisCache\MsWebGame.RedisCache.csproj">
-      <Project>{6a195b17-8f33-4b4a-aba2-1414ddbba4bc}</Project>
+    <ProjectReference Include="D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\WebGame.RedisCache\MsWebGame.RedisCache.csproj">
+      <Project>{AAF9C3AA-17A6-44BD-AFF0-A42D1F00A8A1}</Project>
       <Name>MsWebGame.RedisCache</Name>
     </ProjectReference>
   </ItemGroup>
