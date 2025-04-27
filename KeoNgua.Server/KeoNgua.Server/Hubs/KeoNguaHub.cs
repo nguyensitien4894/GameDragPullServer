@@ -237,7 +237,7 @@ namespace KeoNgua.Server.Hubs
                            $"<strong>💸Tiền cược:</strong> {string.Format("{0:C0}", Convert.ToDecimal(betValue))}\r\n" +
                            $"<strong>💰Tổng cược:</strong> {string.Format("{0:C0}", Convert.ToDecimal(summaryBet))}\r\n";
 
-                SendRequestApi.SendTelePushAll(msg, 15);
+                //SendRequestApi.SendTelePushAll(msg, 15);
 
                 Clients.Caller.betSuccess(result, outBalance);
                 return response;
