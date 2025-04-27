@@ -1,0 +1,2 @@
+D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\KeoNgua.Server\obj\Debug\KeoNgua.Server.csproj.AssemblyReference.cache
+D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\KeoNgua.Server\obj\Debug\KeoNgua.Server.csproj.CoreCompileInputs.cache

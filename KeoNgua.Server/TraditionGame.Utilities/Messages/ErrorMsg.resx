@@ -1,0 +1,783 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AvatarIncorrect" xml:space="preserve">
+    <value>Invalid avatar</value>
+  </data>
+  <data name="BirthdayIncorrect" xml:space="preserve">
+    <value>Invalid date of birth</value>
+  </data>
+  <data name="DisplayNameIncorrect" xml:space="preserve">
+    <value>Display name contains only lowercase characters and numbers</value>
+  </data>
+  <data name="GenderIncorrect" xml:space="preserve">
+    <value>Invalid gender</value>
+  </data>
+  <data name="GetFail" xml:space="preserve">
+    <value>Retrieving information failed</value>
+  </data>
+  <data name="InProccessException" xml:space="preserve">
+    <value>Our system is busy, please try again later</value>
+  </data>
+  <data name="InValidCaptCha" xml:space="preserve">
+    <value>Incorrect code</value>
+  </data>
+  <data name="NameInUse" xml:space="preserve">
+    <value>Display name already used</value>
+  </data>
+  <data name="NewPasswordFormat" xml:space="preserve">
+    <value>The new password only needs to contain lowercase letters and numbers</value>
+  </data>
+  <data name="NewPasswordLength" xml:space="preserve">
+    <value>New password from 6 to 16 characters</value>
+  </data>
+  <data name="NickNameLength" xml:space="preserve">
+    <value>Display name length from 6 to 16 characters</value>
+  </data>
+  <data name="OldPasswordEqualNewPassword" xml:space="preserve">
+    <value>The new password is the same as the old password</value>
+  </data>
+  <data name="OldPasswordLength" xml:space="preserve">
+    <value>Old password from 6 to 16 characters</value>
+  </data>
+  <data name="OldPassWorldNotCorrect" xml:space="preserve">
+    <value>Old password is incorrect</value>
+  </data>
+  <data name="PasswordLength" xml:space="preserve">
+    <value>Password length from 6 to 16 characters</value>
+  </data>
+  <data name="PhoneEmpty" xml:space="preserve">
+    <value>You did not enter a phone number</value>
+  </data>
+  <data name="PhoneFormat" xml:space="preserve">
+    <value>Phone number is not in the correct format</value>
+  </data>
+  <data name="PhoneIncorrect" xml:space="preserve">
+    <value>Invalid phone number</value>
+  </data>
+  <data name="PhoneInUse" xml:space="preserve">
+    <value>Phone number already in use</value>
+  </data>
+  <data name="PhoneNotUse" xml:space="preserve">
+    <value>Unused phone number</value>
+  </data>
+  <data name="PhoneRegister" xml:space="preserve">
+    <value>Registered phone number</value>
+  </data>
+  <data name="UnAuthorized" xml:space="preserve">
+    <value>Not logged in yet</value>
+  </data>
+  <data name="UpdateFail" xml:space="preserve">
+    <value>Update failed</value>
+  </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>Update successful</value>
+  </data>
+  <data name="UserNameEqualNickName" xml:space="preserve">
+    <value>The character name is the same as the login name</value>
+  </data>
+  <data name="UserNameLength" xml:space="preserve">
+    <value>Username length from 6 to 16 characters</value>
+  </data>
+  <data name="OtpEmpty" xml:space="preserve">
+    <value>You have not entered the otp code</value>
+  </data>
+  <data name="OtpIncorrect" xml:space="preserve">
+    <value>Incorrect otp code</value>
+  </data>
+  <data name="MinAmountTranfer" xml:space="preserve">
+    <value>Minimum amount should be {0}</value>
+  </data>
+  <data name="GiftCodeExpired" xml:space="preserve">
+    <value>The gift code has expired</value>
+  </data>
+  <data name="GiftCodeInCorrect" xml:space="preserve">
+    <value>Gift code is incorrect</value>
+  </data>
+  <data name="GiftCodeRequired" xml:space="preserve">
+    <value>Gift code required to enter</value>
+  </data>
+  <data name="GiftCodeSuccess" xml:space="preserve">
+    <value>Enter the gift code successfully</value>
+  </data>
+  <data name="NickNameInUse" xml:space="preserve">
+    <value>Character name already used</value>
+  </data>
+  <data name="PasswordIncorrect" xml:space="preserve">
+    <value>Password contains only lowercase characters and numbers</value>
+  </data>
+  <data name="CapchaRequired" xml:space="preserve">
+    <value>Verification code cannot be empty</value>
+  </data>
+  <data name="FacebookGetFail" xml:space="preserve">
+    <value>Facebook information retrieval failed</value>
+  </data>
+  <data name="FacebookIncorrect" xml:space="preserve">
+    <value>Username or password is incorrect</value>
+  </data>
+  <data name="ParamaterInvalid" xml:space="preserve">
+    <value>Invalid parameter</value>
+  </data>
+  <data name="PhoneNotRegister" xml:space="preserve">
+    <value>Unregistered phone number</value>
+  </data>
+  <data name="PhoneUpdateNeedEmpty" xml:space="preserve">
+    <value>The account has been updated with the phone number</value>
+  </data>
+  <data name="UserNameOrPassInCorrect" xml:space="preserve">
+    <value>Username or password is incorrect</value>
+  </data>
+  <data name="AcountNotConfigOtp" xml:space="preserve">
+    <value>Account not configured to send otp</value>
+  </data>
+  <data name="OtpBusy" xml:space="preserve">
+    <value>The otp sending system is busy</value>
+  </data>
+  <data name="CreateAccountManyTime" xml:space="preserve">
+    <value>Creating too many accounts from one app</value>
+  </data>
+  <data name="UsernameEmpty" xml:space="preserve">
+    <value>Username cannot be blank</value>
+  </data>
+  <data name="UsernameIncorrect" xml:space="preserve">
+    <value>Username contains only alphanumeric characters</value>
+  </data>
+  <data name="NickNameContainNotAlowString" xml:space="preserve">
+    <value>Display name containing keyword disallowed</value>
+  </data>
+  <data name="NickNameContainUsername" xml:space="preserve">
+    <value>Display name cannot contain username</value>
+  </data>
+  <data name="NickNameNotContainSpace" xml:space="preserve">
+    <value>Display name does not contain spaces</value>
+  </data>
+  <data name="CardBusy" xml:space="preserve">
+    <value>System busy</value>
+  </data>
+  <data name="CardCodeInValid" xml:space="preserve">
+    <value>Invalid card face value</value>
+  </data>
+  <data name="CardCodeRequired" xml:space="preserve">
+    <value>You have not selected the card value</value>
+  </data>
+  <data name="CardInvalid" xml:space="preserve">
+    <value>Card invalid</value>
+  </data>
+  <data name="CardIsUpdateStatus" xml:space="preserve">
+    <value>card is updated status</value>
+  </data>
+  <data name="CardNotUpdateMoney" xml:space="preserve">
+    <value>Not Update Money</value>
+  </data>
+  <data name="CardNumberRequired" xml:space="preserve">
+    <value>You have not entered the card code</value>
+  </data>
+  <data name="CardTypeRequired" xml:space="preserve">
+    <value>You have not selected a card type</value>
+  </data>
+  <data name="CardUpdateError" xml:space="preserve">
+    <value>Status not update</value>
+  </data>
+  <data name="CardUpdateOK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="GameAccountIncorrect" xml:space="preserve">
+    <value>Game Account Incorrec</value>
+  </data>
+  <data name="SerialNumberRequired" xml:space="preserve">
+    <value>You have not entered the card serial number</value>
+  </data>
+  <data name="SignatureIncorrect" xml:space="preserve">
+    <value>Signature incorrect</value>
+  </data>
+  <data name="BalanceNotEnough" xml:space="preserve">
+    <value>The account is not enough to make a transaction</value>
+  </data>
+  <data name="CardLack" xml:space="preserve">
+    <value>Card fund is lacking</value>
+  </data>
+  <data name="CardStatusNotSuccess" xml:space="preserve">
+    <value>Card get status not success</value>
+  </data>
+  <data name="CardTelecomInActive" xml:space="preserve">
+    <value>System pauses card change {0}</value>
+  </data>
+  <data name="NPPNotAcitve" xml:space="preserve">
+    <value>Card loading port {0} is under maintenance</value>
+  </data>
+  <data name="CardCashoutSuccess" xml:space="preserve">
+    <value>Card exchange successful. We have sent your card information to your inbox</value>
+  </data>
+  <data name="AmountInValid" xml:space="preserve">
+    <value>Amount required to enter</value>
+  </data>
+  <data name="AmountNotEnoghToCardExchange" xml:space="preserve">
+    <value>The account does not have enough money to change the card</value>
+  </data>
+  <data name="AmountNotEnoughToOpenSafe" xml:space="preserve">
+    <value>The safe vault does not have enough money to withdraw</value>
+  </data>
+  <data name="AmountNotEnoughToSafe" xml:space="preserve">
+    <value>The account does not have enough money to transfer to the safe vault</value>
+  </data>
+  <data name="CardChargingSuccess" xml:space="preserve">
+    <value>We have recorded the card. Please wait</value>
+  </data>
+  <data name="OTPBitNotEngough" xml:space="preserve">
+    <value>The account does not have enough money to get the Otp code</value>
+  </data>
+  <data name="UserRankNotVerify" xml:space="preserve">
+    <value>Your account is not eligible to redeem VP points</value>
+  </data>
+  <data name="VPFail" xml:space="preserve">
+    <value>The redemption system is busy. Please contact me again later</value>
+  </data>
+  <data name="VPNotEnough" xml:space="preserve">
+    <value>The current number of points is not enough to redeem</value>
+  </data>
+  <data name="VPSuccess" xml:space="preserve">
+    <value>Successfully received rewards</value>
+  </data>
+  <data name="CampaignNotExist" xml:space="preserve">
+    <value>Gift code campaign does not exist</value>
+  </data>
+  <data name="GiftCodeAmountValid" xml:space="preserve">
+    <value>Adding the gift code to the account with the error</value>
+  </data>
+  <data name="GiftCodeInUse" xml:space="preserve">
+    <value>The gift code has been used</value>
+  </data>
+  <data name="GiftCodeUseOnlyOne" xml:space="preserve">
+    <value>In this campaign, each user can only use the gift code once</value>
+  </data>
+  <data name="PasswordEmpty" xml:space="preserve">
+    <value>You have not entered your password</value>
+  </data>
+  <data name="AccountReceiveNotExist" xml:space="preserve">
+    <value>The receiving account does not exist</value>
+  </data>
+  <data name="AmountNotValidToTranferBit" xml:space="preserve">
+    <value>The account does not have enough funds to make the transaction</value>
+  </data>
+  <data name="CardCharingException" xml:space="preserve">
+    <value>The card exchange system is busy</value>
+  </data>
+  <data name="FeeNotConfig" xml:space="preserve">
+    <value>The system has not configured transaction fees</value>
+  </data>
+  <data name="TranferBitSuccess" xml:space="preserve">
+    <value>Money transfer successful</value>
+  </data>
+  <data name="UserNameTranferInvalid" xml:space="preserve">
+    <value>The receiving account cannot be empty</value>
+  </data>
+  <data name="AccountLock" xml:space="preserve">
+    <value>Account has been locked</value>
+  </data>
+  <data name="AgencyCodeInUse" xml:space="preserve">
+    <value>Agent code already in use</value>
+  </data>
+  <data name="AgencyDisable" xml:space="preserve">
+    <value>Agent has been locked</value>
+  </data>
+  <data name="AgencyExist" xml:space="preserve">
+    <value>Agent already exists</value>
+  </data>
+  <data name="AgencyFBLinkInUse" xml:space="preserve">
+    <value>The facebook link is already in use</value>
+  </data>
+  <data name="AgencyLock" xml:space="preserve">
+    <value>Agent has been locked</value>
+  </data>
+  <data name="AgencyNotExist" xml:space="preserve">
+    <value>Agent does not exist</value>
+  </data>
+  <data name="AgencySecretInUse" xml:space="preserve">
+    <value>Agent security code has been used</value>
+  </data>
+  <data name="DisplayNameContainSpace" xml:space="preserve">
+    <value>Display name cannot contain spaces</value>
+  </data>
+  <data name="DisplayNameLength" xml:space="preserve">
+    <value>The display name should only contain between 6 and 16 characters</value>
+  </data>
+  <data name="EmailEmpty" xml:space="preserve">
+    <value>Email cannot be empty</value>
+  </data>
+  <data name="EmailInUse" xml:space="preserve">
+    <value>Email already in use</value>
+  </data>
+  <data name="EmailInValid" xml:space="preserve">
+    <value>Email invalidate</value>
+  </data>
+  <data name="FunctionLock" xml:space="preserve">
+    <value>The function will open in a few days</value>
+  </data>
+  <data name="NickNameEmpty" xml:space="preserve">
+    <value>Display name cannot be empty</value>
+  </data>
+  <data name="NoteLengthOverMax" xml:space="preserve">
+    <value>Description cannot exceed 50 characters</value>
+  </data>
+  <data name="PasswordContainSpace" xml:space="preserve">
+    <value>Password cannot contain spaces</value>
+  </data>
+  <data name="UpdateNickNameSuccess" xml:space="preserve">
+    <value>Display name updated successfully</value>
+  </data>
+  <data name="UpdateSecuritySucess" xml:space="preserve">
+    <value>Security update successful</value>
+  </data>
+  <data name="UserChangeVP" xml:space="preserve">
+    <value>Account has redeemed VP points</value>
+  </data>
+  <data name="UserNameContainsNotAllowString" xml:space="preserve">
+    <value>Username contains keywords not allowed</value>
+  </data>
+  <data name="UserNameContainSpace" xml:space="preserve">
+    <value>Username cannot contain spaces</value>
+  </data>
+  <data name="UserNameInUse" xml:space="preserve">
+    <value>Username already used</value>
+  </data>
+  <data name="UserNotActive" xml:space="preserve">
+    <value>Account has been locked</value>
+  </data>
+  <data name="UserNotRanked" xml:space="preserve">
+    <value>The account is not rated yet</value>
+  </data>
+  <data name="UserTranferEqualUser" xml:space="preserve">
+    <value>You cannot transfer to yourself</value>
+  </data>
+  <data name="UserTranferNotExist" xml:space="preserve">
+    <value>Transmitter does not exist</value>
+  </data>
+  <data name="AccountExist" xml:space="preserve">
+    <value>Account already exists</value>
+  </data>
+  <data name="FBRegister" xml:space="preserve">
+    <value>Registered facebook account</value>
+  </data>
+  <data name="CampaignOutMoney" xml:space="preserve">
+    <value>The campaign fund has run out</value>
+  </data>
+  <data name="SaveLogError" xml:space="preserve">
+    <value>Error saving transaction history</value>
+  </data>
+  <data name="UserNotValid" xml:space="preserve">
+    <value>This account is Invalid</value>
+  </data>
+  <data name="CreateErrorLogError" xml:space="preserve">
+    <value>Create error log error</value>
+  </data>
+  <data name="UpdateCardStatus3Error" xml:space="preserve">
+    <value>Update card status 3 error</value>
+  </data>
+  <data name="UpdateStatusSuccessError" xml:space="preserve">
+    <value>Update status success error</value>
+  </data>
+  <data name="CardChargingNotAddAmount" xml:space="preserve">
+    <value>Can't add money to user</value>
+  </data>
+  <data name="CardTeleIDInValid" xml:space="preserve">
+    <value>CardTeleInValid</value>
+  </data>
+  <data name="CardUpdateStatusOKMinus_1" xml:space="preserve">
+    <value>Card update status -1 ok</value>
+  </data>
+  <data name="CardUpdateStatusOK_3" xml:space="preserve">
+    <value>Update status 3</value>
+  </data>
+  <data name="CardUpdateStatus_2" xml:space="preserve">
+    <value>UpdateStatus_2</value>
+  </data>
+  <data name="SerialInvalid" xml:space="preserve">
+    <value>Serial card invalid</value>
+  </data>
+  <data name="UserCardNotFind" xml:space="preserve">
+    <value>Tag not found by request id</value>
+  </data>
+  <data name="CardErrorContactCSKH" xml:space="preserve">
+    <value>Contact customer service for handling</value>
+  </data>
+  <data name="CardLock" xml:space="preserve">
+    <value>The system has temporarily stopped accepting this card</value>
+  </data>
+  <data name="CardNeedApproved" xml:space="preserve">
+    <value>The system has registered. Please wait for card approval</value>
+  </data>
+  <data name="CardNumberNotContainSpace" xml:space="preserve">
+    <value>Tag code must not contain spaces</value>
+  </data>
+  <data name="SerialNumberNotContainSpace" xml:space="preserve">
+    <value>The card serial cannot contain spaces</value>
+  </data>
+  <data name="CardSuccessOnCharging" xml:space="preserve">
+    <value>Card recharge successfully</value>
+  </data>
+  <data name="CardNumberContainNumber" xml:space="preserve">
+    <value>The card code contains only numeric characters</value>
+  </data>
+  <data name="SerialNumberContainNumber" xml:space="preserve">
+    <value>Serial contains only characters and numbers</value>
+  </data>
+  <data name="PhoneRegisterDiffPhonePass" xml:space="preserve">
+    <value>Registered phone number is different from the one entered</value>
+  </data>
+  <data name="UserNotExist" xml:space="preserve">
+    <value>Account does not exist in the system</value>
+  </data>
+  <data name="CardNumberLenghInValid" xml:space="preserve">
+    <value>Tag code length is not suitable</value>
+  </data>
+  <data name="CardSerialLenghInValid" xml:space="preserve">
+    <value>Card serial length does not match</value>
+  </data>
+  <data name="TranferOverMoney" xml:space="preserve">
+    <value>Transfer money over limit within the day</value>
+  </data>
+  <data name="AmountNotValid" xml:space="preserve">
+    <value>Invalid amount</value>
+  </data>
+  <data name="CardOverThree" xml:space="preserve">
+    <value>The card is entered into the system more than the allowed number of times</value>
+  </data>
+  <data name="CardSwapCancelSuccess" xml:space="preserve">
+    <value>Cancellation and change of card successfully</value>
+  </data>
+  <data name="CardSwapNotFound" xml:space="preserve">
+    <value>Redemption card not found</value>
+  </data>
+  <data name="CardSwapStatusInValid" xml:space="preserve">
+    <value>Invalid redemption card status</value>
+  </data>
+  <data name="UserCardSwapCancelFail" xml:space="preserve">
+    <value>Canceling card change failed</value>
+  </data>
+  <data name="UserInValid" xml:space="preserve">
+    <value>This account is Invalid</value>
+  </data>
+  <data name="AdBoxFail" xml:space="preserve">
+    <value>Gift exchange failed</value>
+  </data>
+  <data name="AdBoxGiftCodeInValid" xml:space="preserve">
+    <value>Invalid redemption type</value>
+  </data>
+  <data name="AdBoxSuccess" xml:space="preserve">
+    <value>Successful gift exchange</value>
+  </data>
+  <data name="Bom1AddSuccess" xml:space="preserve">
+    <value>Receive success milestones</value>
+  </data>
+  <data name="Bom1AdFail" xml:space="preserve">
+    <value>Get reward for failure</value>
+  </data>
+  <data name="Bom1OverQuata" xml:space="preserve">
+    <value>The limit for receiving milestone rewards has expired</value>
+  </data>
+  <data name="Bom1UserReceived" xml:space="preserve">
+    <value>The user has received a milestone reward</value>
+  </data>
+  <data name="DeviceEmpty" xml:space="preserve">
+    <value>OTP code is incorrect</value>
+  </data>
+  <data name="PhoneNotRegisterToUseAppOtp" xml:space="preserve">
+    <value>Otp code is incorrect</value>
+  </data>
+  <data name="TokenEmtpy" xml:space="preserve">
+    <value>Token cannot be empty</value>
+  </data>
+  <data name="AnphaMsg" xml:space="preserve">
+    <value>The system is maintaining this function. Please come back later</value>
+  </data>
+  <data name="NickNameExist" xml:space="preserve">
+    <value>The account has updated its display name</value>
+  </data>
+  <data name="AvatarUpdateSuccess" xml:space="preserve">
+    <value>Update avatar successfully</value>
+  </data>
+  <data name="PasswordChangeSuccess" xml:space="preserve">
+    <value>Password successfully changed</value>
+  </data>
+  <data name="CardRateInValidate" xml:space="preserve">
+    <value>TeleteRateInvalid</value>
+  </data>
+  <data name="CardUpdateStatus4" xml:space="preserve">
+    <value>Card update status 4 (refunded to customers)</value>
+  </data>
+  <data name="CardUpdateStatus_Negative3" xml:space="preserve">
+    <value>Update scratch card status -3</value>
+  </data>
+  <data name="MobilePhoneCardNumberLength" xml:space="preserve">
+    <value>Mobile phone scratch card code contains only 12 characters</value>
+  </data>
+  <data name="MobilePhoneSeriNumberLength" xml:space="preserve">
+    <value>Mobile phone series contains only 15 characters</value>
+  </data>
+  <data name="PhoneVietnammobileNotSupport" xml:space="preserve">
+    <value>The system does not support this type of mobile number</value>
+  </data>
+  <data name="ViettelCardNumberLength" xml:space="preserve">
+    <value>The scratch card code is only 13 or 15 characters</value>
+  </data>
+  <data name="ViettelSeriNumberLength" xml:space="preserve">
+    <value>Your series contains only 11 or 14 characters</value>
+  </data>
+  <data name="VinaphoneCardNumberLength" xml:space="preserve">
+    <value>The scratch card code is only 12 or 14 characters</value>
+  </data>
+  <data name="VinaphoneSeriNumberLength" xml:space="preserve">
+    <value>The series is only 12 or 14 characters</value>
+  </data>
+  <data name="UserNameAndPasswordExist" xml:space="preserve">
+    <value>Invalid username or password</value>
+  </data>
+  <data name="ERR_UPDATE_PHONE_LESS_24" xml:space="preserve">
+    <value>Redeem/transfer after 24 hours since phone number registration. Or you need to reach 10vp to be redeemed immediately.</value>
+  </data>
+  <data name="AccountLoginOvertime" xml:space="preserve">
+    <value>Account logged in too many times allowed</value>
+  </data>
+  <data name="AccountSafeInValid" xml:space="preserve">
+    <value>This account is Invalid. Thank you for using the service</value>
+  </data>
+  <data name="AccountSaveNotLink" xml:space="preserve">
+    <value>The account is not configured with the game system. Thank you for using the service</value>
+  </data>
+  <data name="CommandNotRegister" xml:space="preserve">
+    <value>The message is syntactically incorrect. Thank you for using the service</value>
+  </data>
+  <data name="FirstnameRequired" xml:space="preserve">
+    <value>Name cannot be empty</value>
+  </data>
+  <data name="LastnameRequired" xml:space="preserve">
+    <value>They can't be empty</value>
+  </data>
+  <data name="MessageClearFail" xml:space="preserve">
+    <value>Delete failed message</value>
+  </data>
+  <data name="MessageClearSuccess" xml:space="preserve">
+    <value>Delete message successfully</value>
+  </data>
+  <data name="PhoneValid" xml:space="preserve">
+    <value>Valid phone number</value>
+  </data>
+  <data name="AccountLinkedSafeOtp" xml:space="preserve">
+    <value>AppSafe has been linked to another account</value>
+  </data>
+  <data name="OtpSafeUsed" xml:space="preserve">
+    <value>AppSafe has been linked to another account</value>
+  </data>
+  <data name="SafeIDNotCreate" xml:space="preserve">
+    <value>Unused phone number in AppSafe system</value>
+  </data>
+  <data name="SafeIDSuccess" xml:space="preserve">
+    <value>Successfully linked AppSafe account</value>
+  </data>
+  <data name="UnSafeIDSuccess" xml:space="preserve">
+    <value>Unmount successful</value>
+  </data>
+  <data name="MSNErr" xml:space="preserve">
+    <value>System sending confirmation code is busy</value>
+  </data>
+  <data name="AccountNotLinkSafe" xml:space="preserve">
+    <value>The phone number does not exist in the AppSafe system</value>
+  </data>
+  <data name="OtpLengthInValid" xml:space="preserve">
+    <value>The otp character only accepts 6 for otp app, 7 for sms and 8 for AppSafe</value>
+  </data>
+  <data name="PhoneSafeOtpEmty" xml:space="preserve">
+    <value>The phone number does not exist in the AppSafe system</value>
+  </data>
+  <data name="PhoneSafeOtpInUse" xml:space="preserve">
+    <value>Phone number registered in AppSafe</value>
+  </data>
+  <data name="SafeOtpOnlyAccept" xml:space="preserve">
+    <value>Accept only authentication codes sent to the AppSafe system</value>
+  </data>
+  <data name="SmsOtpOnlyAccept" xml:space="preserve">
+    <value>Only accept otp codes sent from SMS</value>
+  </data>
+  <data name="AuthenTypeNeedRemove" xml:space="preserve">
+    <value>You are enabling login security. To do this you need to disable login security</value>
+  </data>
+  <data name="SafeNotiyType10" xml:space="preserve">
+    <value>Your Otp code is {0} limited to use within 5 minutes</value>
+  </data>
+  <data name="NOTINSERVICE" xml:space="preserve">
+    <value>Account does not exist in the system</value>
+  </data>
+  <data name="ERR_EXEED_WRONG_GIFTCODE_QUOTA" xml:space="preserve">
+    <value>You only have 1 time to enter the wrong giftcode before being locked out</value>
+  </data>
+  <data name="ERR_LOCK_EXEED_WRONG_GIFTCODE_QUOTA" xml:space="preserve">
+    <value>Enter the wrong number of times allowed, you will be locked</value>
+  </data>
+  <data name="ERR_WRONG_GIFTCODE_10" xml:space="preserve">
+    <value>You have entered wrong giftcode 10 times</value>
+  </data>
+  <data name="CardnumberInValid" xml:space="preserve">
+    <value>The card code contains only lowercase characters and numbers</value>
+  </data>
+  <data name="SerialCardInvalid" xml:space="preserve">
+    <value>Serial contains only lowercase characters and numbers</value>
+  </data>
+  <data name="UserNotGetRank" xml:space="preserve">
+    <value>Can't get user's rank</value>
+  </data>
+  <data name="AccountFBNotExist" xml:space="preserve">
+    <value>The account registered with facebook does not exist</value>
+  </data>
+  <data name="AccountNotFB" xml:space="preserve">
+    <value>The account is not an account registered with facebook</value>
+  </data>
+  <data name="AccountUpdateFBOneTime" xml:space="preserve">
+    <value>Account updated username and password</value>
+  </data>
+  <data name="PassAndConfirmPassNotEqual" xml:space="preserve">
+    <value>Password and password repeat do not match!</value>
+  </data>
+  <data name="UsernameContainDisplayname" xml:space="preserve">
+    <value>Username cannot contain display name</value>
+  </data>
+  <data name="STOPREGISTER" xml:space="preserve">
+    <value>Pause account registration.</value>
+  </data>
+  <data name="NationChangeSuccess" xml:space="preserve">
+    <value>Country update successful</value>
+  </data>
+  <data name="NationIsEmpty" xml:space="preserve">
+    <value>Country cannot be empty</value>
+  </data>
+  <data name="MOMOLOCK" xml:space="preserve">
+    <value>Momo system is busy. Please come back later</value>
+  </data>
+  <data name="VIETTELPAYLOCK" xml:space="preserve">
+    <value>The system is busy. Please come back later</value>
+  </data>
+  <data name="SecurityInValid" xml:space="preserve">
+    <value>Accounts need to secure their phone number to use this function</value>
+  </data>
+  <data name="BetweenAmountTranfer" xml:space="preserve">
+    <value>Transfer amount must be the value : {0}</value>
+  </data>
+  <data name="InvalidNote" xml:space="preserve">
+    <value>Invalid transfer content</value>
+  </data>
+</root>

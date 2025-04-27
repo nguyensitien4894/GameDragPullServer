@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2CEC1535-B112-4153-98C3-48D4A1D85E98}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TraditionGame.Utilities</RootNamespace>
+    <AssemblyName>TraditionGame.Utilities</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.Memory, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\packages\Microsoft.Bcl.Memory.9.0.0\lib\net462\Microsoft.Bcl.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.TimeProvider, Version=8.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\packages\Microsoft.Bcl.TimeProvider.8.0.1\lib\net462\Microsoft.Bcl.TimeProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\lib\net461\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=8.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.8.8.0\lib\net462\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=8.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.8.8.0\lib\net462\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\packages\Microsoft.Owin.4.2.2\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.7.4\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=6.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\packages\System.Diagnostics.DiagnosticSource.6.0.2\lib\net461\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=8.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.8.8.0\lib\net462\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Text.Encodings.Web, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\packages\System.Text.Encodings.Web.8.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=8.0.0.5, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\packages\System.Text.Json.8.0.5\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Api\ApiUtil.cs" />
+    <Compile Include="Api\SendRequestApi.cs" />
+    <Compile Include="BanksGateTheNhanh\Encrypts.cs" />
+    <Compile Include="BanksGateTheNhanh\Models\APIResponse.cs" />
+    <Compile Include="BanksGateTheNhanh\Models\BankAccount.cs" />
+    <Compile Include="BanksGateTheNhanh\Models\DataCallback.cs" />
+    <Compile Include="BanksGateTheNhanh\Models\GetBankRequest.cs" />
+    <Compile Include="BanksGateTheNhanh\Models\Order.cs" />
+    <Compile Include="BanksGateTheNhanh\Models\OrderRequest.cs" />
+    <Compile Include="BanksGateTheNhanh\Models\UserRequest.cs" />
+    <Compile Include="BanksGateTheNhanh\ShopTheNhanhGateBankApi.cs" />
+    <Compile Include="Caching\CacheCounter.cs" />
+    <Compile Include="Caching\GameFilter.cs" />
+    <Compile Include="Chat\ChatFilter.cs" />
+    <Compile Include="Collection\CircularLinkedList.cs" />
+    <Compile Include="Collection\Permutation.cs" />
+    <Compile Include="Config\Config.cs" />
+    <Compile Include="Constants\Constants.cs" />
+    <Compile Include="Cookies\CookieManager.cs" />
+    <Compile Include="Database\DBHelper.cs" />
+    <Compile Include="DNA\DNAHelpers.cs" />
+    <Compile Include="DNA\EnumGameDNA.cs" />
+    <Compile Include="DNA\Event\CarrotParams.cs" />
+    <Compile Include="DNA\Event\EventParams.cs" />
+    <Compile Include="DNA\Game\GameParams.cs" />
+    <Compile Include="DNA\VP\VPEventParams.cs" />
+    <Compile Include="Facebook\FacebookUtil.cs" />
+    <Compile Include="Facebook\FBAccount.cs" />
+    <Compile Include="Google\GoogleAccount.cs" />
+    <Compile Include="Google\GoogleUtil.cs" />
+    <Compile Include="Http\HttpUtils.cs" />
+    <Compile Include="Http\UrlParseHelper.cs" />
+    <Compile Include="IpAddress\IPAddressHelper.cs" />
+    <Compile Include="IpAddress\IPChecker.cs" />
+    <Compile Include="IpAddress\IPGeographicalLocation.cs" />
+    <Compile Include="Log\LoggerHelper.cs" />
+    <Compile Include="Log\NLogManager.cs" />
+    <Compile Include="Log\ProfileLogger.cs" />
+    <Compile Include="Messages\CommonClientMessage.cs" />
+    <Compile Include="Messages\CommonLogMessage.cs" />
+    <Compile Include="Messages\ErrorMsg1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ErrorMsg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Momos\Api\BaseApiMomoRequest.cs" />
+    <Compile Include="Momos\Api\Charges\MomoChargeApi.cs" />
+    <Compile Include="Momos\Models\MomoCallBack.cs" />
+    <Compile Include="Momos\Models\MomoCallbackRequest.cs" />
+    <Compile Include="Momos\Models\MomoRequest.cs" />
+    <Compile Include="Momos\Models\MomoResponse.cs" />
+    <Compile Include="MyUSDT\API\BaseApiRequest.cs" />
+    <Compile Include="MyUSDT\API\Charges\BankChargeApi.cs" />
+    <Compile Include="MyUSDT\API\Exchanges\BankExchangesApi.cs" />
+    <Compile Include="MyUSDT\Models\Charges\BankChargeModel.cs" />
+    <Compile Include="MyUSDT\Models\Charges\BuyOrderRequestModel.cs" />
+    <Compile Include="MyUSDT\Models\Charges\BuyOrderResponseModel.cs" />
+    <Compile Include="MyUSDT\Models\Charges\CallBackBuyOrderRequest.cs" />
+    <Compile Include="MyUSDT\Models\Charges\OrderDetailModel.cs" />
+    <Compile Include="MyUSDT\Models\Charges\UsdtRate.cs" />
+    <Compile Include="MyUSDT\Models\Exchanges\CallBackSellOrderRequest.cs" />
+    <Compile Include="MyUSDT\Models\Exchanges\MerchantTransactionsRequestModel.cs" />
+    <Compile Include="MyUSDT\Models\Exchanges\MerchantTransactionsResponseModel.cs" />
+    <Compile Include="MyUSDT\Models\Exchanges\SellOrderRequestModel.cs" />
+    <Compile Include="MyUSDT\Models\Exchanges\SellOrderResponseModel.cs" />
+    <Compile Include="MyUSDT\Models\Exchanges\WithDrawBankListModel.cs" />
+    <Compile Include="OneSignal\BaseOneSignal.cs" />
+    <Compile Include="OneSignal\OneSignalApi.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\JWTTokenProvider.cs" />
+    <Compile Include="Security\RijndaelEnhanced.cs" />
+    <Compile Include="Security\SafeOtpTokenProvider.cs" />
+    <Compile Include="Security\Security.cs" />
+    <Compile Include="Security\TokenHashprovider.cs" />
+    <Compile Include="Session\AccountSession.cs" />
+    <Compile Include="SmartBanks\API\BaseApiRequest.cs" />
+    <Compile Include="SmartBanks\API\Charges\SmartBankChargeApi.cs" />
+    <Compile Include="SmartBanks\API\Withdraws\SmartbankWithdrawApi.cs" />
+    <Compile Include="SmartBanks\Model\SmartBankChargeModel.cs" />
+    <Compile Include="SmartBanks\Model\SmartBankChargeRequestModel.cs" />
+    <Compile Include="SmartBanks\Model\SmartBankChargeResquestModel.cs" />
+    <Compile Include="Utils\DatatableConvertor.cs" />
+    <Compile Include="Utils\DateTimeExtension.cs" />
+    <Compile Include="Utils\DateUtil.cs" />
+    <Compile Include="Utils\MessageError.cs" />
+    <Compile Include="Utils\MoneyExtension.cs" />
+    <Compile Include="Utils\RandomUtil.cs" />
+    <Compile Include="Utils\StringExtension.cs" />
+    <Compile Include="Utils\StringUtil.cs" />
+    <Compile Include="ViettelPay\Models\ViettelPayRequest.cs" />
+    <Compile Include="XBomms\Models\XBoomRequestModel.cs" />
+    <Compile Include="XBomms\Models\XBoomResponseModel.cs" />
+    <Compile Include="XBomms\XBommApi.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Messages\ErrorMsg.resx">
+      <LastGenOutput>ErrorMsg1.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\TraditionGame.Utilities\packages.config" />
+    <None Include="libman.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Momos\Utils\" />
+    <Folder Include="MyUSDT\Utils\" />
+    <Folder Include="SmartBanks\Utils\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" Text="$([System.String]::Format('$(ErrorText)', 'D:\Project\Private\GameKeoNguaServer\KeoNgua.Server\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
