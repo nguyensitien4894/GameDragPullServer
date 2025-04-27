@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeoNgua.Server", "KeoNgua.Server\KeoNgua.Server.csproj", "{4890C9F6-7D32-4A0E-99C8-479E488B410B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TraditionGame.Utilities", "TraditionGame.Utilities\TraditionGame.Utilities.csproj", "{2CEC1535-B112-4153-98C3-48D4A1D85E98}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsWebGame.RedisCache", "WebGame.RedisCache\MsWebGame.RedisCache.csproj", "{6A195B17-8F33-4B4A-ABA2-1414DDBBA4BC}"
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4890C9F6-7D32-4A0E-99C8-479E488B410B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4890C9F6-7D32-4A0E-99C8-479E488B410B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4890C9F6-7D32-4A0E-99C8-479E488B410B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4890C9F6-7D32-4A0E-99C8-479E488B410B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2CEC1535-B112-4153-98C3-48D4A1D85E98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2CEC1535-B112-4153-98C3-48D4A1D85E98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CEC1535-B112-4153-98C3-48D4A1D85E98}.Release|Any CPU.ActiveCfg = Release|Any CPU
